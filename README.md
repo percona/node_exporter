@@ -1,8 +1,4 @@
-# Node exporter [![Build Status](https://travis-ci.org/prometheus/node_exporter.svg)][travis]
-
-[![CircleCI](https://circleci.com/gh/prometheus/node_exporter/tree/master.svg?style=shield)][circleci]
-[![Docker Repository on Quay](https://quay.io/repository/prometheus/node-exporter/status)][quay]
-[![Docker Pulls](https://img.shields.io/docker/pulls/prom/node-exporter.svg?maxAge=604800)][hub]
+# Percona Node exporter [![Build Status]
 
 Prometheus exporter for machine metrics, written in Go with pluggable metric
 collectors.
