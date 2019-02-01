@@ -44,6 +44,7 @@ var (
 
 func init() {
 	registerCollector("hwmon", defaultEnabled, NewHwMonCollector)
+	Factories["hwmon"] = NewHwMonCollector
 }
 
 type hwMonCollector struct{}

@@ -100,6 +100,7 @@ type devstatCollector struct {
 
 func init() {
 	registerCollector("devstat", defaultDisabled, NewDevstatCollector)
+	Factories["devstat"] = NewDevstatCollector
 }
 
 // NewDevstatCollector returns a new Collector exposing Device stats.

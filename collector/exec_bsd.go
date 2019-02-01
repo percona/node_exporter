@@ -26,6 +26,7 @@ type execCollector struct {
 
 func init() {
 	registerCollector("exec", defaultEnabled, NewExecCollector)
+	Factories["exec"] = NewExecCollector
 }
 
 // NewExecCollector returns a new Collector exposing system execution statistics.

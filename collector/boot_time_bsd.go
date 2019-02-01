@@ -24,6 +24,7 @@ type bootTimeCollector struct{ boottime bsdSysctl }
 
 func init() {
 	registerCollector("boottime", defaultEnabled, newBootTimeCollector)
+	Factories["boottime"] = newBootTimeCollector
 }
 
 // newBootTimeCollector returns a new Collector exposing system boot time on BSD systems.

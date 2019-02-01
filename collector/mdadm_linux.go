@@ -48,6 +48,7 @@ type mdadmCollector struct{}
 
 func init() {
 	registerCollector("mdadm", defaultEnabled, NewMdadmCollector)
+	Factories["mdadm"] = NewMdadmCollector
 }
 
 func evalStatusline(statusline string) (active, total, size int64, err error) {

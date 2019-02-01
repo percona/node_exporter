@@ -16,16 +16,14 @@
 package collector
 
 import (
+	"flag"
 	"testing"
-
-	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
 func TestMountPointDetails(t *testing.T) {
-	if _, err := kingpin.CommandLine.Parse([]string{"--path.procfs", "./fixtures/proc"}); err != nil {
+	if err := flag.Set("path.procfs", "./fixtures/proc"); err != nil {
 		t.Fatal(err)
 	}
-
 	expected := map[string]string{
 		"/":                               "",
 		"/sys":                            "",
@@ -72,10 +70,9 @@ func TestMountPointDetails(t *testing.T) {
 }
 
 func TestMountsFallback(t *testing.T) {
-	if _, err := kingpin.CommandLine.Parse([]string{"--path.procfs", "./fixtures_hidepid/proc"}); err != nil {
+	if err := flag.Set("path.procfs", "./fixtures_hidepid/proc"); err != nil {
 		t.Fatal(err)
 	}
-
 	expected := map[string]string{
 		"/": "",
 	}

@@ -30,6 +30,7 @@ type zfsSysctl string
 
 func init() {
 	registerCollector("zfs", defaultEnabled, NewZFSCollector)
+	Factories["zfs"] = NewZFSCollector
 }
 
 type zfsCollector struct {

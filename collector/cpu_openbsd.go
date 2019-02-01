@@ -35,6 +35,7 @@ type cpuCollector struct {
 
 func init() {
 	registerCollector("cpu", defaultEnabled, NewCpuCollector)
+	Factories["cpu"] = NewCpuCollector
 }
 
 func NewCpuCollector() (Collector, error) {

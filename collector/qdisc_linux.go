@@ -19,10 +19,10 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"path/filepath"
+	"flag"
 
 	"github.com/ema/qdisc"
 	"github.com/prometheus/client_golang/prometheus"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 type qdiscStatCollector struct {
@@ -34,11 +34,12 @@ type qdiscStatCollector struct {
 }
 
 var (
-	collectorQdisc = kingpin.Flag("collector.qdisc.fixtures", "test fixtures to use for qdisc collector end-to-end testing").Default("").String()
+	collectorQdisc = flag.String("collector.qdisc.fixtures", "","test fixtures to use for qdisc collector end-to-end testing")
 )
 
 func init() {
 	registerCollector("qdisc", defaultDisabled, NewQdiscStatCollector)
+	Factories["qdisc"] = NewQdiscStatCollector
 }
 
 // NewQdiscStatCollector returns a new Collector exposing queuing discipline statistics.

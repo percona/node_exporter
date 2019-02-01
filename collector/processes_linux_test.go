@@ -16,13 +16,12 @@
 package collector
 
 import (
+	"flag"
 	"testing"
-
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 func TestReadProcessStatus(t *testing.T) {
-	if _, err := kingpin.CommandLine.Parse([]string{"--path.procfs", "fixtures/proc"}); err != nil {
+	if err := flag.Set("path.procfs", "fixtures/proc"); err != nil {
 		t.Fatal(err)
 	}
 	want := 1

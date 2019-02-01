@@ -41,6 +41,7 @@ type unameCollector struct{}
 
 func init() {
 	registerCollector("uname", defaultEnabled, newUnameCollector)
+	Factories["uname"] = newUnameCollector
 }
 
 // NewUnameCollector returns new unameCollector.

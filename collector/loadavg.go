@@ -29,6 +29,7 @@ type loadavgCollector struct {
 
 func init() {
 	registerCollector("loadavg", defaultEnabled, NewLoadavgCollector)
+	Factories["loadavg"] = NewLoadavgCollector
 }
 
 // NewLoadavgCollector returns a new Collector exposing load average stats.

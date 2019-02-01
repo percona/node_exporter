@@ -14,6 +14,7 @@
 package collector
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -23,7 +24,6 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/prometheus/common/log"
-	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
 type collectorAdapter struct {
@@ -101,8 +101,10 @@ func TestTextfileCollector(t *testing.T) {
 
 		// Suppress a log message about `nonexistent_path` not existing, this is
 		// expected and clutters the test output.
-		log.AddFlags(kingpin.CommandLine)
-		_, err := kingpin.CommandLine.Parse([]string{"--log.level", "fatal"})
+//		log.AddFlags(kingpin.CommandLine)
+//		_, err := kingpin.CommandLine.Parse([]string{"--log.level", "fatal"})
+		log.AddFlags(flag.CommandLine)
+		err := flag.Set("log.level", "fatal")
 		if err != nil {
 			t.Fatal(err)
 		}

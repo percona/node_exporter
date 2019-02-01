@@ -48,6 +48,7 @@ type meminfoNumaCollector struct {
 
 func init() {
 	registerCollector("meminfo_numa", defaultDisabled, NewMeminfoNumaCollector)
+	Factories["meminfo_numa"] = NewMeminfoNumaCollector
 }
 
 // NewMeminfoNumaCollector returns a new Collector exposing memory stats.

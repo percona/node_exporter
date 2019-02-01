@@ -17,6 +17,7 @@ package collector
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"os"
 	"regexp"
@@ -24,7 +25,6 @@ import (
 	"strings"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 const (
@@ -32,7 +32,7 @@ const (
 )
 
 var (
-	vmStatFields = kingpin.Flag("collector.vmstat.fields", "Regexp of fields to return for vmstat collector.").Default("^(oom_kill|pgpg|pswp|pg.*fault).*").String()
+	vmStatFields = flag.String("collector.vmstat.fields", "^(oom_kill|pgpg|pswp|pg.*fault).*","Regexp of fields to return for vmstat collector.")
 )
 
 type vmStatCollector struct {
@@ -41,6 +41,7 @@ type vmStatCollector struct {
 
 func init() {
 	registerCollector("vmstat", defaultEnabled, NewvmStatCollector)
+	Factories["vmstat"] = NewvmStatCollector
 }
 
 // NewvmStatCollector returns a new Collector exposing vmstat stats.

@@ -35,6 +35,7 @@ type buddyinfoCollector struct {
 
 func init() {
 	registerCollector("buddyinfo", defaultDisabled, NewBuddyinfoCollector)
+	Factories["buddyinfo"] = NewBuddyinfoCollector
 }
 
 // NewBuddyinfoCollector returns a new Collector exposing buddyinfo stats.

@@ -15,6 +15,7 @@ package collector
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -23,7 +24,6 @@ import (
 	"github.com/mdlayher/wifi"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/common/log"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 type wifiCollector struct {
@@ -41,11 +41,12 @@ type wifiCollector struct {
 }
 
 var (
-	collectorWifi = kingpin.Flag("collector.wifi.fixtures", "test fixtures to use for wifi collector metrics").Default("").String()
+	collectorWifi = flag.String("collector.wifi.fixtures", "","test fixtures to use for wifi collector metrics")
 )
 
 func init() {
 	registerCollector("wifi", defaultDisabled, NewWifiCollector)
+	Factories["wifi"] = NewWifiCollector
 }
 
 var _ wifiStater = &wifi.Client{}

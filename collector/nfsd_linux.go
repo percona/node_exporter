@@ -32,6 +32,7 @@ type nfsdCollector struct {
 
 func init() {
 	registerCollector("nfsd", defaultEnabled, NewNFSdCollector)
+	Factories["nfsd"] = NewNFSdCollector
 }
 
 const (

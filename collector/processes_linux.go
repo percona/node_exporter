@@ -34,6 +34,7 @@ type processCollector struct {
 
 func init() {
 	registerCollector("processes", defaultDisabled, NewProcessStatCollector)
+	Factories["processes"] = NewProcessStatCollector
 }
 
 // NewProcessStatCollector returns a new Collector exposing process data read from the proc filesystem.

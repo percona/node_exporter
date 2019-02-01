@@ -15,17 +15,18 @@
 package collector
 
 import (
+	"flag"
 	"fmt"
 	"sync"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/common/log"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 // Namespace defines the common namespace to be used by all metrics.
 const namespace = "node"
+const Namespace = "node"
 
 var (
 	scrapeDurationDesc = prometheus.NewDesc(
@@ -49,6 +50,7 @@ const (
 
 var (
 	factories      = make(map[string]func() (Collector, error))
+	Factories      = make(map[string]func() (Collector, error))
 	collectorState = make(map[string]*bool)
 )
 
@@ -62,9 +64,7 @@ func registerCollector(collector string, isDefaultEnabled bool, factory func() (
 
 	flagName := fmt.Sprintf("collector.%s", collector)
 	flagHelp := fmt.Sprintf("Enable the %s collector (default: %s).", collector, helpDefaultState)
-	defaultValue := fmt.Sprintf("%v", isDefaultEnabled)
-
-	flag := kingpin.Flag(flagName, flagHelp).Default(defaultValue).Bool()
+	flag := flag.Bool(flagName, isDefaultEnabled, flagHelp)
 	collectorState[collector] = flag
 
 	factories[collector] = factory

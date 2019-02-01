@@ -28,6 +28,7 @@ type xfsCollector struct {
 
 func init() {
 	registerCollector("xfs", defaultEnabled, NewXFSCollector)
+	Factories["xfs"] = NewXFSCollector
 }
 
 // NewXFSCollector returns a new Collector exposing XFS statistics.

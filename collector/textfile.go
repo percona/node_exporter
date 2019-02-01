@@ -16,6 +16,7 @@
 package collector
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -28,11 +29,10 @@ import (
 	dto "github.com/prometheus/client_model/go"
 	"github.com/prometheus/common/expfmt"
 	"github.com/prometheus/common/log"
-	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
 var (
-	textFileDirectory = kingpin.Flag("collector.textfile.directory", "Directory to read text files with metrics from.").Default("").String()
+	textFileDirectory = flag.String("collector.textfile.directory", "/usr/local/percona/pmm-client/textfile-collector", "Directory to read text files with metrics from.")
 	mtimeDesc         = prometheus.NewDesc(
 		"node_textfile_mtime_seconds",
 		"Unixtime mtime of textfiles successfully read.",
@@ -49,6 +49,7 @@ type textFileCollector struct {
 
 func init() {
 	registerCollector("textfile", defaultEnabled, NewTextFileCollector)
+	Factories["textfile"] = NewTextFileCollector
 }
 
 // NewTextFileCollector returns a new Collector exposing metrics read from files

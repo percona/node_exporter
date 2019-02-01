@@ -23,9 +23,9 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"flag"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 const (
@@ -33,8 +33,8 @@ const (
 )
 
 var (
-	netStatFields = kingpin.Flag("collector.netstat.fields", "Regexp of fields to return for netstat collector.").Default("^(.*_(InErrors|InErrs)|Ip_Forwarding|Ip(6|Ext)_(InOctets|OutOctets)|Icmp6?_(InMsgs|OutMsgs)|TcpExt_(Listen.*|Syncookies.*)|Tcp_(ActiveOpens|PassiveOpens|RetransSegs|CurrEstab)|Udp6?_(InDatagrams|OutDatagrams|NoPorts))$").String()
-)
+	netStatFields = flag.String("collector.netstat.fields", "^(.*_(InErrors|InErrs)|Ip_Forwarding|Ip(6|Ext)_(InOctets|OutOctets)|Icmp6?_(InMsgs|OutMsgs)|TcpExt_(Listen.*|Syncookies.*)|Tcp_(ActiveOpens|PassiveOpens|RetransSegs|CurrEstab)|Udp6?_(InDatagrams|OutDatagrams|NoPorts))$","Regexp of fields to return for netstat collector.")
+	)
 
 type netStatCollector struct {
 	fieldPattern *regexp.Regexp
@@ -42,6 +42,7 @@ type netStatCollector struct {
 
 func init() {
 	registerCollector("netstat", defaultEnabled, NewNetStatCollector)
+	Factories["netstat"] = NewNetStatCollector
 }
 
 // NewNetStatCollector takes and returns

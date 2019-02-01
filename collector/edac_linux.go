@@ -42,6 +42,7 @@ type edacCollector struct {
 
 func init() {
 	registerCollector("edac", defaultEnabled, NewEdacCollector)
+	Factories["edac"] = NewEdacCollector
 }
 
 // NewEdacCollector returns a new Collector exposing edac stats.

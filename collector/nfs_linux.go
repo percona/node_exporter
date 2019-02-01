@@ -40,6 +40,7 @@ type nfsCollector struct {
 
 func init() {
 	registerCollector("nfs", defaultEnabled, NewNfsCollector)
+	Factories["nfs"] = NewNfsCollector
 }
 
 // NewNfsCollector returns a new Collector exposing NFS statistics.

@@ -14,6 +14,7 @@
 package collector
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -23,11 +24,10 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 func TestIPVSCollector(t *testing.T) {
-	if _, err := kingpin.CommandLine.Parse([]string{"--path.procfs", "fixtures/proc"}); err != nil {
+	if err := flag.Set("path.procfs", "fixtures/proc"); err != nil {
 		t.Fatal(err)
 	}
 	collector, err := newIPVSCollector()
@@ -76,7 +76,7 @@ func (c miniCollector) Describe(ch chan<- *prometheus.Desc) {
 }
 
 func TestIPVSCollectorResponse(t *testing.T) {
-	if _, err := kingpin.CommandLine.Parse([]string{"--path.procfs", "fixtures/proc"}); err != nil {
+	if err := flag.Set("path.procfs", "fixtures/proc"); err != nil {
 		t.Fatal(err)
 	}
 	collector, err := NewIPVSCollector()

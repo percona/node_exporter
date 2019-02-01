@@ -37,6 +37,7 @@ type netClassCollector struct {
 
 func init() {
 	registerCollector("netclass", defaultEnabled, NewNetClassCollector)
+	Factories["netclass"] = NewNetClassCollector
 }
 
 // NewNetClassCollector returns a new Collector exposing network class stats.
