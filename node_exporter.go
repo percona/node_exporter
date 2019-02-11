@@ -25,6 +25,8 @@ import (
 	"github.com/prometheus/common/version"
 	"github.com/prometheus/node_exporter/collector"
 	"gopkg.in/alecthomas/kingpin.v2"
+
+	"github.com/percona/exporter_shared"
 )
 
 func init() {
@@ -96,6 +98,9 @@ func main() {
 	for _, n := range collectors {
 		log.Infof(" - %s", n)
 	}
+
+	// Use our shared code to run server and exit on error. Upstream's code below will not be executed.
+	exporter_shared.RunServerFunc("Node", *listenAddress, *metricsPath, handler)
 
 	http.HandleFunc(*metricsPath, handler)
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
