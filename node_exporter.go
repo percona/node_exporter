@@ -100,5 +100,5 @@ func main() {
 	}
 
 	// Use our shared code to run server and exit on error. Upstream's code below will not be executed.
-	exporter_shared.RunServerFunc("Node", *listenAddress, *metricsPath, handler)
+	exporter_shared.RunServer("Node", *listenAddress, *metricsPath, http.HandlerFunc(handler))
 }
