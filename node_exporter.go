@@ -33,9 +33,7 @@ func init() {
 	prometheus.MustRegister(version.NewCollector("node_exporter"))
 }
 
-type defHandler struct{}
-
-func (h *defHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func handler(w http.ResponseWriter, r *http.Request) {
 	filters := r.URL.Query()["collect[]"]
 	log.Debugln("collect query:", filters)
 
@@ -61,7 +59,7 @@ func (h *defHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		registry,
 	}
 	// Delegate http serving to Prometheus client library, which will call collector.Collect.
-	hdr := promhttp.InstrumentMetricHandler(
+	h := promhttp.InstrumentMetricHandler(
 		registry,
 		promhttp.HandlerFor(gatherers,
 			promhttp.HandlerOpts{
@@ -69,7 +67,7 @@ func (h *defHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				ErrorHandling: promhttp.ContinueOnError,
 			}),
 	)
-	hdr.ServeHTTP(w, r)
+	h.ServeHTTP(w, r)
 }
 
 func main() {
@@ -101,7 +99,23 @@ func main() {
 		log.Infof(" - %s", n)
 	}
 
-	var dh = defHandler{}
 	// Use our shared code to run server and exit on error. Upstream's code below will not be executed.
-	exporter_shared.RunServer("Node", *listenAddress, *metricsPath, dh)
+	exporter_shared.RunServerFunc("Node", *listenAddress, *metricsPath, handler)
+
+	http.HandleFunc(*metricsPath, handler)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(`<html>
+			<head><title>Node Exporter</title></head>
+			<body>
+			<h1>Node Exporter</h1>
+			<p><a href="` + *metricsPath + `">Metrics</a></p>
+			</body>
+			</html>`))
+	})
+
+	log.Infoln("Listening on", *listenAddress)
+	err = http.ListenAndServe(*listenAddress, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
