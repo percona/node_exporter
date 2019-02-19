@@ -101,21 +101,4 @@ func main() {
 
 	// Use our shared code to run server and exit on error. Upstream's code below will not be executed.
 	exporter_shared.RunServerFunc("Node", *listenAddress, *metricsPath, handler)
-
-	http.HandleFunc(*metricsPath, handler)
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(`<html>
-			<head><title>Node Exporter</title></head>
-			<body>
-			<h1>Node Exporter</h1>
-			<p><a href="` + *metricsPath + `">Metrics</a></p>
-			</body>
-			</html>`))
-	})
-
-	log.Infoln("Listening on", *listenAddress)
-	err = http.ListenAndServe(*listenAddress, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
 }
