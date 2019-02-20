@@ -1,14 +1,23 @@
 sudo: false
 
 language: go
+
 go:
   - 1.11.x
-  - tip
+  - master
+
+env:
+  - GO111MODULE=off
+  - GO111MODULE=on
+
+matrix:
+  allow_failures:
+    - go: master
 
 go_import_path: github.com/prometheus/node_exporter
 
 script:
-  - make
+  - go install -v ./...
 
 notifications:
   slack:
