@@ -55,7 +55,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	gatherers := prometheus.Gatherers{
-		prometheus.DefaultGatherer,
 		registry,
 	}
 	// Delegate http serving to Prometheus client library, which will call collector.Collect.
