@@ -13,7 +13,7 @@ type standardGoCollector struct {
 	origin prometheus.Collector
 }
 
-// NewStandardGoCollector.
+// NewStandardGoCollector creates standard go collector.
 func NewStandardGoCollector() (Collector, error) {
 	c := prometheus.NewGoCollector()
 	return &standardGoCollector{origin: c}, nil
@@ -28,7 +28,7 @@ type standardProcessCollector struct {
 	origin prometheus.Collector
 }
 
-// NewStandardProccessCollector.
+// NewStandardProccessCollector creates standard process collector.
 func NewStandardProccessCollector() (Collector, error) {
 	c := prometheus.NewProcessCollector(prometheus.ProcessCollectorOpts{})
 	return &standardProcessCollector{origin: c}, nil
