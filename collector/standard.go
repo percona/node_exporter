@@ -28,7 +28,7 @@ type standardProcessCollector struct {
 	origin prometheus.Collector
 }
 
-// NewStandardGoCollector.
+// NewStandardProccessCollector.
 func NewStandardProccessCollector() (Collector, error) {
 	c := prometheus.NewProcessCollector(prometheus.ProcessCollectorOpts{})
 	return &standardProcessCollector{origin: c}, nil
