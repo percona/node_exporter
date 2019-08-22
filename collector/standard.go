@@ -6,7 +6,7 @@ import (
 
 func init() {
 	registerCollector("standard.go", defaultDisabled, NewStandardGoCollector)
-	registerCollector("standard.proccess", defaultDisabled, NewStandardProccessCollector)
+	registerCollector("standard.process", defaultDisabled, NewStandardProccessCollector)
 }
 
 type standardGoCollector struct {
