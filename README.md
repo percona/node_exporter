@@ -1,6 +1,6 @@
 # Percona Node exporter
 
-[![Build Status](https://travis-ci.org/percona/node_exporter.svg)](https://travis-ci.org/percona/node_exporter)
+[![Build Status](https://travis-ci.com/percona/node_exporter.svg)](https://travis-ci.org/percona/node_exporter)
 
 This fork adds HTTP Basic authentication and TLS support using [Percona's shared code for exporters](https://github.com/percona/exporter_shared).
 
