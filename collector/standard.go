@@ -6,7 +6,7 @@ import (
 
 func init() {
 	registerCollector("standard.go", defaultDisabled, NewStandardGoCollector)
-	registerCollector("standard.process", defaultDisabled, NewStandardProccessCollector)
+	registerCollector("standard.process", defaultDisabled, NewStandardProcessCollector)
 }
 
 type standardGoCollector struct {
@@ -28,8 +28,8 @@ type standardProcessCollector struct {
 	origin prometheus.Collector
 }
 
-// NewStandardProccessCollector creates standard process collector.
-func NewStandardProccessCollector() (Collector, error) {
+// NewStandardProcessCollector creates standard process collector.
+func NewStandardProcessCollector() (Collector, error) {
 	c := prometheus.NewProcessCollector(prometheus.ProcessCollectorOpts{})
 	return &standardProcessCollector{origin: c}, nil
 }
