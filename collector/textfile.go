@@ -32,10 +32,10 @@ import (
 )
 
 var (
-	textFileDirectory   = kingpin.Flag("collector.textfile.directory", "Directory to read text files with metrics from.").Default("/usr/local/percona/pmm-client/textfile-collector/medium-resolution").String()
-	textFileDirectoryLr = kingpin.Flag("collector.textfile.directory.lr", "Directory to read text files with low resolution metrics from.").Default("/usr/local/percona/pmm-client/textfile-collector/low-resolution").String()
-	textFileDirectoryMr = kingpin.Flag("collector.textfile.directory.mr", "Directory to read text files with medium resolution metrics from.").Default("/usr/local/percona/pmm-client/textfile-collector/medium-resolution").String()
-	textFileDirectoryHr = kingpin.Flag("collector.textfile.directory.hr", "Directory to read text files with high resolution metrics from.").Default("/usr/local/percona/pmm-client/textfile-collector/high-resolution").String()
+	textFileDirectory   = kingpin.Flag("collector.textfile.directory", "Directory to read text files with metrics from.").Default("").String()
+	textFileDirectoryLr = kingpin.Flag("collector.textfile.directory.lr", "Directory to read text files with low resolution metrics from.").String()
+	textFileDirectoryMr = kingpin.Flag("collector.textfile.directory.mr", "Directory to read text files with medium resolution metrics from.").String()
+	textFileDirectoryHr = kingpin.Flag("collector.textfile.directory.hr", "Directory to read text files with high resolution metrics from.").String()
 	mtimeDesc           = prometheus.NewDesc(
 		"node_textfile_mtime_seconds",
 		"Unixtime mtime of textfiles successfully read.",
