@@ -199,7 +199,7 @@ ifdef GO111MODULE
 	GO111MODULE=on GOOS= GOARCH= $(GO) get -u honnef.co/go/tools/cmd/staticcheck && \
 	rm -rf $${tmpModule};
 else
-	GOOS= GOARCH= GO111MODULE=off $(GO) get -u honnef.co/go/tools/cmd/staticcheck 
+	GOOS= GOARCH= GO111MODULE=off $(GO) get -u honnef.co/go/tools/cmd/staticcheck
 endif
 
 ifdef GOVENDOR
