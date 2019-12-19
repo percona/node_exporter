@@ -33,7 +33,7 @@ import (
 )
 
 var (
-	textFileDirectory = flag.String("collector.textfile.directory", "/usr/local/percona/pmm-client/textfile_collector", "Directory to read text files with metrics from.")
+	textFileDirectory = flag.String("collector.textfile.directory", "/usr/local/percona/pmm-client/textfile-collector", "Directory to read text files with metrics from.")
 )
 
 type textFileCollector struct {
