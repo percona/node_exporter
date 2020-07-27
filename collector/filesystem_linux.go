@@ -17,6 +17,8 @@ package collector
 
 import (
 	"bufio"
+	"fmt"
+	"io"
 	"os"
 	"strings"
 	"sync"
