@@ -1,6 +1,7 @@
 # Percona Node exporter
 
 [![Build Status](https://travis-ci.com/percona/node_exporter.svg)](https://travis-ci.com/percona/node_exporter)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpercona%2Fnode_exporter.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpercona%2Fnode_exporter?ref=badge_shield)
 
 This fork adds HTTP Basic authentication and TLS support using [Percona's shared code for exporters](https://github.com/percona/exporter_shared).
 
@@ -179,3 +180,7 @@ There is a [community-supplied COPR repository](https://copr.fedorainfracloud.or
 [circleci]: https://circleci.com/gh/prometheus/node_exporter
 [quay]: https://quay.io/repository/prometheus/node-exporter
 [goreportcard]: https://goreportcard.com/report/github.com/prometheus/node_exporter
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpercona%2Fnode_exporter.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpercona%2Fnode_exporter?ref=badge_large)
