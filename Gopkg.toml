@@ -1,0 +1,29 @@
+# This is a fork of github.com/prometheus/node_exporter/collector.
+ignored = ["github.com/prometheus/node_exporter*"]
+
+[prune]
+  go-tests = true
+  non-go = true
+  unused-packages = true
+
+[[constraint]]
+  name = "github.com/mdlayher/wifi"
+  revision = "567082929344b0af8eb8a2ad6fe4725c0b3c8702"
+
+[[constraint]]
+  name = "github.com/prometheus/client_golang"
+  revision = "aace68cde27da90f76be50fcb9937d67fd6a1968"
+
+[[override]]
+  name = "github.com/mdlayher/netlink"
+  revision = "1291b75abe0cc0cb335f110466bf1f02590c916d"
+
+[[override]]
+  name = "github.com/prometheus/common"
+  # Version before introducing kingpin.
+  # https://github.com/prometheus/common/pull/96
+  revision = "185c63bfc5a8c7a703687edb52940c895c818cb5"
+
+[[constraint]]
+  name = "github.com/go-sql-driver/mysql"
+  revision = "72cd26f257d44c1114970e19afddcd812016007e"

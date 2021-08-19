@@ -20,6 +20,9 @@ in Go with pluggable metric collectors.
 
 The [WMI exporter](https://github.com/martinlindhe/wmi_exporter) is recommended for Windows users.
 
+This fork adds HTTP Basic authentication and TLS support using [Percona's shared code for exporters](https://github.com/percona/exporter_shared).
+
+
 ## Collectors
 
 There is varying support for collectors on each operating system. The tables
@@ -160,6 +163,7 @@ This can be useful for having different Prometheus servers collect specific metr
 
     make test
 
+## Visualize
 
 ## Using Docker
 The `node_exporter` is designed to monitor the host system. It's not recommended
