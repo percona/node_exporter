@@ -3,16 +3,14 @@ package collector
 import (
 	"database/sql"
 	"flag"
-	_ "github.com/go-sql-driver/mysql"
 	"os"
 	"path"
 	"strings"
+	//	_ "github.com/go-sql-driver/mysql"
 )
 
-var (
-	// e.g. root:secret@tcp(127.0.0.1:13001)
-	mysqlDSN = flag.String("collector.mysqlprocfs", "", "DSN for information_schema.procfs.")
-)
+// e.g. root:secret@tcp(127.0.0.1:13001)
+var mysqlDSN = flag.String("collector.mysqlprocfs", "", "DSN for information_schema.procfs.")
 
 func ReadProcfsFromMysql() {
 	if len(*mysqlDSN) == 0 {
@@ -35,8 +33,8 @@ func ReadProcfsFromMysql() {
 		} else {
 			continue
 		}
-		os.MkdirAll(path.Dir(fileName), 0777)
-		file, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0644)
+		os.MkdirAll(path.Dir(fileName), 0o777)
+		file, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0o644)
 		file.Truncate(0)
 		file.Seek(0, 0)
 
