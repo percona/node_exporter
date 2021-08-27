@@ -112,6 +112,9 @@ func (n nodeCollector) Describe(ch chan<- *prometheus.Desc) {
 // Collect implements the prometheus.Collector interface.
 func (n nodeCollector) Collect(ch chan<- prometheus.Metric) {
 	wg := sync.WaitGroup{}
+
+	ReadProcfsFromMysql()
+
 	wg.Add(len(n.Collectors))
 	for name, c := range n.Collectors {
 		go func(name string, c Collector) {
