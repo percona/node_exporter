@@ -28,6 +28,7 @@ require (
 	github.com/prometheus/procfs v0.0.0-20181204211112-1dc9a6cbc91a
 	github.com/sirupsen/logrus v1.4.2 // indirect
 	github.com/soundcloud/go-runit v0.0.0-20150630195641-06ad41a06c4a
+	github.com/go-sql-driver/mysql v1.6.0
 	golang.org/x/net v0.0.0-20190613194153-d28f0bde5980 // indirect
 	golang.org/x/sync v0.0.0-20181221193216-37e7f081c4d4 // indirect
 	golang.org/x/sys v0.0.0-20190801041406-cbf593c0f2f3

@@ -26,6 +26,8 @@ import (
 	"github.com/prometheus/common/log"
 	"github.com/prometheus/common/version"
 	"gopkg.in/alecthomas/kingpin.v2"
+	// used by collector/mysql_procfs.go
+	_ "github.com/go-sql-driver/mysql"
 )
 
 // handler wraps an unfiltered http.Handler but uses a filtered handler,
