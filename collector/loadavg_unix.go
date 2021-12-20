@@ -11,11 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//go:build (darwin || dragonfly || netbsd || openbsd) && !noloadavg
 // +build darwin dragonfly netbsd openbsd
 // +build !noloadavg
 
 package collector
-/*
+
 import (
 	"errors"
 )
@@ -31,4 +32,3 @@ func getLoad() ([]float64, error) {
 	}
 	return []float64{float64(loadavg[0]), float64(loadavg[1]), float64(loadavg[2])}, nil
 }
-*/
