@@ -10,7 +10,7 @@ fi
 # this filter.
 lint=$($1 check metrics < $2 2>&1 | grep "node_")
 
-if [[ ! -z $lint ]]; then
+if [[ -n $lint ]]; then
     echo -e "Some Prometheus metrics do not follow best practices:\n"
     echo "$lint"
 
