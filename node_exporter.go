@@ -177,8 +177,8 @@ func main() {
 	kingpin.Parse()
 
 	// Use our shared code to run server and exit on error. Upstream's code below will not be executed.
-	exporter_shared.RunServer("Node", *listenAddress, *metricsPath, newHandler(!*disableExporterMetrics, *maxRequests))
 	logger := promlog.New(promlogConfig)
+	exporter_shared.RunServer("Node", *listenAddress, *metricsPath, newHandler(!*disableExporterMetrics, *maxRequests, logger))
 
 	if *disableDefaultCollectors {
 		collector.DisableDefaultCollectors()
