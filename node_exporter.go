@@ -35,6 +35,8 @@ import (
 	"github.com/prometheus/common/version"
 	"github.com/prometheus/exporter-toolkit/web"
 	kingpin "gopkg.in/alecthomas/kingpin.v2"
+
+	_ "github.com/frankban/quicktest" // indirect
 )
 
 // handler wraps an unfiltered http.Handler but uses a filtered handler,
