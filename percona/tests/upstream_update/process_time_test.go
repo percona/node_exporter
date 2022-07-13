@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"os"
 	"os/exec"
@@ -15,31 +16,44 @@ import (
 
 	"github.com/montanaflynn/stats"
 	"github.com/stretchr/testify/assert"
+	"github.com/tklauser/go-sysconf"
 	"golang.org/x/sys/unix"
 )
 
 func TestCpuTime(t *testing.T) {
-	doTestStats(t, 10, 25)
+	doTestStats(t, 5, 25)
 }
 
 func doTestStats(t *testing.T, cnt int, size int) {
-	var a []int64
+	var durations []float64
 
 	for i := 0; i < cnt; i++ {
 		d, _ := doTest(t, size)
-		a = append(a, d)
+		durations = append(durations, float64(d))
 	}
 
-	var ba []float64
+	mean, _ := stats.Mean(durations)
+	stdDev, _ := stats.StandardDeviation(durations)
+	stdDev = float64(100) / mean * stdDev
 
-	for _, f := range a {
-		ba = append(ba, float64(f))
+	clockTicks, err := sysconf.Sysconf(sysconf.SC_CLK_TCK)
+	if err != nil {
+		panic(err)
 	}
-	data := ba
-	med, _ := stats.Mean(data)
-	dev, _ := stats.StandardDeviation(data)
 
-	fmt.Printf("loop %d: sample time: %.2f [mean: %.2f; dev: %.2f]\n", size, med/float64(size), med, dev)
+	mean = mean / float64(clockTicks) * float64(1000)
+
+	fmt.Printf("loop %dx%d: sample time: %.2f ms [std dev: %.1f %%]\n", cnt, size, mean/float64(size), stdDev)
+}
+
+func checkPort(port int) bool {
+	ln, err := net.Listen("tcp", ":"+fmt.Sprint(port))
+	if err != nil {
+		return false
+	}
+
+	_ = ln.Close()
+	return true
 }
 
 func doTest(t *testing.T, iterations int) (int64, error) {
@@ -48,8 +62,20 @@ func doTest(t *testing.T, iterations int) (int64, error) {
 		return 0, err
 	}
 
+	var port = -1
+	for i := 20000; i < 20100; i++ {
+		if checkPort(i) {
+			port = i
+			break
+		}
+	}
+
+	if port == -1 {
+		panic("Failed to find free port in range [20000..20100]")
+	}
+
 	linesStr := string(lines)
-	linesStr += "--web.listen-address=127.0.0.1:20001"
+	linesStr += fmt.Sprintf("--web.listen-address=127.0.0.1:%d", port)
 	linesArr := strings.Split(linesStr, "\n")
 
 	fileName := "../../../node_exporter"
@@ -64,22 +90,25 @@ func doTest(t *testing.T, iterations int) (int64, error) {
 		return 0, err
 	}
 
-	waitForExporter()
+	waitForExporter(port)
 
 	total1 := getCPUSample(cmd.Process.Pid)
 
 	for i := 0; i < iterations; i++ {
-		getMetrics(t)
+		getMetrics(t, port)
 		time.Sleep(1 * time.Millisecond)
 	}
 
 	total2 := getCPUSample(cmd.Process.Pid)
 
-	err = cmd.Process.Signal(unix.SIGTERM)
-	assert.NoError(t, err, "Failed to send SIGTERM to exporter process")
+	err = cmd.Process.Signal(unix.SIGINT)
+	assert.NoError(t, err, "Failed to send SIGINT to exporter process")
 
 	err = cmd.Wait()
-	assert.NoError(t, err, "Failed to wait for exporter process termination")
+	if err != nil && err.Error() != "signal: interrupt" {
+		assert.NoError(t, err, "Failed to wait for exporter process termination. Process output:\n%q", out.String())
+		panic(err)
+	}
 
 	return total2 - total1, nil
 }
@@ -94,9 +123,6 @@ func getCPUSample(pid int) (total int64) {
 		fields := strings.Fields(line)
 		numFields := len(fields)
 		if numFields > 3 {
-			//fmt.Println(line)
-			//fmt.Printf("%s; %s; %s; %s\n", fields[13], fields[14], fields[15], fields[16])
-
 			i, err := strconv.ParseInt(fields[13], 10, 64)
 			if err != nil {
 				panic(err)
@@ -111,8 +137,6 @@ func getCPUSample(pid int) (total int64) {
 
 			totalTime += i
 
-			//fmt.Printf("cpu ticks: %d; cpu time: %.2f\n", totalTime, float64(totalTime)/float64(hertz))
-
 			total = totalTime
 
 			return
@@ -121,14 +145,17 @@ func getCPUSample(pid int) (total int64) {
 	return
 }
 
-func getMetrics(t *testing.T) {
-	resp, err := http.Get("http://127.0.0.1:20001/metrics")
+func getMetrics(t *testing.T, port int) {
+	resp, err := http.Get(fmt.Sprintf("http://127.0.0.1:%d/metrics", port))
 	if !assert.NoError(t, err, "Failed to get response from exporters web interface") {
 		return
 	}
 
 	assert.Equal(t, resp.StatusCode, 200, "Response fail")
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err = Body.Close()
+		assert.NoError(t, err, "Failed to close response from exporters web interface")
+	}(resp.Body)
 
 	if resp.StatusCode == http.StatusOK {
 		bodyBytes, err := io.ReadAll(resp.Body)
@@ -138,14 +165,19 @@ func getMetrics(t *testing.T) {
 	}
 }
 
-func waitForExporter() {
-	for !doGet() {
+func waitForExporter(port int) {
+	watchdog := 1000
+	for ; !doGet(port) && watchdog > 0; watchdog-- {
 		time.Sleep(1 * time.Millisecond)
+	}
+
+	if watchdog == 0 {
+		panic(fmt.Sprintf("Failed to wait for exporter (on port %d)", port))
 	}
 }
 
-func doGet() bool {
-	resp, err := http.Get("http://127.0.0.1:20001/metrics")
+func doGet(port int) bool {
+	resp, err := http.Get(fmt.Sprintf("http://127.0.0.1:%d/metrics", port))
 	if err != nil {
 		return false
 	}

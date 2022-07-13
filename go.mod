@@ -23,6 +23,7 @@ require (
 	github.com/siebenmann/go-kstat v0.0.0-20210513183136-173c9b0a9973 // indirect
 	github.com/soundcloud/go-runit v0.0.0-20150630195641-06ad41a06c4a
 	github.com/stretchr/testify v1.4.0
+	github.com/tklauser/go-sysconf v0.3.10
 	golang.org/x/sys v0.0.0-20220319134239-a9b59b0215f8
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 )
