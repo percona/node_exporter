@@ -28,7 +28,7 @@ const (
 )
 
 func TestCpuTime(t *testing.T) {
-	doTestStats(t, 5, 25)
+	doTestStats(t, 3, 25)
 }
 
 func doTestStats(t *testing.T, cnt int, size int) {
@@ -42,6 +42,7 @@ func doTestStats(t *testing.T, cnt int, size int) {
 	mean, _ := stats.Mean(durations)
 	stdDev, _ := stats.StandardDeviation(durations)
 	stdDev = float64(100) / mean * stdDev
+	stdDevMs := stdDev / float64(100) * mean
 
 	clockTicks, err := sysconf.Sysconf(sysconf.SC_CLK_TCK)
 	if err != nil {
@@ -50,7 +51,7 @@ func doTestStats(t *testing.T, cnt int, size int) {
 
 	mean = mean / float64(clockTicks) * float64(1000)
 
-	fmt.Printf("loop %dx%d: sample time: %.2f ms [std dev: %.1f %%]\n", cnt, size, mean/float64(size), stdDev)
+	fmt.Printf("loop %dx%d: sample time: %.2fms [deviation ±%.2fms, %.1f%%]\n", cnt, size, mean/float64(size), stdDevMs, stdDev)
 }
 
 func checkPort(port int) bool {
