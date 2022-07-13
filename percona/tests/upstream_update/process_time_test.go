@@ -20,6 +20,13 @@ import (
 	"golang.org/x/sys/unix"
 )
 
+const (
+	exporterWaitTimeoutMs = 1000 // time to wait for exporter process start
+
+	portRangeStart = 20000 // exporter web interface listening port
+	portRangeEnd   = 20100 // exporter web interface listening port
+)
+
 func TestCpuTime(t *testing.T) {
 	doTestStats(t, 5, 25)
 }
@@ -63,7 +70,7 @@ func doTest(t *testing.T, iterations int) (int64, error) {
 	}
 
 	var port = -1
-	for i := 20000; i < 20100; i++ {
+	for i := portRangeStart; i < portRangeEnd; i++ {
 		if checkPort(i) {
 			port = i
 			break
@@ -71,7 +78,7 @@ func doTest(t *testing.T, iterations int) (int64, error) {
 	}
 
 	if port == -1 {
-		panic("Failed to find free port in range [20000..20100]")
+		panic(fmt.Sprintf("Failed to find free port in range [%d..%d]", portRangeStart, portRangeEnd))
 	}
 
 	linesStr := string(lines)
@@ -85,21 +92,24 @@ func doTest(t *testing.T, iterations int) (int64, error) {
 	cmd.Stdout = &out
 
 	err = cmd.Start()
-
 	if !assert.NoError(t, err, "Failed to start exporter. Process output:\n%q", out.String()) {
 		return 0, err
 	}
 
 	waitForExporter(port)
 
-	total1 := getCPUSample(cmd.Process.Pid)
+	total1 := getCPUTime(cmd.Process.Pid)
 
 	for i := 0; i < iterations; i++ {
-		getMetrics(t, port)
+		err = tryGetMetrics(port)
+		if !assert.NoError(t, err) {
+			return 0, err
+		}
+
 		time.Sleep(1 * time.Millisecond)
 	}
 
-	total2 := getCPUSample(cmd.Process.Pid)
+	total2 := getCPUTime(cmd.Process.Pid)
 
 	err = cmd.Process.Signal(unix.SIGINT)
 	assert.NoError(t, err, "Failed to send SIGINT to exporter process")
@@ -113,7 +123,7 @@ func doTest(t *testing.T, iterations int) (int64, error) {
 	return total2 - total1, nil
 }
 
-func getCPUSample(pid int) (total int64) {
+func getCPUTime(pid int) (total int64) {
 	contents, err := ioutil.ReadFile(fmt.Sprintf("/proc/%d/stat", pid))
 	if err != nil {
 		return
@@ -145,60 +155,42 @@ func getCPUSample(pid int) (total int64) {
 	return
 }
 
-func getMetrics(t *testing.T, port int) {
+func tryGetMetrics(port int) error {
 	resp, err := http.Get(fmt.Sprintf("http://127.0.0.1:%d/metrics", port))
-	if !assert.NoError(t, err, "Failed to get response from exporters web interface") {
-		return
+	if err != nil {
+		return fmt.Errorf("failed to get response from exporters web interface: %w", err)
 	}
 
-	assert.Equal(t, resp.StatusCode, 200, "Response fail")
-	defer func(Body io.ReadCloser) {
-		err = Body.Close()
-		assert.NoError(t, err, "Failed to close response from exporters web interface")
-	}(resp.Body)
-
-	if resp.StatusCode == http.StatusOK {
-		bodyBytes, err := io.ReadAll(resp.Body)
-		assert.NoError(t, err, "Failed to get response from exporters web interface")
-		bodyString := string(bodyBytes)
-		assert.NotEmpty(t, bodyString)
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("failed to get response from exporters web interface: %w", err)
 	}
+
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("failed to read response from exporters web interface: %w", err)
+	}
+
+	bodyString := string(bodyBytes)
+	if bodyString == "" {
+		return fmt.Errorf("got empty response from exporters web interface: %w", err)
+	}
+
+	err = resp.Body.Close()
+	if err != nil {
+		return fmt.Errorf("failed to close response body: %w", err)
+	}
+
+	return nil
 }
 
 func waitForExporter(port int) {
-	watchdog := 1000
-	for ; !doGet(port) && watchdog > 0; watchdog-- {
+	watchdog := exporterWaitTimeoutMs
+
+	for ; tryGetMetrics(port) != nil && watchdog > 0; watchdog-- {
 		time.Sleep(1 * time.Millisecond)
 	}
 
 	if watchdog == 0 {
 		panic(fmt.Sprintf("Failed to wait for exporter (on port %d)", port))
 	}
-}
-
-func doGet(port int) bool {
-	resp, err := http.Get(fmt.Sprintf("http://127.0.0.1:%d/metrics", port))
-	if err != nil {
-		return false
-	}
-
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 200 {
-		return false
-	}
-
-	if resp.StatusCode == http.StatusOK {
-		bodyBytes, err := io.ReadAll(resp.Body)
-		if err != nil {
-			return false
-		}
-
-		bodyString := string(bodyBytes)
-		if bodyString == "" {
-			return false
-		}
-	}
-
-	return true
 }
