@@ -1,4 +1,4 @@
-package percona_tests
+package perconatests
 
 import (
 	"bytes"
@@ -98,12 +98,12 @@ func launchExporter(fileName string) (cmd *exec.Cmd, port int, collectOutput fun
 func stopExporter(cmd *exec.Cmd, collectOutput func() string) error {
 	err := cmd.Process.Signal(unix.SIGINT)
 	if err != nil {
-		return errors.Wrapf(err, "Failed to send SIGINT to exporter process.%s\n", collectOutput())
+		return errors.Wrapf(err, "failed to send SIGINT to exporter process.%s\n", collectOutput())
 	}
 
 	err = cmd.Wait()
 	if err != nil && err.Error() != "signal: interrupt" {
-		return errors.Wrapf(err, "Failed to wait for exporter process termination.%s\n", collectOutput())
+		return errors.Wrapf(err, "failed to wait for exporter process termination.%s\n", collectOutput())
 	}
 
 	return nil
