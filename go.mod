@@ -30,8 +30,8 @@ require (
 	github.com/safchain/ethtool v0.2.0
 	github.com/soundcloud/go-runit v0.0.0-20150630195641-06ad41a06c4a
 	github.com/stretchr/testify v1.8.0
-	github.com/tklauser/go-sysconf v0.3.11
-	golang.org/x/sys v0.4.0
+	github.com/tklauser/go-sysconf v0.3.10
+	golang.org/x/sys v0.5.0
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 )
 
@@ -56,11 +56,11 @@ require (
 	github.com/tklauser/numcpus v0.6.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
-	golang.org/x/crypto v0.0.0-20221012134737-56aed061732a // indirect
-	golang.org/x/net v0.5.0 // indirect
+	golang.org/x/crypto v0.1.0 // indirect
+	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20220909003341-f21342109be1 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/text v0.6.0 // indirect
+	golang.org/x/text v0.7.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
