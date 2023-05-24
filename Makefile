@@ -92,12 +92,12 @@ export PMM_RELEASE_PATH?=.
 all:: vet checkmetrics checkrules common-all $(cross-test) $(test-e2e)
 
 .PHONY: test
-test: collector/fixtures/sys/.unpacked
+test: collector/fixtures/sys/.unpacked collector/fixtures/udev/.unpacked
 	@echo ">> running tests"
 	$(GO) test -short $(test-flags) $(pkgs)
 
 .PHONY: test-32bit
-test-32bit: collector/fixtures/sys/.unpacked
+test-32bit: collector/fixtures/sys/.unpacked collector/fixtures/udev/.unpacked
 	@echo ">> running tests in 32-bit mode"
 	@env GOARCH=$(GOARCH_CROSS) $(GO) test $(pkgs)
 
@@ -114,9 +114,12 @@ skip-test-32bit:
 update_fixtures:
 	rm -vf collector/fixtures/sys/.unpacked
 	./ttar -C collector/fixtures -c -f collector/fixtures/sys.ttar sys
+	rm -vf collector/fixtures/udev/.unpacked
+	./ttar -C collector/fixtures -c -f collector/fixtures/udev.ttar udev
+
 
 .PHONY: test-e2e
-test-e2e: build collector/fixtures/sys/.unpacked
+test-e2e: build collector/fixtures/sys/.unpacked collector/fixtures/udev/.unpacked
 	@echo ">> running end-to-end tests"
 	./end-to-end-test.sh
 
