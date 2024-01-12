@@ -303,7 +303,7 @@ func (c *textFileCollector) processFile(dir, name string, ch chan<- prometheus.M
 
 	for _, mf := range families {
 		if mf.Help == nil {
-			help := fmt.Sprintf("Metric read from %s", path)
+			help := fmt.Sprintf("Metric read from File", path)
 			mf.Help = &help
 		}
 	}
