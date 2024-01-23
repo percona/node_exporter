@@ -58,6 +58,7 @@ jobs:
           go-version: 1.19
       - run: docker run --privileged linuxkit/binfmt:v0.8
       - run: make promtool
+      - run: make promu
       - run: promu crossbuild -v
       - run: promu --config .promu-cgo.yml crossbuild -v
 

@@ -102,7 +102,7 @@ type btrfsIoctlFsStats struct {
 
 func (c *btrfsCollector) getIoctlStats() (map[string]*btrfsIoctlFsStats, error) {
 	// Instead of introducing more ioctl calls to scan for all btrfs
-	// filesystems re-use our mount point utils to find known mounts
+	// filesystems reuse our mount point utils to find known mounts
 	mountsList, err := mountPointDetails(c.logger)
 	if err != nil {
 		return nil, err
