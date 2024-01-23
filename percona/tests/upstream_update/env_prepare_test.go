@@ -1,4 +1,4 @@
-package percona_tests
+package perconatests
 
 import (
 	"archive/tar"
