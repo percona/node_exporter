@@ -1,0 +1,65 @@
+name: Node Exporter CI
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.19
+      - run: go mod download
+      - run: make
+
+  test-arm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: uname -a
+      - run: make test-e2e
+
+  codespell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: sudo pip install codespell
+      - run: codespell --skip=".git,./vendor,ttar,go.mod,go.sum,*pem,./collector/fixtures" -I scripts/codespell_ignore.txt
+
+  test_mixins:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: go install github.com/google/go-jsonnet/cmd/jsonnet@latest
+      - run: go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest
+      - run: go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest
+      - run: make promtool
+      - run: make -C docs/node-mixin clean
+      - run: make -C docs/node-mixin jb_install
+      - run: make -C docs/node-mixin
+      - run: git diff --exit-code
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: docker run --privileged linuxkit/binfmt:v0.8
+      - run: promu crossbuild -v
+      - run: promu --config .promu-cgo.yml crossbuild -v
+
+  test_docker:
+    needs: [test, build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: docker run --rm -t -v "$(pwd):/app" "${{ secrets.DOCKER_TEST_IMAGE_NAME }}" -i "${{ secrets.REPO_PATH }}" -T
+      - run: make docker
+      - run: docker images
+      - run: make test-docker
