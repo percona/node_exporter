@@ -18,6 +18,11 @@ jobs:
           go-version: 1.19
       - run: go mod download
       - run: make test-e2e
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: node_exporter
+          path: node_exporter
 
 # GitHub Actions does not support ARM yet
 #  test-arm:
@@ -62,6 +67,11 @@ jobs:
       - run: make promu
       - run: promu crossbuild -v
       - run: promu --config .promu-cgo.yml crossbuild -v
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: .build
 
   test_docker:
     needs: [test, build]
@@ -71,6 +81,14 @@ jobs:
         REPO_PATH: github.com/prometheus/node_exporter
     steps:
       - uses: actions/checkout@v2
+      - name: Download node_exporter artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: node_exporter
+      - name: Download build artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: build
       - run: make docker
       - run: docker images
       - run: docker run --rm -t -v "$(pwd):/app" "${{ env.DOCKER_TEST_IMAGE_NAME }}" -i "${{ env.REPO_PATH }}" -T
