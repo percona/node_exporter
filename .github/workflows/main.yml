@@ -66,9 +66,12 @@ jobs:
   test_docker:
     needs: [test, build]
     runs-on: ubuntu-latest
+    env:
+        DOCKER_TEST_IMAGE_NAME: quay.io/prometheus/golang-builder:1.18-base
+        REPO_PATH: github.com/prometheus/node_exporter
     steps:
       - uses: actions/checkout@v2
-      - run: docker run --rm -t -v "$(pwd):/app" "${{ secrets.DOCKER_TEST_IMAGE_NAME }}" -i "${{ secrets.REPO_PATH }}" -T
       - run: make docker
       - run: docker images
+      - run: docker run --rm -t -v "$(pwd):/app" "${{ env.DOCKER_TEST_IMAGE_NAME }}" -i "${{ env.REPO_PATH }}" -T
       - run: make test-docker
