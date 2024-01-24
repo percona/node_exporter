@@ -17,14 +17,15 @@ jobs:
         with:
           go-version: 1.19
       - run: go mod download
-      - run: make
-
-  test-arm:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: uname -a
       - run: make test-e2e
+
+# GitHub Actions does not support ARM yet
+#  test-arm:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - run: uname -a
+#      - run: make test-e2e
 
   codespell:
     runs-on: ubuntu-latest
