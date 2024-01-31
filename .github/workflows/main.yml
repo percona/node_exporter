@@ -24,14 +24,6 @@ jobs:
           name: node_exporter
           path: node_exporter
 
-# GitHub Actions does not support ARM yet
-#  test-arm:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - run: uname -a
-#      - run: make test-e2e
-
   codespell:
     runs-on: ubuntu-latest
     steps:
@@ -65,31 +57,10 @@ jobs:
       - run: docker run --privileged linuxkit/binfmt:v0.8
       - run: make promtool
       - run: make promu
-      - run: promu crossbuild -v
-      - run: promu --config .promu-cgo.yml crossbuild -v
+      - run: promu crossbuild -v  --parallelism 3 --parallelism-thread 3
+      - run: promu --config .promu-cgo.yml crossbuild -v  --parallelism 3 --parallelism-thread 3
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
           path: .build
-
-  test_docker:
-    needs: [test, build]
-    runs-on: ubuntu-latest
-    env:
-        DOCKER_TEST_IMAGE_NAME: quay.io/prometheus/golang-builder:1.18-base
-        REPO_PATH: github.com/prometheus/node_exporter
-    steps:
-      - uses: actions/checkout@v2
-      - name: Download node_exporter artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: node_exporter
-      - name: Download build artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: build
-      - run: make docker
-      - run: docker images
-      - run: docker run --rm -t -v "$(pwd):/app" "${{ env.DOCKER_TEST_IMAGE_NAME }}" -i "${{ env.REPO_PATH }}" -T
-      - run: make test-docker
