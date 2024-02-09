@@ -1,0 +1,66 @@
+name: Node Exporter CI
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: ${{ github.workspace }}/go.mod
+      - run: go mod download
+      - run: make test-e2e
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: node_exporter
+          path: node_exporter
+
+  codespell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo pip install codespell
+      - run: codespell --skip=".git,ttar,go.mod,go.sum,*pem,./collector/fixtures" -I scripts/codespell_ignore.txt
+
+  test_mixins:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: ${{ github.workspace }}/go.mod
+      - run: go install github.com/google/go-jsonnet/cmd/jsonnet@latest
+      - run: go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest
+      - run: go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest
+      - run: make promtool
+      - run: make -C docs/node-mixin clean
+      - run: make -C docs/node-mixin jb_install
+      - run: make -C docs/node-mixin
+      - run: git diff --exit-code
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: ${{ github.workspace }}/go.mod
+      - run: docker run --privileged linuxkit/binfmt:v0.8
+      - run: make promtool
+      - run: make promu
+      - run: promu crossbuild -v  --parallelism 3 --parallelism-thread 3
+      - run: promu --config .promu-cgo.yml crossbuild -v  --parallelism 3 --parallelism-thread 3
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: .build
