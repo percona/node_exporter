@@ -3,7 +3,7 @@ module github.com/prometheus/node_exporter
 go 1.21
 
 require (
-	github.com/beevik/ntp v0.3.0
+	github.com/beevik/ntp v1.3.1
 	github.com/coreos/go-systemd/v22 v22.3.2
 	github.com/dennwc/btrfs v0.0.0-20220403080356-b3db0b2dedac
 	github.com/ema/qdisc v0.0.0-20200603082823-62d0308e3e00
@@ -55,7 +55,7 @@ require (
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/crypto v0.17.0 // indirect
-	golang.org/x/net v0.17.0 // indirect
+	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20220223155221-ee480838109b // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
