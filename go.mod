@@ -17,7 +17,7 @@ require (
 	github.com/mattn/go-xmlrpc v0.0.3
 	github.com/mdlayher/netlink v1.7.2
 	github.com/mdlayher/wifi v0.0.0-20220320220353-954ff73a19a5
-	github.com/montanaflynn/stats v0.6.6
+	github.com/montanaflynn/stats v0.7.1
 	github.com/opencontainers/selinux v1.11.0
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.13.0
