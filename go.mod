@@ -16,7 +16,7 @@ require (
 	github.com/lufia/iostat v1.2.1
 	github.com/mattn/go-xmlrpc v0.0.3
 	github.com/mdlayher/netlink v1.7.2
-	github.com/mdlayher/wifi v0.0.0-20220320220353-954ff73a19a5
+	github.com/mdlayher/wifi v0.1.0
 	github.com/montanaflynn/stats v0.7.1
 	github.com/opencontainers/selinux v1.11.0
 	github.com/pkg/errors v0.9.1
@@ -46,7 +46,7 @@ require (
 	github.com/josharian/native v1.1.0 // indirect
 	github.com/jpillora/backoff v1.0.0 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
-	github.com/mdlayher/genetlink v1.2.0 // indirect
+	github.com/mdlayher/genetlink v1.3.2 // indirect
 	github.com/mdlayher/socket v0.4.1 // indirect
 	github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
