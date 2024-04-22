@@ -29,7 +29,7 @@ require (
 	github.com/soundcloud/go-runit v0.0.0-20150630195641-06ad41a06c4a
 	github.com/stretchr/testify v1.9.0
 	github.com/tklauser/go-sysconf v0.3.13
-	golang.org/x/sys v0.16.0
+	golang.org/x/sys v0.18.0
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 )
 
@@ -54,8 +54,8 @@ require (
 	github.com/tklauser/numcpus v0.7.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
-	golang.org/x/crypto v0.17.0 // indirect
-	golang.org/x/net v0.19.0 // indirect
+	golang.org/x/crypto v0.21.0 // indirect
+	golang.org/x/net v0.23.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20220223155221-ee480838109b // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
