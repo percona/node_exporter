@@ -9,7 +9,7 @@ require (
 	github.com/ema/qdisc v0.0.0-20200603082823-62d0308e3e00
 	github.com/go-kit/log v0.2.1
 	github.com/godbus/dbus/v5 v5.1.0
-	github.com/hashicorp/go-envparse v0.0.0-20200406174449-d9cfd743a15e
+	github.com/hashicorp/go-envparse v0.1.0
 	github.com/hodgesds/perf-utils v0.7.0
 	github.com/illumos/go-kstat v0.0.0-20210513183136-173c9b0a9973
 	github.com/jsimonetti/rtnetlink v1.4.1
