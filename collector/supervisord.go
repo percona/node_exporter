@@ -24,11 +24,11 @@ import (
 	"net/url"
 	"time"
 
+	"github.com/alecthomas/kingpin/v2"
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 	"github.com/mattn/go-xmlrpc"
 	"github.com/prometheus/client_golang/prometheus"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 var (
@@ -68,6 +68,8 @@ func NewSupervisordCollector(logger log.Logger) (Collector, error) {
 	} else {
 		xrpc = xmlrpc.NewClient(*supervisordURL)
 	}
+
+	level.Warn(logger).Log("msg", "This collector is deprecated and will be removed in the next major version release.")
 
 	return &supervisordCollector{
 		upDesc: prometheus.NewDesc(

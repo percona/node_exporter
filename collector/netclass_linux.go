@@ -19,14 +19,16 @@ package collector
 import (
 	"errors"
 	"fmt"
+	"net"
 	"os"
 	"regexp"
+	"sync"
 
+	"github.com/alecthomas/kingpin/v2"
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/procfs/sysfs"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 var (
@@ -40,6 +42,7 @@ type netClassCollector struct {
 	subsystem             string
 	ignoredDevicesPattern *regexp.Regexp
 	metricDescs           map[string]*prometheus.Desc
+	metricDescsMu         sync.Mutex
 	logger                log.Logger
 }
 
@@ -96,12 +99,12 @@ func (c *netClassCollector) netClassSysfsUpdate(ch chan<- prometheus.Metric) err
 		infoDesc := prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, c.subsystem, "info"),
 			"Non-numeric data from /sys/class/net/<iface>, value is always 1.",
-			[]string{"device", "address", "broadcast", "duplex", "operstate", "ifalias"},
+			[]string{"device", "address", "broadcast", "duplex", "operstate", "adminstate", "ifalias"},
 			nil,
 		)
 		infoValue := 1.0
 
-		ch <- prometheus.MustNewConstMetric(infoDesc, prometheus.GaugeValue, infoValue, ifaceInfo.Name, ifaceInfo.Address, ifaceInfo.Broadcast, ifaceInfo.Duplex, ifaceInfo.OperState, ifaceInfo.IfAlias)
+		ch <- prometheus.MustNewConstMetric(infoDesc, prometheus.GaugeValue, infoValue, ifaceInfo.Name, ifaceInfo.Address, ifaceInfo.Broadcast, ifaceInfo.Duplex, ifaceInfo.OperState, getAdminState(ifaceInfo.Flags), ifaceInfo.IfAlias)
 
 		pushMetric(ch, c.getFieldDesc("address_assign_type"), "address_assign_type", ifaceInfo.AddrAssignType, prometheus.GaugeValue, ifaceInfo.Name)
 		pushMetric(ch, c.getFieldDesc("carrier"), "carrier", ifaceInfo.Carrier, prometheus.GaugeValue, ifaceInfo.Name)
@@ -135,6 +138,9 @@ func (c *netClassCollector) netClassSysfsUpdate(ch chan<- prometheus.Metric) err
 }
 
 func (c *netClassCollector) getFieldDesc(name string) *prometheus.Desc {
+	c.metricDescsMu.Lock()
+	defer c.metricDescsMu.Unlock()
+
 	fieldDesc, exists := c.metricDescs[name]
 
 	if !exists {
@@ -169,4 +175,16 @@ func (c *netClassCollector) getNetClassInfo() (sysfs.NetClass, error) {
 	}
 
 	return netClass, nil
+}
+
+func getAdminState(flags *int64) string {
+	if flags == nil {
+		return "unknown"
+	}
+
+	if *flags&int64(net.FlagUp) == 1 {
+		return "up"
+	}
+
+	return "down"
 }

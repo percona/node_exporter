@@ -22,14 +22,14 @@ The `node_exporter` listens on HTTP port 9100 by default. See the `--help` outpu
 
 ### Ansible
 
-For automated installs with [Ansible](https://www.ansible.com/), there is the [Cloud Alchemy role](https://github.com/cloudalchemy/ansible-node-exporter).
+For automated installs with [Ansible](https://www.ansible.com/), there is the [Prometheus Community role](https://github.com/prometheus-community/ansible).
 
 ### Docker
 
-The `node_exporter` is designed to monitor the host system. It's not recommended
-to deploy it as a Docker container because it requires access to the host system.
+The `node_exporter` is designed to monitor the host system. Deploying in containers requires
+extra care in order to avoid monitoring the container itself.
 
-For situations where Docker deployment is needed, some extra flags must be used to allow
+For situations where containerized deployment is needed, some extra flags must be used to allow
 the `node_exporter` access to the host namespaces.
 
 Be aware that any non-root mount points you want to monitor will need to be bind-mounted
@@ -79,6 +79,34 @@ Collectors are enabled by providing a `--collector.<name>` flag.
 Collectors that are enabled by default can be disabled by providing a `--no-collector.<name>` flag.
 To enable only some specific collector(s), use `--collector.disable-defaults --collector.<name> ...`.
 
+### Include & Exclude flags
+
+A few collectors can be configured to include or exclude certain patterns using dedicated flags. The exclude flags are used to indicate "all except", while the include flags are used to say "none except". Note that these flags are mutually exclusive on collectors that support both.
+
+Example:
+
+```txt
+--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+```
+
+List:
+
+Collector | Scope | Include Flag | Exclude Flag
+--- | --- | --- | ---
+arp | device | --collector.arp.device-include | --collector.arp.device-exclude
+cpu | bugs | --collector.cpu.info.bugs-include | N/A
+cpu | flags | --collector.cpu.info.flags-include | N/A
+diskstats | device | --collector.diskstats.device-include | --collector.diskstats.device-exclude
+ethtool | device | --collector.ethtool.device-include | --collector.ethtool.device-exclude
+ethtool | metrics | --collector.ethtool.metrics-include | N/A
+filesystem | fs-types | N/A | --collector.filesystem.fs-types-exclude
+filesystem | mount-points | N/A | --collector.filesystem.mount-points-exclude
+hwmon | chip | --collector.hwmon.chip-include | --collector.hwmon.chip-exclude
+netdev | device | --collector.netdev.device-include | --collector.netdev.device-exclude
+qdisk | device | --collector.qdisk.device-include | --collector.qdisk.device-exclude
+sysctl | all | --collector.sysctl.include | N/A
+systemd | unit | --collector.systemd.unit-include | --collector.systemd.unit-exclude
+
 ### Enabled by default
 
 Name     | Description | OS
@@ -107,6 +135,7 @@ mdadm | Exposes statistics about devices in `/proc/mdstat` (does nothing if no `
 meminfo | Exposes memory statistics. | Darwin, Dragonfly, FreeBSD, Linux, OpenBSD
 netclass | Exposes network interface info from `/sys/class/net/` | Linux
 netdev | Exposes network interface statistics such as bytes transferred. | Darwin, Dragonfly, FreeBSD, Linux, OpenBSD
+netisr | Exposes netisr statistics | FreeBSD
 netstat | Exposes network statistics from `/proc/net/netstat`. This is the same information as `netstat -s`. | Linux
 nfs | Exposes NFS client statistics from `/proc/net/rpc/nfs`. This is the same information as `nfsstat -c`. | Linux
 nfsd | Exposes NFS kernel server statistics from `/proc/net/rpc/nfsd`. This is the same information as `nfsstat -s`. | Linux
@@ -129,6 +158,7 @@ timex | Exposes selected adjtimex(2) system call stats. | Linux
 udp_queues | Exposes UDP total lengths of the rx_queue and tx_queue from `/proc/net/udp` and `/proc/net/udp6`. | Linux
 uname | Exposes system information as provided by the uname system call. | Darwin, FreeBSD, Linux, OpenBSD
 vmstat | Exposes statistics from `/proc/vmstat`. | Linux
+watchdog | Exposes statistics from `/sys/class/watchdog` | Linux
 xfs | Exposes XFS runtime statistics. | Linux (kernel 4.4+)
 zfs | Exposes [ZFS](http://open-zfs.org/) performance statistics. | FreeBSD, [Linux](http://zfsonlinux.org/), Solaris
 
@@ -155,28 +185,39 @@ Name     | Description | OS
 ---------|-------------|----
 buddyinfo | Exposes statistics of memory fragments as reported by /proc/buddyinfo. | Linux
 cgroups | A summary of the number of active and enabled cgroups | Linux
+cpu\_vulnerabilities | Exposes CPU vulnerability information from sysfs. | Linux
 devstat | Exposes device statistics | Dragonfly, FreeBSD
+drm | Expose GPU metrics using sysfs / DRM, `amdgpu` is the only driver which exposes this information through DRM | Linux
 drbd | Exposes Distributed Replicated Block Device statistics (to version 8.4) | Linux
 ethtool | Exposes network interface information and network driver statistics equivalent to `ethtool`, `ethtool -S`, and `ethtool -i`. | Linux
 interrupts | Exposes detailed interrupts statistics. | Linux, OpenBSD
 ksmd | Exposes kernel and system statistics from `/sys/kernel/mm/ksm`. | Linux
 lnstat | Exposes stats from `/proc/net/stat/`. | Linux
 logind | Exposes session counts from [logind](http://www.freedesktop.org/wiki/Software/systemd/logind/). | Linux
-meminfo\_numa | Exposes memory statistics from `/proc/meminfo_numa`. | Linux
+meminfo\_numa | Exposes memory statistics from `/sys/devices/system/node/node[0-9]*/meminfo`, `/sys/devices/system/node/node[0-9]*/numastat`. | Linux
 mountstats | Exposes filesystem statistics from `/proc/self/mountstats`. Exposes detailed NFS client statistics. | Linux
 network_route | Exposes the routing table as metrics | Linux
-ntp | Exposes local NTP daemon health to check [time](./docs/TIME.md) | _any_
 perf | Exposes perf based metrics (Warning: Metrics are dependent on kernel configuration and settings). | Linux
 processes | Exposes aggregate process statistics from `/proc`. | Linux
 qdisc | Exposes [queuing discipline](https://en.wikipedia.org/wiki/Network_scheduler#Linux_kernel) statistics | Linux
-runit | Exposes service status from [runit](http://smarden.org/runit/). | _any_
 slabinfo | Exposes slab statistics from `/proc/slabinfo`. Note that permission of `/proc/slabinfo` is usually 0400, so set it appropriately. | Linux
-supervisord | Exposes service status from [supervisord](http://supervisord.org/). | _any_
+softirqs | Exposes detailed softirq statistics from `/proc/softirqs`. | Linux
 sysctl | Expose sysctl values from `/proc/sys`. Use `--collector.sysctl.include(-info)` to configure. | Linux
 systemd | Exposes service and system status from [systemd](http://www.freedesktop.org/wiki/Software/systemd/). | Linux
 tcpstat | Exposes TCP connection status information from `/proc/net/tcp` and `/proc/net/tcp6`. (Warning: the current version has potential performance issues in high load situations.) | Linux
 wifi | Exposes WiFi device and station statistics. | Linux
+xfrm | Exposes statistics from `/proc/net/xfrm_stat` | Linux
 zoneinfo | Exposes NUMA memory zone metrics. | Linux
+
+### Deprecated
+
+These collectors are deprecated and will be removed in the next major release.
+
+Name     | Description | OS
+---------|-------------|----
+ntp | Exposes local NTP daemon health to check [time](./docs/TIME.md) | _any_
+runit | Exposes service status from [runit](http://smarden.org/runit/). | _any_
+supervisord | Exposes service status from [supervisord](http://supervisord.org/). | _any_
 
 ### Perf Collector
 
@@ -335,10 +376,10 @@ To see all available configuration flags:
 The exporter supports TLS via a new web configuration file.
 
 ```console
-./node_exporter --web.config=web-config.yml
+./node_exporter --web.config.file=web-config.yml
 ```
 
-See the [exporter-toolkit https package](https://github.com/prometheus/exporter-toolkit/blob/v0.1.0/https/README.md) for more details.
+See the [exporter-toolkit web-configuration](https://github.com/prometheus/exporter-toolkit/blob/master/docs/web-configuration.md) for more details.
 
 [travis]: https://travis-ci.org/prometheus/node_exporter
 [hub]: https://hub.docker.com/r/prom/node-exporter/

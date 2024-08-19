@@ -97,7 +97,7 @@ node_bcache_cache_misses_total{backing_device="bdev0",uuid="deaddd54-c735-46d5-8
 node_bcache_cache_read_races_total{uuid="deaddd54-c735-46d5-868e-f331c5fd7c74"} 0
 # HELP node_bcache_cache_readaheads_total Count of times readahead occurred.
 # TYPE node_bcache_cache_readaheads_total counter
-node_bcache_cache_readaheads_total{backing_device="bdev0",uuid="deaddd54-c735-46d5-868e-f331c5fd7c74"} 0
+node_bcache_cache_readaheads_total{backing_device="bdev0",uuid="deaddd54-c735-46d5-868e-f331c5fd7c74"} 13
 # HELP node_bcache_congested Congestion.
 # TYPE node_bcache_congested gauge
 node_bcache_congested{uuid="deaddd54-c735-46d5-868e-f331c5fd7c74"} 0
@@ -348,6 +348,16 @@ node_cpu_scaling_frequency_min_hertz{cpu="0"} 8e+08
 node_cpu_scaling_frequency_min_hertz{cpu="1"} 8e+08
 node_cpu_scaling_frequency_min_hertz{cpu="2"} 1e+06
 node_cpu_scaling_frequency_min_hertz{cpu="3"} 1e+06
+# HELP node_cpu_scaling_governor Current enabled CPU frequency governor.
+# TYPE node_cpu_scaling_governor gauge
+node_cpu_scaling_governor{cpu="0",governor="performance"} 0
+node_cpu_scaling_governor{cpu="0",governor="powersave"} 1
+node_cpu_scaling_governor{cpu="1",governor="performance"} 0
+node_cpu_scaling_governor{cpu="1",governor="powersave"} 1
+node_cpu_scaling_governor{cpu="2",governor="performance"} 0
+node_cpu_scaling_governor{cpu="2",governor="powersave"} 1
+node_cpu_scaling_governor{cpu="3",governor="performance"} 0
+node_cpu_scaling_governor{cpu="3",governor="powersave"} 1
 # HELP node_cpu_seconds_total Seconds the CPUs spent in each mode.
 # TYPE node_cpu_seconds_total counter
 node_cpu_seconds_total{cpu="0",mode="idle"} 10870.69
@@ -414,6 +424,13 @@ node_cpu_seconds_total{cpu="7",mode="softirq"} 0.31
 node_cpu_seconds_total{cpu="7",mode="steal"} 0
 node_cpu_seconds_total{cpu="7",mode="system"} 101.64
 node_cpu_seconds_total{cpu="7",mode="user"} 290.98
+# HELP node_cpu_vulnerabilities_info Details of each CPU vulnerability reported by sysfs. The value of the series is an int encoded state of the vulnerability. The same state is stored as a string in the label
+# TYPE node_cpu_vulnerabilities_info gauge
+node_cpu_vulnerabilities_info{codename="itlb_multihit",mitigation="",state="not affected"} 1
+node_cpu_vulnerabilities_info{codename="mds",mitigation="",state="vulnerable"} 1
+node_cpu_vulnerabilities_info{codename="retbleed",mitigation="untrained return thunk; SMT enabled with STIBP protection",state="mitigation"} 1
+node_cpu_vulnerabilities_info{codename="spectre_v1",mitigation="usercopy/swapgs barriers and __user pointer sanitization",state="mitigation"} 1
+node_cpu_vulnerabilities_info{codename="spectre_v2",mitigation="Retpolines, IBPB: conditional, STIBP: always-on, RSB filling, PBRSB-eIBRS: Not affected",state="mitigation"} 1
 # HELP node_disk_ata_rotation_rate_rpm ATA disk rotation rate in RPMs (0 for SSDs).
 # TYPE node_disk_ata_rotation_rate_rpm gauge
 node_disk_ata_rotation_rate_rpm{device="sda"} 7200
@@ -745,50 +762,66 @@ node_entropy_available_bits 1337
 # HELP node_entropy_pool_size_bits Bits of entropy pool.
 # TYPE node_entropy_pool_size_bits gauge
 node_entropy_pool_size_bits 4096
-# HELP node_exporter_build_info A metric with a constant '1' value labeled by version, revision, branch, and goversion from which node_exporter was built.
+# HELP node_exporter_build_info A metric with a constant '1' value labeled by version, revision, branch, goversion from which node_exporter was built, and the goos and goarch for the build.
 # TYPE node_exporter_build_info gauge
+# HELP node_fibrechannel_dumped_frames_total Number of dumped frames
+# TYPE node_fibrechannel_dumped_frames_total counter
+node_fibrechannel_dumped_frames_total{fc_host="host1"} 0
 # HELP node_fibrechannel_error_frames_total Number of errors in frames
 # TYPE node_fibrechannel_error_frames_total counter
 node_fibrechannel_error_frames_total{fc_host="host0"} 0
+node_fibrechannel_error_frames_total{fc_host="host1"} 19
 # HELP node_fibrechannel_fcp_packet_aborts_total Number of aborted packets
 # TYPE node_fibrechannel_fcp_packet_aborts_total counter
 node_fibrechannel_fcp_packet_aborts_total{fc_host="host0"} 19
 # HELP node_fibrechannel_info Non-numeric data from /sys/class/fc_host/<host>, value is always 1.
 # TYPE node_fibrechannel_info gauge
+node_fibrechannel_info{dev_loss_tmo="",fabric_name="",fc_host="host1",port_id="",port_name="",port_state="",port_type="",speed="8 Gbit",supported_classes="",supported_speeds="",symbolic_name=""} 1
 node_fibrechannel_info{dev_loss_tmo="30",fabric_name="0",fc_host="host0",port_id="000002",port_name="1000e0071bce95f2",port_state="Online",port_type="Point-To-Point (direct nport connection)",speed="16 Gbit",supported_classes="Class 3",supported_speeds="4 Gbit, 8 Gbit, 16 Gbit",symbolic_name="Emulex SN1100E2P FV12.4.270.3 DV12.4.0.0. HN:gotest. OS:Linux"} 1
 # HELP node_fibrechannel_invalid_crc_total Invalid Cyclic Redundancy Check count
 # TYPE node_fibrechannel_invalid_crc_total counter
 node_fibrechannel_invalid_crc_total{fc_host="host0"} 2
+node_fibrechannel_invalid_crc_total{fc_host="host1"} 32
 # HELP node_fibrechannel_invalid_tx_words_total Number of invalid words transmitted by host port
 # TYPE node_fibrechannel_invalid_tx_words_total counter
 node_fibrechannel_invalid_tx_words_total{fc_host="host0"} 8
+node_fibrechannel_invalid_tx_words_total{fc_host="host1"} 128
 # HELP node_fibrechannel_link_failure_total Number of times the host port link has failed
 # TYPE node_fibrechannel_link_failure_total counter
 node_fibrechannel_link_failure_total{fc_host="host0"} 9
+node_fibrechannel_link_failure_total{fc_host="host1"} 144
 # HELP node_fibrechannel_loss_of_signal_total Number of times signal has been lost
 # TYPE node_fibrechannel_loss_of_signal_total counter
 node_fibrechannel_loss_of_signal_total{fc_host="host0"} 17
+node_fibrechannel_loss_of_signal_total{fc_host="host1"} 272
 # HELP node_fibrechannel_loss_of_sync_total Number of failures on either bit or transmission word boundaries
 # TYPE node_fibrechannel_loss_of_sync_total counter
 node_fibrechannel_loss_of_sync_total{fc_host="host0"} 16
+node_fibrechannel_loss_of_sync_total{fc_host="host1"} 256
 # HELP node_fibrechannel_nos_total Number Not_Operational Primitive Sequence received by host port
 # TYPE node_fibrechannel_nos_total counter
 node_fibrechannel_nos_total{fc_host="host0"} 18
+node_fibrechannel_nos_total{fc_host="host1"} 288
 # HELP node_fibrechannel_rx_frames_total Number of frames received
 # TYPE node_fibrechannel_rx_frames_total counter
 node_fibrechannel_rx_frames_total{fc_host="host0"} 3
+node_fibrechannel_rx_frames_total{fc_host="host1"} 48
 # HELP node_fibrechannel_rx_words_total Number of words received by host port
 # TYPE node_fibrechannel_rx_words_total counter
 node_fibrechannel_rx_words_total{fc_host="host0"} 4
+node_fibrechannel_rx_words_total{fc_host="host1"} 64
 # HELP node_fibrechannel_seconds_since_last_reset_total Number of seconds since last host port reset
 # TYPE node_fibrechannel_seconds_since_last_reset_total counter
 node_fibrechannel_seconds_since_last_reset_total{fc_host="host0"} 7
+node_fibrechannel_seconds_since_last_reset_total{fc_host="host1"} 112
 # HELP node_fibrechannel_tx_frames_total Number of frames transmitted by host port
 # TYPE node_fibrechannel_tx_frames_total counter
 node_fibrechannel_tx_frames_total{fc_host="host0"} 5
+node_fibrechannel_tx_frames_total{fc_host="host1"} 80
 # HELP node_fibrechannel_tx_words_total Number of words transmitted by host port
 # TYPE node_fibrechannel_tx_words_total counter
 node_fibrechannel_tx_words_total{fc_host="host0"} 6
+node_fibrechannel_tx_words_total{fc_host="host1"} 96
 # HELP node_filefd_allocated File descriptor statistics: allocated.
 # TYPE node_filefd_allocated gauge
 node_filefd_allocated 1024
@@ -2308,6 +2341,9 @@ node_netstat_TcpExt_SyncookiesRecv 0
 # HELP node_netstat_TcpExt_SyncookiesSent Statistic TcpExtSyncookiesSent.
 # TYPE node_netstat_TcpExt_SyncookiesSent untyped
 node_netstat_TcpExt_SyncookiesSent 0
+# HELP node_netstat_TcpExt_TCPOFOQueue Statistic TcpExtTCPOFOQueue.
+# TYPE node_netstat_TcpExt_TCPOFOQueue untyped
+node_netstat_TcpExt_TCPOFOQueue 42
 # HELP node_netstat_TcpExt_TCPTimeouts Statistic TcpExtTCPTimeouts.
 # TYPE node_netstat_TcpExt_TCPTimeouts untyped
 node_netstat_TcpExt_TCPTimeouts 115
@@ -2423,8 +2459,8 @@ node_network_iface_link_mode{device="bond0"} 1
 node_network_iface_link_mode{device="eth0"} 1
 # HELP node_network_info Non-numeric data from /sys/class/net/<iface>, value is always 1.
 # TYPE node_network_info gauge
-node_network_info{address="01:01:01:01:01:01",broadcast="ff:ff:ff:ff:ff:ff",device="bond0",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="01:01:01:01:01:01",broadcast="ff:ff:ff:ff:ff:ff",device="eth0",duplex="full",ifalias="",operstate="up"} 1
+node_network_info{address="01:01:01:01:01:01",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="bond0",duplex="full",ifalias="",operstate="up"} 1
+node_network_info{address="01:01:01:01:01:01",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="eth0",duplex="full",ifalias="",operstate="up"} 1
 # HELP node_network_mtu_bytes Network device property: mtu_bytes
 # TYPE node_network_mtu_bytes gauge
 node_network_mtu_bytes{device="bond0"} 1500
@@ -2743,13 +2779,16 @@ node_nfsd_requests_total{method="SecInfo",proto="4"} 0
 node_nfsd_requests_total{method="SetAttr",proto="2"} 0
 node_nfsd_requests_total{method="SetAttr",proto="3"} 0
 node_nfsd_requests_total{method="SetAttr",proto="4"} 0
+node_nfsd_requests_total{method="SetClientID",proto="4"} 3
+node_nfsd_requests_total{method="SetClientIDConfirm",proto="4"} 3
 node_nfsd_requests_total{method="SymLink",proto="2"} 0
 node_nfsd_requests_total{method="SymLink",proto="3"} 0
-node_nfsd_requests_total{method="Verify",proto="4"} 3
+node_nfsd_requests_total{method="Verify",proto="4"} 0
+node_nfsd_requests_total{method="WdelegGetattr",proto="4"} 15
 node_nfsd_requests_total{method="WrCache",proto="2"} 0
 node_nfsd_requests_total{method="Write",proto="2"} 0
 node_nfsd_requests_total{method="Write",proto="3"} 0
-node_nfsd_requests_total{method="Write",proto="4"} 3
+node_nfsd_requests_total{method="Write",proto="4"} 0
 # HELP node_nfsd_rpc_errors_total Total number of NFSd RPC errors by error type.
 # TYPE node_nfsd_rpc_errors_total counter
 node_nfsd_rpc_errors_total{error="auth"} 2
@@ -2788,7 +2827,7 @@ node_power_supply_energy_watthour{power_supply="BAT0"} 36.58
 # HELP node_power_supply_info info of /sys/class/power_supply/<power_supply>.
 # TYPE node_power_supply_info gauge
 node_power_supply_info{power_supply="AC",type="Mains"} 1
-node_power_supply_info{capacity_level="Normal",manufacturer="LGC",model_name="LNV-45N1�",power_supply="BAT0",serial_number="38109",status="Discharging",technology="Li-ion",type="Battery"} 1
+node_power_supply_info{capacity_level="Normal",manufacturer="LGC",model_name="LNV-45N1��",power_supply="BAT0",serial_number="38109",status="Discharging",technology="Li-ion",type="Battery"} 1
 # HELP node_power_supply_online online value of /sys/class/power_supply/<power_supply>.
 # TYPE node_power_supply_online gauge
 node_power_supply_online{power_supply="AC"} 0
@@ -2899,6 +2938,7 @@ node_scrape_collector_success{collector="buddyinfo"} 1
 node_scrape_collector_success{collector="cgroups"} 1
 node_scrape_collector_success{collector="conntrack"} 1
 node_scrape_collector_success{collector="cpu"} 1
+node_scrape_collector_success{collector="cpu_vulnerabilities"} 1
 node_scrape_collector_success{collector="cpufreq"} 1
 node_scrape_collector_success{collector="diskstats"} 1
 node_scrape_collector_success{collector="dmi"} 1
@@ -2931,9 +2971,9 @@ node_scrape_collector_success{collector="processes"} 1
 node_scrape_collector_success{collector="qdisc"} 1
 node_scrape_collector_success{collector="rapl"} 1
 node_scrape_collector_success{collector="schedstat"} 1
-node_scrape_collector_success{collector="selinux"} 1
 node_scrape_collector_success{collector="slabinfo"} 1
 node_scrape_collector_success{collector="sockstat"} 1
+node_scrape_collector_success{collector="softirqs"} 1
 node_scrape_collector_success{collector="softnet"} 1
 node_scrape_collector_success{collector="stat"} 1
 node_scrape_collector_success{collector="sysctl"} 1
@@ -2943,13 +2983,12 @@ node_scrape_collector_success{collector="thermal_zone"} 1
 node_scrape_collector_success{collector="time"} 1
 node_scrape_collector_success{collector="udp_queues"} 1
 node_scrape_collector_success{collector="vmstat"} 1
+node_scrape_collector_success{collector="watchdog"} 1
 node_scrape_collector_success{collector="wifi"} 1
+node_scrape_collector_success{collector="xfrm"} 1
 node_scrape_collector_success{collector="xfs"} 1
 node_scrape_collector_success{collector="zfs"} 1
 node_scrape_collector_success{collector="zoneinfo"} 1
-# HELP node_selinux_enabled SELinux is enabled, 1 is true, 0 is false
-# TYPE node_selinux_enabled gauge
-node_selinux_enabled 0
 # HELP node_slabinfo_active_objects The number of objects that are currently active (i.e., in use).
 # TYPE node_slabinfo_active_objects gauge
 node_slabinfo_active_objects{slab="dmaengine-unmap-128"} 1206
@@ -3040,6 +3079,28 @@ node_sockstat_UDP_mem_bytes 0
 # HELP node_sockstat_sockets_used Number of IPv4 sockets in use.
 # TYPE node_sockstat_sockets_used gauge
 node_sockstat_sockets_used 229
+# HELP node_softirqs_functions_total Softirq counts per CPU.
+# TYPE node_softirqs_functions_total counter
+node_softirqs_functions_total{cpu="0",type="BLOCK"} 23776
+node_softirqs_functions_total{cpu="0",type="HI"} 7
+node_softirqs_functions_total{cpu="0",type="HRTIMER"} 40
+node_softirqs_functions_total{cpu="0",type="IRQ_POLL"} 0
+node_softirqs_functions_total{cpu="0",type="NET_RX"} 43066
+node_softirqs_functions_total{cpu="0",type="NET_TX"} 2301
+node_softirqs_functions_total{cpu="0",type="RCU"} 155929
+node_softirqs_functions_total{cpu="0",type="SCHED"} 378895
+node_softirqs_functions_total{cpu="0",type="TASKLET"} 372
+node_softirqs_functions_total{cpu="0",type="TIMER"} 424191
+node_softirqs_functions_total{cpu="1",type="BLOCK"} 24115
+node_softirqs_functions_total{cpu="1",type="HI"} 1
+node_softirqs_functions_total{cpu="1",type="HRTIMER"} 346
+node_softirqs_functions_total{cpu="1",type="IRQ_POLL"} 0
+node_softirqs_functions_total{cpu="1",type="NET_RX"} 104508
+node_softirqs_functions_total{cpu="1",type="NET_TX"} 2430
+node_softirqs_functions_total{cpu="1",type="RCU"} 146631
+node_softirqs_functions_total{cpu="1",type="SCHED"} 152852
+node_softirqs_functions_total{cpu="1",type="TASKLET"} 1899
+node_softirqs_functions_total{cpu="1",type="TIMER"} 108342
 # HELP node_softirqs_total Number of softirq calls.
 # TYPE node_softirqs_total counter
 node_softirqs_total{vector="block"} 186066
@@ -3052,18 +3113,42 @@ node_softirqs_total{vector="rcu"} 508444
 node_softirqs_total{vector="sched"} 622196
 node_softirqs_total{vector="tasklet"} 1.783454e+06
 node_softirqs_total{vector="timer"} 1.481983e+06
+# HELP node_softnet_backlog_len Softnet backlog status
+# TYPE node_softnet_backlog_len gauge
+node_softnet_backlog_len{cpu="0"} 0
+node_softnet_backlog_len{cpu="1"} 0
+node_softnet_backlog_len{cpu="2"} 0
+node_softnet_backlog_len{cpu="3"} 0
+# HELP node_softnet_cpu_collision_total Number of collision occur while obtaining device lock while transmitting
+# TYPE node_softnet_cpu_collision_total counter
+node_softnet_cpu_collision_total{cpu="0"} 0
+node_softnet_cpu_collision_total{cpu="1"} 0
+node_softnet_cpu_collision_total{cpu="2"} 0
+node_softnet_cpu_collision_total{cpu="3"} 0
 # HELP node_softnet_dropped_total Number of dropped packets
 # TYPE node_softnet_dropped_total counter
 node_softnet_dropped_total{cpu="0"} 0
 node_softnet_dropped_total{cpu="1"} 41
 node_softnet_dropped_total{cpu="2"} 0
 node_softnet_dropped_total{cpu="3"} 0
+# HELP node_softnet_flow_limit_count_total Number of times flow limit has been reached
+# TYPE node_softnet_flow_limit_count_total counter
+node_softnet_flow_limit_count_total{cpu="0"} 0
+node_softnet_flow_limit_count_total{cpu="1"} 0
+node_softnet_flow_limit_count_total{cpu="2"} 0
+node_softnet_flow_limit_count_total{cpu="3"} 0
 # HELP node_softnet_processed_total Number of processed packets
 # TYPE node_softnet_processed_total counter
 node_softnet_processed_total{cpu="0"} 299641
 node_softnet_processed_total{cpu="1"} 916354
 node_softnet_processed_total{cpu="2"} 5.577791e+06
 node_softnet_processed_total{cpu="3"} 3.113785e+06
+# HELP node_softnet_received_rps_total Number of times cpu woken up received_rps
+# TYPE node_softnet_received_rps_total counter
+node_softnet_received_rps_total{cpu="0"} 0
+node_softnet_received_rps_total{cpu="1"} 0
+node_softnet_received_rps_total{cpu="2"} 0
+node_softnet_received_rps_total{cpu="3"} 0
 # HELP node_softnet_times_squeezed_total Number of times processing packets ran out of quota
 # TYPE node_softnet_times_squeezed_total counter
 node_softnet_times_squeezed_total{cpu="0"} 1
@@ -3172,6 +3257,31 @@ node_vmstat_pswpin 1476
 # HELP node_vmstat_pswpout /proc/vmstat information field pswpout.
 # TYPE node_vmstat_pswpout untyped
 node_vmstat_pswpout 35045
+# HELP node_watchdog_access_cs0 Value of /sys/class/watchdog/<watchdog>/access_cs0
+# TYPE node_watchdog_access_cs0 gauge
+node_watchdog_access_cs0{name="watchdog0"} 0
+# HELP node_watchdog_bootstatus Value of /sys/class/watchdog/<watchdog>/bootstatus
+# TYPE node_watchdog_bootstatus gauge
+node_watchdog_bootstatus{name="watchdog0"} 1
+# HELP node_watchdog_fw_version Value of /sys/class/watchdog/<watchdog>/fw_version
+# TYPE node_watchdog_fw_version gauge
+node_watchdog_fw_version{name="watchdog0"} 2
+# HELP node_watchdog_info Info of /sys/class/watchdog/<watchdog>
+# TYPE node_watchdog_info gauge
+node_watchdog_info{identity="",name="watchdog1",options="",pretimeout_governor="",state="",status=""} 1
+node_watchdog_info{identity="Software Watchdog",name="watchdog0",options="0x8380",pretimeout_governor="noop",state="active",status="0x8000"} 1
+# HELP node_watchdog_nowayout Value of /sys/class/watchdog/<watchdog>/nowayout
+# TYPE node_watchdog_nowayout gauge
+node_watchdog_nowayout{name="watchdog0"} 0
+# HELP node_watchdog_pretimeout_seconds Value of /sys/class/watchdog/<watchdog>/pretimeout
+# TYPE node_watchdog_pretimeout_seconds gauge
+node_watchdog_pretimeout_seconds{name="watchdog0"} 120
+# HELP node_watchdog_timeleft_seconds Value of /sys/class/watchdog/<watchdog>/timeleft
+# TYPE node_watchdog_timeleft_seconds gauge
+node_watchdog_timeleft_seconds{name="watchdog0"} 300
+# HELP node_watchdog_timeout_seconds Value of /sys/class/watchdog/<watchdog>/timeout
+# TYPE node_watchdog_timeout_seconds gauge
+node_watchdog_timeout_seconds{name="watchdog0"} 60
 # HELP node_wifi_interface_frequency_hertz The current frequency a WiFi interface is operating at, in hertz.
 # TYPE node_wifi_interface_frequency_hertz gauge
 node_wifi_interface_frequency_hertz{device="wlan0"} 2.412e+09
@@ -3219,6 +3329,90 @@ node_wifi_station_transmit_failed_total{device="wlan0",mac_address="aa:bb:cc:dd:
 # TYPE node_wifi_station_transmit_retries_total counter
 node_wifi_station_transmit_retries_total{device="wlan0",mac_address="01:02:03:04:05:06"} 20
 node_wifi_station_transmit_retries_total{device="wlan0",mac_address="aa:bb:cc:dd:ee:ff"} 10
+# HELP node_xfrm_acquire_error_packets_total State hasn’t been fully acquired before use
+# TYPE node_xfrm_acquire_error_packets_total counter
+node_xfrm_acquire_error_packets_total 24532
+# HELP node_xfrm_fwd_hdr_error_packets_total Forward routing of a packet is not allowed
+# TYPE node_xfrm_fwd_hdr_error_packets_total counter
+node_xfrm_fwd_hdr_error_packets_total 6654
+# HELP node_xfrm_in_buffer_error_packets_total No buffer is left
+# TYPE node_xfrm_in_buffer_error_packets_total counter
+node_xfrm_in_buffer_error_packets_total 2
+# HELP node_xfrm_in_error_packets_total All errors not matched by other
+# TYPE node_xfrm_in_error_packets_total counter
+node_xfrm_in_error_packets_total 1
+# HELP node_xfrm_in_hdr_error_packets_total Header error
+# TYPE node_xfrm_in_hdr_error_packets_total counter
+node_xfrm_in_hdr_error_packets_total 4
+# HELP node_xfrm_in_no_pols_packets_total No policy is found for states e.g. Inbound SAs are correct but no SP is found
+# TYPE node_xfrm_in_no_pols_packets_total counter
+node_xfrm_in_no_pols_packets_total 65432
+# HELP node_xfrm_in_no_states_packets_total No state is found i.e. Either inbound SPI, address, or IPsec protocol at SA is wrong
+# TYPE node_xfrm_in_no_states_packets_total counter
+node_xfrm_in_no_states_packets_total 3
+# HELP node_xfrm_in_pol_block_packets_total Policy discards
+# TYPE node_xfrm_in_pol_block_packets_total counter
+node_xfrm_in_pol_block_packets_total 100
+# HELP node_xfrm_in_pol_error_packets_total Policy error
+# TYPE node_xfrm_in_pol_error_packets_total counter
+node_xfrm_in_pol_error_packets_total 10000
+# HELP node_xfrm_in_state_expired_packets_total State is expired
+# TYPE node_xfrm_in_state_expired_packets_total counter
+node_xfrm_in_state_expired_packets_total 7
+# HELP node_xfrm_in_state_invalid_packets_total State is invalid
+# TYPE node_xfrm_in_state_invalid_packets_total counter
+node_xfrm_in_state_invalid_packets_total 55555
+# HELP node_xfrm_in_state_mismatch_packets_total State has mismatch option e.g. UDP encapsulation type is mismatch
+# TYPE node_xfrm_in_state_mismatch_packets_total counter
+node_xfrm_in_state_mismatch_packets_total 23451
+# HELP node_xfrm_in_state_mode_error_packets_total Transformation mode specific error
+# TYPE node_xfrm_in_state_mode_error_packets_total counter
+node_xfrm_in_state_mode_error_packets_total 100
+# HELP node_xfrm_in_state_proto_error_packets_total Transformation protocol specific error e.g. SA key is wrong
+# TYPE node_xfrm_in_state_proto_error_packets_total counter
+node_xfrm_in_state_proto_error_packets_total 40
+# HELP node_xfrm_in_state_seq_error_packets_total Sequence error i.e. Sequence number is out of window
+# TYPE node_xfrm_in_state_seq_error_packets_total counter
+node_xfrm_in_state_seq_error_packets_total 6000
+# HELP node_xfrm_in_tmpl_mismatch_packets_total No matching template for states e.g. Inbound SAs are correct but SP rule is wrong
+# TYPE node_xfrm_in_tmpl_mismatch_packets_total counter
+node_xfrm_in_tmpl_mismatch_packets_total 51
+# HELP node_xfrm_out_bundle_check_error_packets_total Bundle check error
+# TYPE node_xfrm_out_bundle_check_error_packets_total counter
+node_xfrm_out_bundle_check_error_packets_total 555
+# HELP node_xfrm_out_bundle_gen_error_packets_total Bundle generation error
+# TYPE node_xfrm_out_bundle_gen_error_packets_total counter
+node_xfrm_out_bundle_gen_error_packets_total 43321
+# HELP node_xfrm_out_error_packets_total All errors which is not matched others
+# TYPE node_xfrm_out_error_packets_total counter
+node_xfrm_out_error_packets_total 1e+06
+# HELP node_xfrm_out_no_states_packets_total No state is found
+# TYPE node_xfrm_out_no_states_packets_total counter
+node_xfrm_out_no_states_packets_total 869
+# HELP node_xfrm_out_pol_block_packets_total Policy discards
+# TYPE node_xfrm_out_pol_block_packets_total counter
+node_xfrm_out_pol_block_packets_total 43456
+# HELP node_xfrm_out_pol_dead_packets_total Policy is dead
+# TYPE node_xfrm_out_pol_dead_packets_total counter
+node_xfrm_out_pol_dead_packets_total 7656
+# HELP node_xfrm_out_pol_error_packets_total Policy error
+# TYPE node_xfrm_out_pol_error_packets_total counter
+node_xfrm_out_pol_error_packets_total 1454
+# HELP node_xfrm_out_state_expired_packets_total State is expired
+# TYPE node_xfrm_out_state_expired_packets_total counter
+node_xfrm_out_state_expired_packets_total 565
+# HELP node_xfrm_out_state_invalid_packets_total State is invalid, perhaps expired
+# TYPE node_xfrm_out_state_invalid_packets_total counter
+node_xfrm_out_state_invalid_packets_total 28765
+# HELP node_xfrm_out_state_mode_error_packets_total Transformation mode specific error
+# TYPE node_xfrm_out_state_mode_error_packets_total counter
+node_xfrm_out_state_mode_error_packets_total 8
+# HELP node_xfrm_out_state_proto_error_packets_total Transformation protocol specific error
+# TYPE node_xfrm_out_state_proto_error_packets_total counter
+node_xfrm_out_state_proto_error_packets_total 4542
+# HELP node_xfrm_out_state_seq_error_packets_total Sequence error i.e. Sequence number overflow
+# TYPE node_xfrm_out_state_seq_error_packets_total counter
+node_xfrm_out_state_seq_error_packets_total 543
 # HELP node_xfs_allocation_btree_compares_total Number of allocation B-tree compares for a filesystem.
 # TYPE node_xfs_allocation_btree_compares_total counter
 node_xfs_allocation_btree_compares_total{device="sda1"} 0
@@ -3672,193 +3866,193 @@ node_zfs_arc_prefetch_metadata_misses 16071
 # HELP node_zfs_arc_size kstat.zfs.misc.arcstats.size
 # TYPE node_zfs_arc_size untyped
 node_zfs_arc_size 1.603939792e+09
-# HELP node_zfs_dbuf_dbuf_cache_count kstat.zfs.misc.dbuf_stats.dbuf_cache_count
+# HELP node_zfs_dbuf_dbuf_cache_count kstat.zfs.misc.dbufstats.dbuf_cache_count
 # TYPE node_zfs_dbuf_dbuf_cache_count untyped
 node_zfs_dbuf_dbuf_cache_count 27
-# HELP node_zfs_dbuf_dbuf_cache_hiwater_bytes kstat.zfs.misc.dbuf_stats.dbuf_cache_hiwater_bytes
+# HELP node_zfs_dbuf_dbuf_cache_hiwater_bytes kstat.zfs.misc.dbufstats.dbuf_cache_hiwater_bytes
 # TYPE node_zfs_dbuf_dbuf_cache_hiwater_bytes untyped
 node_zfs_dbuf_dbuf_cache_hiwater_bytes 6.9117804e+07
-# HELP node_zfs_dbuf_dbuf_cache_level_0 kstat.zfs.misc.dbuf_stats.dbuf_cache_level_0
+# HELP node_zfs_dbuf_dbuf_cache_level_0 kstat.zfs.misc.dbufstats.dbuf_cache_level_0
 # TYPE node_zfs_dbuf_dbuf_cache_level_0 untyped
 node_zfs_dbuf_dbuf_cache_level_0 27
-# HELP node_zfs_dbuf_dbuf_cache_level_0_bytes kstat.zfs.misc.dbuf_stats.dbuf_cache_level_0_bytes
+# HELP node_zfs_dbuf_dbuf_cache_level_0_bytes kstat.zfs.misc.dbufstats.dbuf_cache_level_0_bytes
 # TYPE node_zfs_dbuf_dbuf_cache_level_0_bytes untyped
 node_zfs_dbuf_dbuf_cache_level_0_bytes 302080
-# HELP node_zfs_dbuf_dbuf_cache_level_1 kstat.zfs.misc.dbuf_stats.dbuf_cache_level_1
+# HELP node_zfs_dbuf_dbuf_cache_level_1 kstat.zfs.misc.dbufstats.dbuf_cache_level_1
 # TYPE node_zfs_dbuf_dbuf_cache_level_1 untyped
 node_zfs_dbuf_dbuf_cache_level_1 0
-# HELP node_zfs_dbuf_dbuf_cache_level_10 kstat.zfs.misc.dbuf_stats.dbuf_cache_level_10
+# HELP node_zfs_dbuf_dbuf_cache_level_10 kstat.zfs.misc.dbufstats.dbuf_cache_level_10
 # TYPE node_zfs_dbuf_dbuf_cache_level_10 untyped
 node_zfs_dbuf_dbuf_cache_level_10 0
-# HELP node_zfs_dbuf_dbuf_cache_level_10_bytes kstat.zfs.misc.dbuf_stats.dbuf_cache_level_10_bytes
+# HELP node_zfs_dbuf_dbuf_cache_level_10_bytes kstat.zfs.misc.dbufstats.dbuf_cache_level_10_bytes
 # TYPE node_zfs_dbuf_dbuf_cache_level_10_bytes untyped
 node_zfs_dbuf_dbuf_cache_level_10_bytes 0
-# HELP node_zfs_dbuf_dbuf_cache_level_11 kstat.zfs.misc.dbuf_stats.dbuf_cache_level_11
+# HELP node_zfs_dbuf_dbuf_cache_level_11 kstat.zfs.misc.dbufstats.dbuf_cache_level_11
 # TYPE node_zfs_dbuf_dbuf_cache_level_11 untyped
 node_zfs_dbuf_dbuf_cache_level_11 0
-# HELP node_zfs_dbuf_dbuf_cache_level_11_bytes kstat.zfs.misc.dbuf_stats.dbuf_cache_level_11_bytes
+# HELP node_zfs_dbuf_dbuf_cache_level_11_bytes kstat.zfs.misc.dbufstats.dbuf_cache_level_11_bytes
 # TYPE node_zfs_dbuf_dbuf_cache_level_11_bytes untyped
 node_zfs_dbuf_dbuf_cache_level_11_bytes 0
-# HELP node_zfs_dbuf_dbuf_cache_level_1_bytes kstat.zfs.misc.dbuf_stats.dbuf_cache_level_1_bytes
+# HELP node_zfs_dbuf_dbuf_cache_level_1_bytes kstat.zfs.misc.dbufstats.dbuf_cache_level_1_bytes
 # TYPE node_zfs_dbuf_dbuf_cache_level_1_bytes untyped
 node_zfs_dbuf_dbuf_cache_level_1_bytes 0
-# HELP node_zfs_dbuf_dbuf_cache_level_2 kstat.zfs.misc.dbuf_stats.dbuf_cache_level_2
+# HELP node_zfs_dbuf_dbuf_cache_level_2 kstat.zfs.misc.dbufstats.dbuf_cache_level_2
 # TYPE node_zfs_dbuf_dbuf_cache_level_2 untyped
 node_zfs_dbuf_dbuf_cache_level_2 0
-# HELP node_zfs_dbuf_dbuf_cache_level_2_bytes kstat.zfs.misc.dbuf_stats.dbuf_cache_level_2_bytes
+# HELP node_zfs_dbuf_dbuf_cache_level_2_bytes kstat.zfs.misc.dbufstats.dbuf_cache_level_2_bytes
 # TYPE node_zfs_dbuf_dbuf_cache_level_2_bytes untyped
 node_zfs_dbuf_dbuf_cache_level_2_bytes 0
-# HELP node_zfs_dbuf_dbuf_cache_level_3 kstat.zfs.misc.dbuf_stats.dbuf_cache_level_3
+# HELP node_zfs_dbuf_dbuf_cache_level_3 kstat.zfs.misc.dbufstats.dbuf_cache_level_3
 # TYPE node_zfs_dbuf_dbuf_cache_level_3 untyped
 node_zfs_dbuf_dbuf_cache_level_3 0
-# HELP node_zfs_dbuf_dbuf_cache_level_3_bytes kstat.zfs.misc.dbuf_stats.dbuf_cache_level_3_bytes
+# HELP node_zfs_dbuf_dbuf_cache_level_3_bytes kstat.zfs.misc.dbufstats.dbuf_cache_level_3_bytes
 # TYPE node_zfs_dbuf_dbuf_cache_level_3_bytes untyped
 node_zfs_dbuf_dbuf_cache_level_3_bytes 0
-# HELP node_zfs_dbuf_dbuf_cache_level_4 kstat.zfs.misc.dbuf_stats.dbuf_cache_level_4
+# HELP node_zfs_dbuf_dbuf_cache_level_4 kstat.zfs.misc.dbufstats.dbuf_cache_level_4
 # TYPE node_zfs_dbuf_dbuf_cache_level_4 untyped
 node_zfs_dbuf_dbuf_cache_level_4 0
-# HELP node_zfs_dbuf_dbuf_cache_level_4_bytes kstat.zfs.misc.dbuf_stats.dbuf_cache_level_4_bytes
+# HELP node_zfs_dbuf_dbuf_cache_level_4_bytes kstat.zfs.misc.dbufstats.dbuf_cache_level_4_bytes
 # TYPE node_zfs_dbuf_dbuf_cache_level_4_bytes untyped
 node_zfs_dbuf_dbuf_cache_level_4_bytes 0
-# HELP node_zfs_dbuf_dbuf_cache_level_5 kstat.zfs.misc.dbuf_stats.dbuf_cache_level_5
+# HELP node_zfs_dbuf_dbuf_cache_level_5 kstat.zfs.misc.dbufstats.dbuf_cache_level_5
 # TYPE node_zfs_dbuf_dbuf_cache_level_5 untyped
 node_zfs_dbuf_dbuf_cache_level_5 0
-# HELP node_zfs_dbuf_dbuf_cache_level_5_bytes kstat.zfs.misc.dbuf_stats.dbuf_cache_level_5_bytes
+# HELP node_zfs_dbuf_dbuf_cache_level_5_bytes kstat.zfs.misc.dbufstats.dbuf_cache_level_5_bytes
 # TYPE node_zfs_dbuf_dbuf_cache_level_5_bytes untyped
 node_zfs_dbuf_dbuf_cache_level_5_bytes 0
-# HELP node_zfs_dbuf_dbuf_cache_level_6 kstat.zfs.misc.dbuf_stats.dbuf_cache_level_6
+# HELP node_zfs_dbuf_dbuf_cache_level_6 kstat.zfs.misc.dbufstats.dbuf_cache_level_6
 # TYPE node_zfs_dbuf_dbuf_cache_level_6 untyped
 node_zfs_dbuf_dbuf_cache_level_6 0
-# HELP node_zfs_dbuf_dbuf_cache_level_6_bytes kstat.zfs.misc.dbuf_stats.dbuf_cache_level_6_bytes
+# HELP node_zfs_dbuf_dbuf_cache_level_6_bytes kstat.zfs.misc.dbufstats.dbuf_cache_level_6_bytes
 # TYPE node_zfs_dbuf_dbuf_cache_level_6_bytes untyped
 node_zfs_dbuf_dbuf_cache_level_6_bytes 0
-# HELP node_zfs_dbuf_dbuf_cache_level_7 kstat.zfs.misc.dbuf_stats.dbuf_cache_level_7
+# HELP node_zfs_dbuf_dbuf_cache_level_7 kstat.zfs.misc.dbufstats.dbuf_cache_level_7
 # TYPE node_zfs_dbuf_dbuf_cache_level_7 untyped
 node_zfs_dbuf_dbuf_cache_level_7 0
-# HELP node_zfs_dbuf_dbuf_cache_level_7_bytes kstat.zfs.misc.dbuf_stats.dbuf_cache_level_7_bytes
+# HELP node_zfs_dbuf_dbuf_cache_level_7_bytes kstat.zfs.misc.dbufstats.dbuf_cache_level_7_bytes
 # TYPE node_zfs_dbuf_dbuf_cache_level_7_bytes untyped
 node_zfs_dbuf_dbuf_cache_level_7_bytes 0
-# HELP node_zfs_dbuf_dbuf_cache_level_8 kstat.zfs.misc.dbuf_stats.dbuf_cache_level_8
+# HELP node_zfs_dbuf_dbuf_cache_level_8 kstat.zfs.misc.dbufstats.dbuf_cache_level_8
 # TYPE node_zfs_dbuf_dbuf_cache_level_8 untyped
 node_zfs_dbuf_dbuf_cache_level_8 0
-# HELP node_zfs_dbuf_dbuf_cache_level_8_bytes kstat.zfs.misc.dbuf_stats.dbuf_cache_level_8_bytes
+# HELP node_zfs_dbuf_dbuf_cache_level_8_bytes kstat.zfs.misc.dbufstats.dbuf_cache_level_8_bytes
 # TYPE node_zfs_dbuf_dbuf_cache_level_8_bytes untyped
 node_zfs_dbuf_dbuf_cache_level_8_bytes 0
-# HELP node_zfs_dbuf_dbuf_cache_level_9 kstat.zfs.misc.dbuf_stats.dbuf_cache_level_9
+# HELP node_zfs_dbuf_dbuf_cache_level_9 kstat.zfs.misc.dbufstats.dbuf_cache_level_9
 # TYPE node_zfs_dbuf_dbuf_cache_level_9 untyped
 node_zfs_dbuf_dbuf_cache_level_9 0
-# HELP node_zfs_dbuf_dbuf_cache_level_9_bytes kstat.zfs.misc.dbuf_stats.dbuf_cache_level_9_bytes
+# HELP node_zfs_dbuf_dbuf_cache_level_9_bytes kstat.zfs.misc.dbufstats.dbuf_cache_level_9_bytes
 # TYPE node_zfs_dbuf_dbuf_cache_level_9_bytes untyped
 node_zfs_dbuf_dbuf_cache_level_9_bytes 0
-# HELP node_zfs_dbuf_dbuf_cache_lowater_bytes kstat.zfs.misc.dbuf_stats.dbuf_cache_lowater_bytes
+# HELP node_zfs_dbuf_dbuf_cache_lowater_bytes kstat.zfs.misc.dbufstats.dbuf_cache_lowater_bytes
 # TYPE node_zfs_dbuf_dbuf_cache_lowater_bytes untyped
 node_zfs_dbuf_dbuf_cache_lowater_bytes 5.6550932e+07
-# HELP node_zfs_dbuf_dbuf_cache_max_bytes kstat.zfs.misc.dbuf_stats.dbuf_cache_max_bytes
+# HELP node_zfs_dbuf_dbuf_cache_max_bytes kstat.zfs.misc.dbufstats.dbuf_cache_max_bytes
 # TYPE node_zfs_dbuf_dbuf_cache_max_bytes untyped
 node_zfs_dbuf_dbuf_cache_max_bytes 6.2834368e+07
-# HELP node_zfs_dbuf_dbuf_cache_size kstat.zfs.misc.dbuf_stats.dbuf_cache_size
+# HELP node_zfs_dbuf_dbuf_cache_size kstat.zfs.misc.dbufstats.dbuf_cache_size
 # TYPE node_zfs_dbuf_dbuf_cache_size untyped
 node_zfs_dbuf_dbuf_cache_size 302080
-# HELP node_zfs_dbuf_dbuf_cache_size_max kstat.zfs.misc.dbuf_stats.dbuf_cache_size_max
+# HELP node_zfs_dbuf_dbuf_cache_size_max kstat.zfs.misc.dbufstats.dbuf_cache_size_max
 # TYPE node_zfs_dbuf_dbuf_cache_size_max untyped
 node_zfs_dbuf_dbuf_cache_size_max 394240
-# HELP node_zfs_dbuf_dbuf_cache_total_evicts kstat.zfs.misc.dbuf_stats.dbuf_cache_total_evicts
+# HELP node_zfs_dbuf_dbuf_cache_total_evicts kstat.zfs.misc.dbufstats.dbuf_cache_total_evicts
 # TYPE node_zfs_dbuf_dbuf_cache_total_evicts untyped
 node_zfs_dbuf_dbuf_cache_total_evicts 0
-# HELP node_zfs_dbuf_hash_chain_max kstat.zfs.misc.dbuf_stats.hash_chain_max
+# HELP node_zfs_dbuf_hash_chain_max kstat.zfs.misc.dbufstats.hash_chain_max
 # TYPE node_zfs_dbuf_hash_chain_max untyped
 node_zfs_dbuf_hash_chain_max 0
-# HELP node_zfs_dbuf_hash_chains kstat.zfs.misc.dbuf_stats.hash_chains
+# HELP node_zfs_dbuf_hash_chains kstat.zfs.misc.dbufstats.hash_chains
 # TYPE node_zfs_dbuf_hash_chains untyped
 node_zfs_dbuf_hash_chains 0
-# HELP node_zfs_dbuf_hash_collisions kstat.zfs.misc.dbuf_stats.hash_collisions
+# HELP node_zfs_dbuf_hash_collisions kstat.zfs.misc.dbufstats.hash_collisions
 # TYPE node_zfs_dbuf_hash_collisions untyped
 node_zfs_dbuf_hash_collisions 0
-# HELP node_zfs_dbuf_hash_dbuf_level_0 kstat.zfs.misc.dbuf_stats.hash_dbuf_level_0
+# HELP node_zfs_dbuf_hash_dbuf_level_0 kstat.zfs.misc.dbufstats.hash_dbuf_level_0
 # TYPE node_zfs_dbuf_hash_dbuf_level_0 untyped
 node_zfs_dbuf_hash_dbuf_level_0 37
-# HELP node_zfs_dbuf_hash_dbuf_level_0_bytes kstat.zfs.misc.dbuf_stats.hash_dbuf_level_0_bytes
+# HELP node_zfs_dbuf_hash_dbuf_level_0_bytes kstat.zfs.misc.dbufstats.hash_dbuf_level_0_bytes
 # TYPE node_zfs_dbuf_hash_dbuf_level_0_bytes untyped
 node_zfs_dbuf_hash_dbuf_level_0_bytes 465920
-# HELP node_zfs_dbuf_hash_dbuf_level_1 kstat.zfs.misc.dbuf_stats.hash_dbuf_level_1
+# HELP node_zfs_dbuf_hash_dbuf_level_1 kstat.zfs.misc.dbufstats.hash_dbuf_level_1
 # TYPE node_zfs_dbuf_hash_dbuf_level_1 untyped
 node_zfs_dbuf_hash_dbuf_level_1 10
-# HELP node_zfs_dbuf_hash_dbuf_level_10 kstat.zfs.misc.dbuf_stats.hash_dbuf_level_10
+# HELP node_zfs_dbuf_hash_dbuf_level_10 kstat.zfs.misc.dbufstats.hash_dbuf_level_10
 # TYPE node_zfs_dbuf_hash_dbuf_level_10 untyped
 node_zfs_dbuf_hash_dbuf_level_10 0
-# HELP node_zfs_dbuf_hash_dbuf_level_10_bytes kstat.zfs.misc.dbuf_stats.hash_dbuf_level_10_bytes
+# HELP node_zfs_dbuf_hash_dbuf_level_10_bytes kstat.zfs.misc.dbufstats.hash_dbuf_level_10_bytes
 # TYPE node_zfs_dbuf_hash_dbuf_level_10_bytes untyped
 node_zfs_dbuf_hash_dbuf_level_10_bytes 0
-# HELP node_zfs_dbuf_hash_dbuf_level_11 kstat.zfs.misc.dbuf_stats.hash_dbuf_level_11
+# HELP node_zfs_dbuf_hash_dbuf_level_11 kstat.zfs.misc.dbufstats.hash_dbuf_level_11
 # TYPE node_zfs_dbuf_hash_dbuf_level_11 untyped
 node_zfs_dbuf_hash_dbuf_level_11 0
-# HELP node_zfs_dbuf_hash_dbuf_level_11_bytes kstat.zfs.misc.dbuf_stats.hash_dbuf_level_11_bytes
+# HELP node_zfs_dbuf_hash_dbuf_level_11_bytes kstat.zfs.misc.dbufstats.hash_dbuf_level_11_bytes
 # TYPE node_zfs_dbuf_hash_dbuf_level_11_bytes untyped
 node_zfs_dbuf_hash_dbuf_level_11_bytes 0
-# HELP node_zfs_dbuf_hash_dbuf_level_1_bytes kstat.zfs.misc.dbuf_stats.hash_dbuf_level_1_bytes
+# HELP node_zfs_dbuf_hash_dbuf_level_1_bytes kstat.zfs.misc.dbufstats.hash_dbuf_level_1_bytes
 # TYPE node_zfs_dbuf_hash_dbuf_level_1_bytes untyped
 node_zfs_dbuf_hash_dbuf_level_1_bytes 1.31072e+06
-# HELP node_zfs_dbuf_hash_dbuf_level_2 kstat.zfs.misc.dbuf_stats.hash_dbuf_level_2
+# HELP node_zfs_dbuf_hash_dbuf_level_2 kstat.zfs.misc.dbufstats.hash_dbuf_level_2
 # TYPE node_zfs_dbuf_hash_dbuf_level_2 untyped
 node_zfs_dbuf_hash_dbuf_level_2 2
-# HELP node_zfs_dbuf_hash_dbuf_level_2_bytes kstat.zfs.misc.dbuf_stats.hash_dbuf_level_2_bytes
+# HELP node_zfs_dbuf_hash_dbuf_level_2_bytes kstat.zfs.misc.dbufstats.hash_dbuf_level_2_bytes
 # TYPE node_zfs_dbuf_hash_dbuf_level_2_bytes untyped
 node_zfs_dbuf_hash_dbuf_level_2_bytes 262144
-# HELP node_zfs_dbuf_hash_dbuf_level_3 kstat.zfs.misc.dbuf_stats.hash_dbuf_level_3
+# HELP node_zfs_dbuf_hash_dbuf_level_3 kstat.zfs.misc.dbufstats.hash_dbuf_level_3
 # TYPE node_zfs_dbuf_hash_dbuf_level_3 untyped
 node_zfs_dbuf_hash_dbuf_level_3 2
-# HELP node_zfs_dbuf_hash_dbuf_level_3_bytes kstat.zfs.misc.dbuf_stats.hash_dbuf_level_3_bytes
+# HELP node_zfs_dbuf_hash_dbuf_level_3_bytes kstat.zfs.misc.dbufstats.hash_dbuf_level_3_bytes
 # TYPE node_zfs_dbuf_hash_dbuf_level_3_bytes untyped
 node_zfs_dbuf_hash_dbuf_level_3_bytes 262144
-# HELP node_zfs_dbuf_hash_dbuf_level_4 kstat.zfs.misc.dbuf_stats.hash_dbuf_level_4
+# HELP node_zfs_dbuf_hash_dbuf_level_4 kstat.zfs.misc.dbufstats.hash_dbuf_level_4
 # TYPE node_zfs_dbuf_hash_dbuf_level_4 untyped
 node_zfs_dbuf_hash_dbuf_level_4 2
-# HELP node_zfs_dbuf_hash_dbuf_level_4_bytes kstat.zfs.misc.dbuf_stats.hash_dbuf_level_4_bytes
+# HELP node_zfs_dbuf_hash_dbuf_level_4_bytes kstat.zfs.misc.dbufstats.hash_dbuf_level_4_bytes
 # TYPE node_zfs_dbuf_hash_dbuf_level_4_bytes untyped
 node_zfs_dbuf_hash_dbuf_level_4_bytes 262144
-# HELP node_zfs_dbuf_hash_dbuf_level_5 kstat.zfs.misc.dbuf_stats.hash_dbuf_level_5
+# HELP node_zfs_dbuf_hash_dbuf_level_5 kstat.zfs.misc.dbufstats.hash_dbuf_level_5
 # TYPE node_zfs_dbuf_hash_dbuf_level_5 untyped
 node_zfs_dbuf_hash_dbuf_level_5 2
-# HELP node_zfs_dbuf_hash_dbuf_level_5_bytes kstat.zfs.misc.dbuf_stats.hash_dbuf_level_5_bytes
+# HELP node_zfs_dbuf_hash_dbuf_level_5_bytes kstat.zfs.misc.dbufstats.hash_dbuf_level_5_bytes
 # TYPE node_zfs_dbuf_hash_dbuf_level_5_bytes untyped
 node_zfs_dbuf_hash_dbuf_level_5_bytes 262144
-# HELP node_zfs_dbuf_hash_dbuf_level_6 kstat.zfs.misc.dbuf_stats.hash_dbuf_level_6
+# HELP node_zfs_dbuf_hash_dbuf_level_6 kstat.zfs.misc.dbufstats.hash_dbuf_level_6
 # TYPE node_zfs_dbuf_hash_dbuf_level_6 untyped
 node_zfs_dbuf_hash_dbuf_level_6 0
-# HELP node_zfs_dbuf_hash_dbuf_level_6_bytes kstat.zfs.misc.dbuf_stats.hash_dbuf_level_6_bytes
+# HELP node_zfs_dbuf_hash_dbuf_level_6_bytes kstat.zfs.misc.dbufstats.hash_dbuf_level_6_bytes
 # TYPE node_zfs_dbuf_hash_dbuf_level_6_bytes untyped
 node_zfs_dbuf_hash_dbuf_level_6_bytes 0
-# HELP node_zfs_dbuf_hash_dbuf_level_7 kstat.zfs.misc.dbuf_stats.hash_dbuf_level_7
+# HELP node_zfs_dbuf_hash_dbuf_level_7 kstat.zfs.misc.dbufstats.hash_dbuf_level_7
 # TYPE node_zfs_dbuf_hash_dbuf_level_7 untyped
 node_zfs_dbuf_hash_dbuf_level_7 0
-# HELP node_zfs_dbuf_hash_dbuf_level_7_bytes kstat.zfs.misc.dbuf_stats.hash_dbuf_level_7_bytes
+# HELP node_zfs_dbuf_hash_dbuf_level_7_bytes kstat.zfs.misc.dbufstats.hash_dbuf_level_7_bytes
 # TYPE node_zfs_dbuf_hash_dbuf_level_7_bytes untyped
 node_zfs_dbuf_hash_dbuf_level_7_bytes 0
-# HELP node_zfs_dbuf_hash_dbuf_level_8 kstat.zfs.misc.dbuf_stats.hash_dbuf_level_8
+# HELP node_zfs_dbuf_hash_dbuf_level_8 kstat.zfs.misc.dbufstats.hash_dbuf_level_8
 # TYPE node_zfs_dbuf_hash_dbuf_level_8 untyped
 node_zfs_dbuf_hash_dbuf_level_8 0
-# HELP node_zfs_dbuf_hash_dbuf_level_8_bytes kstat.zfs.misc.dbuf_stats.hash_dbuf_level_8_bytes
+# HELP node_zfs_dbuf_hash_dbuf_level_8_bytes kstat.zfs.misc.dbufstats.hash_dbuf_level_8_bytes
 # TYPE node_zfs_dbuf_hash_dbuf_level_8_bytes untyped
 node_zfs_dbuf_hash_dbuf_level_8_bytes 0
-# HELP node_zfs_dbuf_hash_dbuf_level_9 kstat.zfs.misc.dbuf_stats.hash_dbuf_level_9
+# HELP node_zfs_dbuf_hash_dbuf_level_9 kstat.zfs.misc.dbufstats.hash_dbuf_level_9
 # TYPE node_zfs_dbuf_hash_dbuf_level_9 untyped
 node_zfs_dbuf_hash_dbuf_level_9 0
-# HELP node_zfs_dbuf_hash_dbuf_level_9_bytes kstat.zfs.misc.dbuf_stats.hash_dbuf_level_9_bytes
+# HELP node_zfs_dbuf_hash_dbuf_level_9_bytes kstat.zfs.misc.dbufstats.hash_dbuf_level_9_bytes
 # TYPE node_zfs_dbuf_hash_dbuf_level_9_bytes untyped
 node_zfs_dbuf_hash_dbuf_level_9_bytes 0
-# HELP node_zfs_dbuf_hash_elements kstat.zfs.misc.dbuf_stats.hash_elements
+# HELP node_zfs_dbuf_hash_elements kstat.zfs.misc.dbufstats.hash_elements
 # TYPE node_zfs_dbuf_hash_elements untyped
 node_zfs_dbuf_hash_elements 55
-# HELP node_zfs_dbuf_hash_elements_max kstat.zfs.misc.dbuf_stats.hash_elements_max
+# HELP node_zfs_dbuf_hash_elements_max kstat.zfs.misc.dbufstats.hash_elements_max
 # TYPE node_zfs_dbuf_hash_elements_max untyped
 node_zfs_dbuf_hash_elements_max 55
-# HELP node_zfs_dbuf_hash_hits kstat.zfs.misc.dbuf_stats.hash_hits
+# HELP node_zfs_dbuf_hash_hits kstat.zfs.misc.dbufstats.hash_hits
 # TYPE node_zfs_dbuf_hash_hits untyped
 node_zfs_dbuf_hash_hits 108807
-# HELP node_zfs_dbuf_hash_insert_race kstat.zfs.misc.dbuf_stats.hash_insert_race
+# HELP node_zfs_dbuf_hash_insert_race kstat.zfs.misc.dbufstats.hash_insert_race
 # TYPE node_zfs_dbuf_hash_insert_race untyped
 node_zfs_dbuf_hash_insert_race 0
-# HELP node_zfs_dbuf_hash_misses kstat.zfs.misc.dbuf_stats.hash_misses
+# HELP node_zfs_dbuf_hash_misses kstat.zfs.misc.dbufstats.hash_misses
 # TYPE node_zfs_dbuf_hash_misses untyped
 node_zfs_dbuf_hash_misses 1851
 # HELP node_zfs_dmu_tx_dmu_tx_assigned kstat.zfs.misc.dmu_tx.dmu_tx_assigned
@@ -4177,16 +4371,25 @@ node_zfs_zpool_rupdate{zpool="poolz1"} 1.10734831944501e+14
 # HELP node_zfs_zpool_state kstat.zfs.misc.state
 # TYPE node_zfs_zpool_state gauge
 node_zfs_zpool_state{state="degraded",zpool="pool1"} 0
+node_zfs_zpool_state{state="degraded",zpool="pool2"} 0
 node_zfs_zpool_state{state="degraded",zpool="poolz1"} 1
 node_zfs_zpool_state{state="faulted",zpool="pool1"} 0
+node_zfs_zpool_state{state="faulted",zpool="pool2"} 0
 node_zfs_zpool_state{state="faulted",zpool="poolz1"} 0
 node_zfs_zpool_state{state="offline",zpool="pool1"} 0
+node_zfs_zpool_state{state="offline",zpool="pool2"} 0
 node_zfs_zpool_state{state="offline",zpool="poolz1"} 0
 node_zfs_zpool_state{state="online",zpool="pool1"} 1
+node_zfs_zpool_state{state="online",zpool="pool2"} 0
 node_zfs_zpool_state{state="online",zpool="poolz1"} 0
 node_zfs_zpool_state{state="removed",zpool="pool1"} 0
+node_zfs_zpool_state{state="removed",zpool="pool2"} 0
 node_zfs_zpool_state{state="removed",zpool="poolz1"} 0
+node_zfs_zpool_state{state="suspended",zpool="pool1"} 0
+node_zfs_zpool_state{state="suspended",zpool="pool2"} 1
+node_zfs_zpool_state{state="suspended",zpool="poolz1"} 0
 node_zfs_zpool_state{state="unavail",zpool="pool1"} 0
+node_zfs_zpool_state{state="unavail",zpool="pool2"} 0
 node_zfs_zpool_state{state="unavail",zpool="poolz1"} 0
 # HELP node_zfs_zpool_wcnt kstat.zfs.misc.io.wcnt
 # TYPE node_zfs_zpool_wcnt untyped
