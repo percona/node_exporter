@@ -6,7 +6,7 @@ require (
 	github.com/beevik/ntp v1.3.1
 	github.com/coreos/go-systemd/v22 v22.5.0
 	github.com/dennwc/btrfs v0.0.0-20220403080356-b3db0b2dedac
-	github.com/ema/qdisc v0.0.0-20200603082823-62d0308e3e00
+	github.com/ema/qdisc v1.0.0
 	github.com/go-kit/log v0.2.1
 	github.com/godbus/dbus/v5 v5.1.0
 	github.com/hashicorp/go-envparse v0.1.0
