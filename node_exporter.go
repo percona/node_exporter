@@ -26,8 +26,8 @@ import (
 	"github.com/prometheus/common/promlog"
 	"github.com/prometheus/common/promlog/flag"
 
-	"github.com/alecthomas/kingpin/v2"
-	"github.com/go-kit/log"
+	kingpin "github.com/alecthomas/kingpin/v2"
+	log "github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 	"github.com/prometheus/client_golang/prometheus"
 	promcollectors "github.com/prometheus/client_golang/prometheus/collectors"

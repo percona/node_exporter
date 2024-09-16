@@ -17,8 +17,8 @@ package collector
 import (
 	"fmt"
 
-	"github.com/go-kit/log"
-	"gopkg.in/alecthomas/kingpin.v2"
+	kingpin "github.com/alecthomas/kingpin/v2"
+	log "github.com/go-kit/log"
 )
 
 func RegisterCollectorPublic(collector string, isDefaultEnabled bool, factory func(logger log.Logger) (Collector, error)) {

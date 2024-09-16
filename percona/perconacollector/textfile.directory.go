@@ -25,13 +25,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/go-kit/log"
+	kingpin "github.com/alecthomas/kingpin/v2"
+	log "github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 	"github.com/prometheus/client_golang/prometheus"
 	dto "github.com/prometheus/client_model/go"
 	"github.com/prometheus/common/expfmt"
 	cl "github.com/prometheus/node_exporter/collector"
-	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
 var (
