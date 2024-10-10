@@ -16,13 +16,15 @@ package perconatests
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/montanaflynn/stats"
 	"github.com/stretchr/testify/assert"
+	"github.com/tklauser/go-sysconf"
 )
 
 const (
@@ -143,7 +145,7 @@ func doTest(iterations int, fileName string) (cpu, hwm, data int64, _ error) {
 	for i := 0; i < iterations; i++ {
 		_, err = tryGetMetrics(port)
 		if err != nil {
-			return 0, 0, 0, errors.Wrapf(err, "Failed to perform test iteration %d.%s", i, collectOutput())
+			return 0, 0, 0, fmt.Errorf("failed to perform test iteration %d.%s: %w", i, collectOutput(), err)
 		}
 
 		time.Sleep(1 * time.Millisecond)
@@ -162,7 +164,7 @@ func doTest(iterations int, fileName string) (cpu, hwm, data int64, _ error) {
 }
 
 func getCPUMem(pid int) (hwm, data int64) {
-	contents, err := ioutil.ReadFile(fmt.Sprintf("/proc/%d/status", pid))
+	contents, err := os.ReadFile(fmt.Sprintf("/proc/%d/status", pid))
 	if err != nil {
 		return 0, 0
 	}
@@ -186,7 +188,7 @@ func getCPUMem(pid int) (hwm, data int64) {
 }
 
 func getCPUTime(pid int) (total int64) {
-	contents, err := ioutil.ReadFile(fmt.Sprintf("/proc/%d/stat", pid))
+	contents, err := os.ReadFile(fmt.Sprintf("/proc/%d/stat", pid))
 	if err != nil {
 		return
 	}
