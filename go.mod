@@ -30,7 +30,7 @@ require (
 	github.com/safchain/ethtool v0.3.0
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f
-	golang.org/x/sys v0.19.0
+	golang.org/x/sys v0.20.0
 	howett.net/plist v1.0.1
 )
 
