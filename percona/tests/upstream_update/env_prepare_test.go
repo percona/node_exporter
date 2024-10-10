@@ -78,7 +78,7 @@ func extractExporter(gzipStream io.Reader, fileName string) {
 			}
 		default:
 			log.Fatalf(
-				"ExtractTarGz: uknown type: %d in %s",
+				"ExtractTarGz: unknown type: %d in %s",
 				header.Typeflag,
 				header.Name)
 		}
