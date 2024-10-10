@@ -20,21 +20,24 @@ import (
 	_ "net/http/pprof"
 	"os"
 	"os/user"
+	"runtime"
 	"sort"
 
 	"github.com/prometheus/common/promlog"
 	"github.com/prometheus/common/promlog/flag"
 
-	"github.com/go-kit/log"
+	kingpin "github.com/alecthomas/kingpin/v2"
+	log "github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 	"github.com/prometheus/client_golang/prometheus"
 	promcollectors "github.com/prometheus/client_golang/prometheus/collectors"
+	versioncollector "github.com/prometheus/client_golang/prometheus/collectors/version"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/prometheus/common/version"
 	"github.com/prometheus/exporter-toolkit/web"
+	"github.com/prometheus/exporter-toolkit/web/kingpinflag"
 	"github.com/prometheus/node_exporter/collector"
 	_ "github.com/prometheus/node_exporter/percona/perconacollector"
-	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
 // handler wraps an unfiltered http.Handler but uses a filtered handler,
@@ -118,35 +121,43 @@ func (h *handler) innerHandler(filters ...string) (http.Handler, error) {
 	}
 
 	r := prometheus.NewRegistry()
-	r.MustRegister(version.NewCollector("node_exporter"))
+	r.MustRegister(versioncollector.NewCollector("node_exporter"))
 	if err := r.Register(nc); err != nil {
 		return nil, fmt.Errorf("couldn't register node collector: %s", err)
 	}
-	handler := promhttp.HandlerFor(
-		prometheus.Gatherers{h.exporterMetricsRegistry, r},
-		promhttp.HandlerOpts{
-			ErrorLog:            stdlog.New(log.NewStdlibAdapter(level.Error(h.logger)), "", 0),
-			ErrorHandling:       promhttp.ContinueOnError,
-			MaxRequestsInFlight: h.maxRequests,
-			Registry:            h.exporterMetricsRegistry,
-		},
-	)
+
+	var handler http.Handler
 	if h.includeExporterMetrics {
+		handler = promhttp.HandlerFor(
+			prometheus.Gatherers{h.exporterMetricsRegistry, r},
+			promhttp.HandlerOpts{
+				ErrorLog:            stdlog.New(log.NewStdlibAdapter(level.Error(h.logger)), "", 0),
+				ErrorHandling:       promhttp.ContinueOnError,
+				MaxRequestsInFlight: h.maxRequests,
+				Registry:            h.exporterMetricsRegistry,
+			},
+		)
 		// Note that we have to use h.exporterMetricsRegistry here to
 		// use the same promhttp metrics for all expositions.
 		handler = promhttp.InstrumentMetricHandler(
 			h.exporterMetricsRegistry, handler,
 		)
+	} else {
+		handler = promhttp.HandlerFor(
+			r,
+			promhttp.HandlerOpts{
+				ErrorLog:            stdlog.New(log.NewStdlibAdapter(level.Error(h.logger)), "", 0),
+				ErrorHandling:       promhttp.ContinueOnError,
+				MaxRequestsInFlight: h.maxRequests,
+			},
+		)
 	}
+
 	return handler, nil
 }
 
 func main() {
 	var (
-		listenAddress = kingpin.Flag(
-			"web.listen-address",
-			"Address on which to expose metrics and web interface.",
-		).Default(":9100").String()
 		metricsPath = kingpin.Flag(
 			"web.telemetry-path",
 			"Path under which to expose metrics.",
@@ -163,10 +174,10 @@ func main() {
 			"collector.disable-defaults",
 			"Set all collectors to disabled by default.",
 		).Default("false").Bool()
-		configFile = kingpin.Flag(
-			"web.config",
-			"[EXPERIMENTAL] Path to config yaml file that can enable TLS or authentication.",
-		).Default("").String()
+		maxProcs = kingpin.Flag(
+			"runtime.gomaxprocs", "The target number of CPUs Go will run on (GOMAXPROCS)",
+		).Envar("GOMAXPROCS").Default("1").Int()
+		toolkitFlags = kingpinflag.AddFlags(kingpin.CommandLine, ":9100")
 	)
 
 	promlogConfig := &promlog.Config{}
@@ -185,21 +196,32 @@ func main() {
 	if user, err := user.Current(); err == nil && user.Uid == "0" {
 		level.Warn(logger).Log("msg", "Node Exporter is running as root user. This exporter is designed to run as unprivileged user, root is not required.")
 	}
+	runtime.GOMAXPROCS(*maxProcs)
+	level.Debug(logger).Log("msg", "Go MAXPROCS", "procs", runtime.GOMAXPROCS(0))
 
 	http.Handle(*metricsPath, newHandler(!*disableExporterMetrics, *maxRequests, logger))
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(`<html>
-			<head><title>Node Exporter</title></head>
-			<body>
-			<h1>Node Exporter</h1>
-			<p><a href="` + *metricsPath + `">Metrics</a></p>
-			</body>
-			</html>`))
-	})
+	if *metricsPath != "/" {
+		landingConfig := web.LandingConfig{
+			Name:        "Node Exporter",
+			Description: "Prometheus Node Exporter",
+			Version:     version.Info(),
+			Links: []web.LandingLinks{
+				{
+					Address: *metricsPath,
+					Text:    "Metrics",
+				},
+			},
+		}
+		landingPage, err := web.NewLandingPage(landingConfig)
+		if err != nil {
+			level.Error(logger).Log("err", err)
+			os.Exit(1)
+		}
+		http.Handle("/", landingPage)
+	}
 
-	level.Info(logger).Log("msg", "Listening on", "address", *listenAddress)
-	server := &http.Server{Addr: *listenAddress}
-	if err := web.ListenAndServe(server, *configFile, logger); err != nil {
+	server := &http.Server{}
+	if err := web.ListenAndServe(server, toolkitFlags, logger); err != nil {
 		level.Error(logger).Log("err", err)
 		os.Exit(1)
 	}

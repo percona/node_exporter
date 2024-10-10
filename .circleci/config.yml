@@ -1,16 +1,16 @@
 ---
 version: 2.1
 orbs:
-  prometheus: prometheus/prometheus@0.16.0
+  prometheus: prometheus/prometheus@0.17.1
 executors:
   # Whenever the Go version is updated here, .promu.yml and .promu-cgo.yml
   # should also be updated.
   golang:
     docker:
-      - image: cimg/go:1.19
+      - image: cimg/go:1.22
   arm:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     resource_class: arm.medium
 
 jobs:
@@ -28,13 +28,6 @@ jobs:
       - checkout
       - run: uname -a
       - run: make test-e2e
-  codespell:
-    docker:
-      - image: circleci/python
-    steps:
-      - checkout
-      - run: sudo pip install codespell
-      - run: codespell --skip=".git,./vendor,ttar,go.mod,go.sum,*pem,./collector/fixtures" -I scripts/codespell_ignore.txt
   test_mixins:
     executor: golang
     steps:
@@ -49,13 +42,23 @@ jobs:
       - run: git diff --exit-code
   build:
     machine:
-      image: ubuntu-2004:202101-01
+      image: ubuntu-2204:current
     parallelism: 3
     steps:
       - prometheus/setup_environment
-      - run: docker run --privileged linuxkit/binfmt:v0.8
+      - run: docker run --privileged linuxkit/binfmt:af88a591f9cc896a52ce596b9cf7ca26a061ef97
       - run: promu crossbuild -v --parallelism $CIRCLE_NODE_TOTAL --parallelism-thread $CIRCLE_NODE_INDEX
       - run: promu --config .promu-cgo.yml crossbuild -v --parallelism $CIRCLE_NODE_TOTAL --parallelism-thread $CIRCLE_NODE_INDEX
+      # sign the darwin build so it doesn't get SIGKILLed on start, see: https://github.com/prometheus/node_exporter/issues/2539
+      - run:
+          command: |
+            if [[ -f "$(pwd)/.build/darwin-arm64/node_exporter" ]]; then
+                promu codesign "$(pwd)/.build/darwin-arm64/node_exporter"
+            fi
+
+            if [[ -f "$(pwd)/.build/darwin-amd64/node_exporter" ]]; then
+                promu codesign "$(pwd)/.build/darwin-amd64/node_exporter"                
+            fi
       - persist_to_workspace:
           root: .
           paths:
@@ -65,9 +68,9 @@ jobs:
           destination: /build
   test_docker:
     machine:
-      image: ubuntu-2204:2022.04.2
+      image: ubuntu-2204:current
     environment:
-      DOCKER_TEST_IMAGE_NAME: quay.io/prometheus/golang-builder:1.18-base
+      DOCKER_TEST_IMAGE_NAME: quay.io/prometheus/golang-builder:1.22-base
       REPO_PATH: github.com/prometheus/node_exporter
     steps:
       - prometheus/setup_environment
@@ -102,10 +105,6 @@ workflows:
             tags:
               only: /.*/
       - build:
-          filters:
-            tags:
-              only: /.*/
-      - codespell:
           filters:
             tags:
               only: /.*/

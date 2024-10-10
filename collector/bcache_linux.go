@@ -19,10 +19,10 @@ package collector
 import (
 	"fmt"
 
+	"github.com/alecthomas/kingpin/v2"
 	"github.com/go-kit/log"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/procfs/bcache"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 var (
@@ -134,14 +134,19 @@ func bcachePeriodStatsToMetric(ps *bcache.PeriodStats, labelValue string) []bcac
 			extraLabel:      label,
 			extraLabelValue: labelValue,
 		},
-		{
-			name:            "cache_readaheads_total",
-			desc:            "Count of times readahead occurred.",
-			value:           float64(ps.CacheReadaheads),
-			metricType:      prometheus.CounterValue,
-			extraLabel:      label,
-			extraLabelValue: labelValue,
-		},
+	}
+	if ps.CacheReadaheads != 0 {
+		bcacheReadaheadMetrics := []bcacheMetric{
+			{
+				name:            "cache_readaheads_total",
+				desc:            "Count of times readahead occurred.",
+				value:           float64(ps.CacheReadaheads),
+				metricType:      prometheus.CounterValue,
+				extraLabel:      label,
+				extraLabelValue: labelValue,
+			},
+		}
+		metrics = append(metrics, bcacheReadaheadMetrics...)
 	}
 	return metrics
 }

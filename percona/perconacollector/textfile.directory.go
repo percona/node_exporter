@@ -18,20 +18,19 @@ package perconacollector
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
 	"time"
 
-	"github.com/go-kit/log"
+	kingpin "github.com/alecthomas/kingpin/v2"
+	log "github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 	"github.com/prometheus/client_golang/prometheus"
 	dto "github.com/prometheus/client_model/go"
 	"github.com/prometheus/common/expfmt"
 	cl "github.com/prometheus/node_exporter/collector"
-	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
 var (
@@ -235,13 +234,13 @@ func (c *textFileCollector) Update(ch chan<- prometheus.Metric) error {
 	paths, err := filepath.Glob(c.path)
 	if err != nil || len(paths) == 0 {
 		// not glob or not accessible path either way assume single
-		// directory and let ioutil.ReadDir handle it
+		// directory and let os.ReadDir handle it
 		paths = []string{c.path}
 	}
 
 	mtimes := make(map[string]time.Time)
 	for _, path := range paths {
-		files, err := ioutil.ReadDir(path)
+		files, err := os.ReadDir(path)
 		if err != nil && path != "" {
 			errored = true
 			level.Error(c.logger).Log("msg", "failed to read textfile collector directory", "path", path, "err", err)

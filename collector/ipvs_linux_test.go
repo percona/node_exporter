@@ -11,6 +11,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//go:build !noipvs
+// +build !noipvs
+
 package collector
 
 import (
@@ -24,9 +27,9 @@ import (
 
 	"github.com/go-kit/log"
 
+	"github.com/alecthomas/kingpin/v2"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 func TestIPVSCollector(t *testing.T) {
@@ -209,9 +212,8 @@ func TestIPVSCollectorResponse(t *testing.T) {
 					if want == got {
 						// this is a line we are interested in, and it is correct
 						continue wantLoop
-					} else {
-						gotLinesIdx++
 					}
+					gotLinesIdx++
 				}
 				// if this point is reached, the line we want was missing
 				t.Fatalf("Missing expected output line(s), first missing line is %s", want)

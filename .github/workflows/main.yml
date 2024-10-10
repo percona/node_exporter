@@ -24,13 +24,6 @@ jobs:
           name: node_exporter
           path: node_exporter
 
-  codespell:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: sudo pip install codespell
-      - run: codespell --skip=".git,ttar,go.mod,go.sum,*pem,./collector/fixtures" -I scripts/codespell_ignore.txt
-
   test_mixins:
     runs-on: ubuntu-latest
     steps:

@@ -6,7 +6,7 @@
 	Before filing a bug report, note that running node_exporter in Docker is
 	not recommended, for the reasons detailed in the README:
 
-	https://github.com/prometheus/node_exporter#using-docker
+	https://github.com/prometheus/node_exporter#docker
 
 	Finally, also note that node_exporter is focused on *NIX kernels, and the
 	WMI exporter should be used instead on Windows.
@@ -22,6 +22,8 @@
 
 ### node_exporter command line flags
 <!-- Please list all of the command line flags -->
+
+### node_exporter log output
 
 ### Are you running node_exporter in Docker?
 <!-- Please note the warning above. -->

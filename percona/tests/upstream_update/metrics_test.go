@@ -1,4 +1,4 @@
-// Copyright 2017 The Prometheus Authors
+// Copyright 2015 The Prometheus Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -20,8 +20,6 @@ import (
 	"sort"
 	"strings"
 	"testing"
-
-	"github.com/pkg/errors"
 )
 
 var dumpMetricsFlag = flag.Bool("dumpMetrics", false, "")
@@ -508,17 +506,17 @@ func getMetrics(fileName string) (string, error) {
 func getMetricsFrom(fileName, endpoint string) (string, error) {
 	cmd, port, collectOutput, err := launchExporter(fileName)
 	if err != nil {
-		return "", errors.Wrap(err, "Failed to launch exporter")
+		return "", fmt.Errorf("failed to launch exporter: %w", err)
 	}
 
 	metrics, err := tryGetMetricsFrom(port, endpoint)
 	if err != nil {
-		return "", errors.Wrap(err, "Failed to get metrics")
+		return "", fmt.Errorf("failed to get metrics: %w", err)
 	}
 
 	err = stopExporter(cmd, collectOutput)
 	if err != nil {
-		return "", errors.Wrap(err, "Failed to stop exporter")
+		return "", fmt.Errorf("failed to stop exporter: %w", err)
 	}
 
 	return metrics, nil
