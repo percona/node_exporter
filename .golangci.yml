@@ -10,6 +10,7 @@ linters:
     - unused
     - structcheck
     - varcheck
+    - gocritic
 
 issues:
   exclude-rules:
