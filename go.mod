@@ -2,6 +2,8 @@ module github.com/prometheus/node_exporter
 
 go 1.23
 
+toolchain go1.23.2
+
 require (
 	github.com/beevik/ntp v1.3.1
 	github.com/coreos/go-systemd/v22 v22.5.0
