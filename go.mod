@@ -3,6 +3,7 @@ module github.com/prometheus/node_exporter
 go 1.23
 
 require (
+	github.com/alecthomas/kingpin/v2 v2.4.0
 	github.com/beevik/ntp v1.3.1
 	github.com/coreos/go-systemd/v22 v22.5.0
 	github.com/dennwc/btrfs v0.0.0-20220403080356-b3db0b2dedac
@@ -20,7 +21,7 @@ require (
 	github.com/montanaflynn/stats v0.7.1
 	github.com/opencontainers/selinux v1.11.0
 	github.com/pkg/errors v0.9.1
-	github.com/prometheus/client_golang v1.20.4
+	github.com/prometheus/client_golang v1.20.5
 	github.com/prometheus/client_model v0.6.1
 	github.com/prometheus/common v0.60.0
 	github.com/prometheus/exporter-toolkit v0.7.2
@@ -34,7 +35,6 @@ require (
 )
 
 require (
-	github.com/alecthomas/kingpin/v2 v2.4.0 // indirect
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 // indirect
 	github.com/alecthomas/units v0.0.0-20211218093645-b94a6e3cc137 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
