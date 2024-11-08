@@ -1,10 +1,10 @@
 module github.com/prometheus/node_exporter
 
-go 1.21
+go 1.23
 
 require (
 	github.com/alecthomas/kingpin/v2 v2.4.0
-	github.com/beevik/ntp v1.3.1
+	github.com/beevik/ntp v1.4.3
 	github.com/coreos/go-systemd/v22 v22.5.0
 	github.com/dennwc/btrfs v0.0.0-20240418142341-0167142bde7a
 	github.com/ema/qdisc v1.0.0
@@ -19,7 +19,7 @@ require (
 	github.com/mattn/go-xmlrpc v0.0.3
 	github.com/mdlayher/ethtool v0.1.0
 	github.com/mdlayher/netlink v1.7.2
-	github.com/mdlayher/wifi v0.1.0
+	github.com/mdlayher/wifi v0.3.0
 	github.com/montanaflynn/stats v0.7.1
 	github.com/opencontainers/selinux v1.11.0
 	github.com/prometheus-community/go-runit v0.1.0
@@ -28,11 +28,11 @@ require (
 	github.com/prometheus/common v0.53.0
 	github.com/prometheus/exporter-toolkit v0.11.0
 	github.com/prometheus/procfs v0.14.0
-	github.com/safchain/ethtool v0.3.0
-	github.com/stretchr/testify v1.8.4
+	github.com/safchain/ethtool v0.4.1
+	github.com/stretchr/testify v1.9.0
 	github.com/tklauser/go-sysconf v0.3.14
 	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f
-	golang.org/x/sys v0.20.0
+	golang.org/x/sys v0.26.0
 	howett.net/plist v1.0.1
 )
 
@@ -55,11 +55,11 @@ require (
 	github.com/xhit/go-str2duration/v2 v2.1.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
-	golang.org/x/crypto v0.21.0 // indirect
-	golang.org/x/net v0.23.0 // indirect
-	golang.org/x/oauth2 v0.18.0 // indirect
-	golang.org/x/sync v0.7.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/crypto v0.27.0 // indirect
+	golang.org/x/net v0.25.0 // indirect
+	golang.org/x/oauth2 v0.0.0-20220223155221-ee480838109b // indirect
+	golang.org/x/sync v0.8.0 // indirect
+	golang.org/x/text v0.18.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
