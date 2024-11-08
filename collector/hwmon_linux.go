@@ -24,6 +24,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/alecthomas/kingpin/v2"
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 	"github.com/prometheus/client_golang/prometheus"
@@ -31,6 +32,9 @@ import (
 )
 
 var (
+	collectorHWmonChipInclude = kingpin.Flag("collector.hwmon.chip-include", "Regexp of hwmon chip to include (mutually exclusive to device-exclude).").String()
+	collectorHWmonChipExclude = kingpin.Flag("collector.hwmon.chip-exclude", "Regexp of hwmon chip to exclude (mutually exclusive to device-include).").String()
+
 	hwmonInvalidMetricChars = regexp.MustCompile("[^a-z0-9:_]")
 	hwmonFilenameFormat     = regexp.MustCompile(`^(?P<type>[^0-9]+)(?P<id>[0-9]*)?(_(?P<property>.+))?$`)
 	hwmonLabelDesc          = []string{"chip", "sensor"}
@@ -47,13 +51,18 @@ func init() {
 }
 
 type hwMonCollector struct {
-	logger log.Logger
+	deviceFilter deviceFilter
+	logger       log.Logger
 }
 
 // NewHwMonCollector returns a new Collector exposing /sys/class/hwmon stats
 // (similar to lm-sensors).
 func NewHwMonCollector(logger log.Logger) (Collector, error) {
-	return &hwMonCollector{logger}, nil
+
+	return &hwMonCollector{
+		logger:       logger,
+		deviceFilter: newDeviceFilter(*collectorHWmonChipExclude, *collectorHWmonChipInclude),
+	}, nil
 }
 
 func cleanMetricName(name string) string {
@@ -154,6 +163,11 @@ func (c *hwMonCollector) updateHwmon(ch chan<- prometheus.Metric, dir string) er
 		return err
 	}
 
+	if c.deviceFilter.ignored(hwmonName) {
+		level.Debug(c.logger).Log("msg", "ignoring hwmon chip", "chip", hwmonName)
+		return nil
+	}
+
 	data := make(map[string]map[string]string)
 	err = collectSensorData(dir, data)
 	if err != nil {
@@ -192,12 +206,10 @@ func (c *hwMonCollector) updateHwmon(ch chan<- prometheus.Metric, dir string) er
 
 		labels := []string{hwmonName, sensor}
 		if labelText, ok := sensorData["label"]; ok {
-			label := cleanMetricName(labelText)
-			if label != "" {
-				desc := prometheus.NewDesc("node_hwmon_sensor_label", "Label for given chip and sensor",
-					[]string{"chip", "sensor", "label"}, nil)
-				ch <- prometheus.MustNewConstMetric(desc, prometheus.GaugeValue, 1.0, hwmonName, sensor, label)
-			}
+			label := strings.ToValidUTF8(labelText, "�")
+			desc := prometheus.NewDesc("node_hwmon_sensor_label", "Label for given chip and sensor",
+				[]string{"chip", "sensor", "label"}, nil)
+			ch <- prometheus.MustNewConstMetric(desc, prometheus.GaugeValue, 1.0, hwmonName, sensor, label)
 		}
 
 		if sensorType == "beep_enable" {
@@ -432,9 +444,13 @@ func (c *hwMonCollector) Update(ch chan<- prometheus.Metric) error {
 		return err
 	}
 
+	var lastErr error
 	for _, hwDir := range hwmonFiles {
 		hwmonXPathName := filepath.Join(hwmonPathName, hwDir.Name())
-		fileInfo, _ := os.Lstat(hwmonXPathName)
+		fileInfo, err := os.Lstat(hwmonXPathName)
+		if err != nil {
+			continue
+		}
 
 		if fileInfo.Mode()&os.ModeSymlink > 0 {
 			fileInfo, err = os.Stat(hwmonXPathName)
@@ -447,10 +463,10 @@ func (c *hwMonCollector) Update(ch chan<- prometheus.Metric) error {
 			continue
 		}
 
-		if lastErr := c.updateHwmon(ch, hwmonXPathName); lastErr != nil {
-			err = lastErr
+		if err = c.updateHwmon(ch, hwmonXPathName); err != nil {
+			lastErr = err
 		}
 	}
 
-	return err
+	return lastErr
 }

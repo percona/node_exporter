@@ -36,7 +36,7 @@ const (
 	// See also https://www.kernel.org/doc/Documentation/block/stat.txt
 	unixSectorSize = 512.0
 
-	diskstatsDefaultIgnoredDevices = "^(ram|loop|fd|(h|s|v|xv)d[a-z]|nvme\\d+n\\d+p)\\d+$"
+	diskstatsDefaultIgnoredDevices = "^(z?ram|loop|fd|(h|s|v|xv)d[a-z]|nvme\\d+n\\d+p)\\d+$"
 
 	// See udevadm(8).
 	udevDevicePropertyPrefix = "E:"
@@ -63,6 +63,7 @@ const (
 	udevIDRevision              = "ID_REVISION"
 	udevIDSerialShort           = "ID_SERIAL_SHORT"
 	udevIDWWN                   = "ID_WWN"
+	udevSCSIIdentSerial         = "SCSI_IDENT_SERIAL"
 )
 
 type typedFactorDesc struct {
@@ -286,13 +287,21 @@ func (c *diskstatsCollector) Update(ch chan<- prometheus.Metric) error {
 			level.Debug(c.logger).Log("msg", "Failed to parse udev info", "err", err)
 		}
 
+		// This is usually the serial printed on the disk label.
+		serial := info[udevSCSIIdentSerial]
+
+		// If it's undefined, fallback to ID_SERIAL_SHORT instead.
+		if serial == "" {
+			serial = info[udevIDSerialShort]
+		}
+
 		ch <- c.infoDesc.mustNewConstMetric(1.0, dev,
 			fmt.Sprint(stats.MajorNumber),
 			fmt.Sprint(stats.MinorNumber),
 			info[udevIDPath],
 			info[udevIDWWN],
 			info[udevIDModel],
-			info[udevIDSerialShort],
+			serial,
 			info[udevIDRevision],
 		)
 

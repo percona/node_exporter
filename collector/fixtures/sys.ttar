@@ -141,7 +141,7 @@ Mode: 400
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Path: sys/class/dmi/id/product_version
 Lines: 1
-À[‡
+ï¿½[ï¿½
 Mode: 444
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Path: sys/class/dmi/id/sys_vendor
@@ -288,6 +288,87 @@ Lines: 1
 Emulex SN1100E2P FV12.4.270.3 DV12.4.0.0. HN:gotest. OS:Linux
 Mode: 644
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Directory: sys/class/fc_host/host1
+Mode: 755
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/fc_host/host1/speed
+Lines: 1
+8 Gbit
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Directory: sys/class/fc_host/host1/statistics
+Mode: 755
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/fc_host/host1/statistics/dumped_frames
+Lines: 1
+0x0
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/fc_host/host1/statistics/error_frames
+Lines: 1
+0x13
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/fc_host/host1/statistics/fcp_packet_aborts
+Lines: 1
+0xffffffffffffffff
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/fc_host/host1/statistics/invalid_crc_count
+Lines: 1
+0x20
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/fc_host/host1/statistics/invalid_tx_word_count
+Lines: 1
+0x80
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/fc_host/host1/statistics/link_failure_count
+Lines: 1
+0x90
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/fc_host/host1/statistics/loss_of_signal_count
+Lines: 1
+0x110
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/fc_host/host1/statistics/loss_of_sync_count
+Lines: 1
+0x100
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/fc_host/host1/statistics/nos_count
+Lines: 1
+0x120
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/fc_host/host1/statistics/rx_frames
+Lines: 1
+0x30
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/fc_host/host1/statistics/rx_words
+Lines: 1
+0x40
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/fc_host/host1/statistics/seconds_since_last_reset
+Lines: 1
+0x70
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/fc_host/host1/statistics/tx_frames
+Lines: 1
+0x50
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/fc_host/host1/statistics/tx_words
+Lines: 1
+0x60
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Directory: sys/class/hwmon
 Mode: 755
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -355,6 +436,9 @@ Path: sys/class/hwmon/hwmon4/temp2_max
 Lines: 1
 100000
 Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/hwmon/hwmon5
+SymlinkTo: ../../devices/platform/bogus.0/hwmon/hwmon5/
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Directory: sys/class/infiniband
 Mode: 755
@@ -1440,7 +1524,7 @@ Mode: 444
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Path: sys/class/power_supply/BAT0/model_name
 Lines: 1
-LNV-45N1ÀÀ
+LNV-45N1ï¿½ï¿½
 Mode: 444
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Directory: sys/class/power_supply/BAT0/power
@@ -1713,6 +1797,75 @@ SymlinkTo: ../../devices/virtual/thermal/cooling_device0
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Path: sys/class/thermal/thermal_zone0
 SymlinkTo: ../../devices/virtual/thermal/thermal_zone0
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Directory: sys/class/watchdog
+Mode: 775
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Directory: sys/class/watchdog/watchdog0
+Mode: 775
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/watchdog/watchdog0/access_cs0
+Lines: 1
+0EOF
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/watchdog/watchdog0/bootstatus
+Lines: 1
+1EOF
+Mode: 444
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/watchdog/watchdog0/fw_version
+Lines: 1
+2EOF
+Mode: 444
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/watchdog/watchdog0/identity
+Lines: 1
+Software WatchdogEOF
+Mode: 444
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/watchdog/watchdog0/nowayout
+Lines: 1
+0EOF
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/watchdog/watchdog0/options
+Lines: 1
+0x8380EOF
+Mode: 444
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/watchdog/watchdog0/pretimeout
+Lines: 1
+120EOF
+Mode: 444
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/watchdog/watchdog0/pretimeout_governor
+Lines: 1
+noopEOF
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/watchdog/watchdog0/state
+Lines: 1
+activeEOF
+Mode: 444
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/watchdog/watchdog0/status
+Lines: 1
+0x8000EOF
+Mode: 444
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/watchdog/watchdog0/timeleft
+Lines: 1
+300EOF
+Mode: 444
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/class/watchdog/watchdog0/timeout
+Lines: 1
+60EOF
+Mode: 444
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Directory: sys/class/watchdog/watchdog1
+Mode: 775
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Directory: sys/devices
 Mode: 755
@@ -2396,7 +2549,7 @@ Mode: 644
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Path: sys/devices/pci0000:00/0000:00:0d.0/ata4/host3/target3:0:0/3:0:0:0/block/sdb/bcache/stats_day/cache_readaheads
 Lines: 1
-0
+13
 Mode: 644
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Directory: sys/devices/pci0000:00/0000:00:0d.0/ata4/host3/target3:0:0/3:0:0:0/block/sdb/bcache/stats_five_minute
@@ -2439,7 +2592,7 @@ Mode: 644
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Path: sys/devices/pci0000:00/0000:00:0d.0/ata4/host3/target3:0:0/3:0:0:0/block/sdb/bcache/stats_five_minute/cache_readaheads
 Lines: 1
-0
+13
 Mode: 644
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Directory: sys/devices/pci0000:00/0000:00:0d.0/ata4/host3/target3:0:0/3:0:0:0/block/sdb/bcache/stats_hour
@@ -2482,7 +2635,7 @@ Mode: 644
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Path: sys/devices/pci0000:00/0000:00:0d.0/ata4/host3/target3:0:0/3:0:0:0/block/sdb/bcache/stats_hour/cache_readaheads
 Lines: 1
-0
+13
 Mode: 644
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Directory: sys/devices/pci0000:00/0000:00:0d.0/ata4/host3/target3:0:0/3:0:0:0/block/sdb/bcache/stats_total
@@ -2525,7 +2678,7 @@ Mode: 644
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Path: sys/devices/pci0000:00/0000:00:0d.0/ata4/host3/target3:0:0/3:0:0:0/block/sdb/bcache/stats_total/cache_readaheads
 Lines: 1
-0
+13
 Mode: 644
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Path: sys/devices/pci0000:00/0000:00:0d.0/ata4/host3/target3:0:0/3:0:0:0/block/sdb/bcache/writeback_rate_debug
@@ -2671,6 +2824,45 @@ Path: sys/devices/platform/applesmc.768/name
 Lines: 1
 applesmc
 Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Directory: sys/devices/platform/bogus.0
+Mode: 775
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Directory: sys/devices/platform/bogus.0/hwmon
+Mode: 775
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Directory: sys/devices/platform/bogus.0/hwmon/hwmon5
+Mode: 775
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/devices/platform/bogus.0/hwmon/hwmon5/bogus1_crit
+Lines: 1
+100000
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/devices/platform/bogus.0/hwmon/hwmon5/bogus1_crit_alarm
+Lines: 1
+0
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/devices/platform/bogus.0/hwmon/hwmon5/bogus1_input
+Lines: 1
+55000
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/devices/platform/bogus.0/hwmon/hwmon5/bogus1_label
+Lines: 1
+Physical id 0
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/devices/platform/bogus.0/hwmon/hwmon5/bogus1_max
+Lines: 1
+84000
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/devices/platform/bogus.0/hwmon/hwmon5/name
+Lines: 1
+bogus
+Mode: 664
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Directory: sys/devices/platform/coretemp.0
 Mode: 755
@@ -3545,6 +3737,44 @@ Lines: 1
 1,3-5,9
 Mode: 664
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/devices/system/cpu/offline
+Lines: 1
+
+Mode: 664
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/devices/system/cpu/online
+Lines: 1
+0-3
+Mode: 664
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Directory: sys/devices/system/cpu/vulnerabilities
+Mode: 755
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/devices/system/cpu/vulnerabilities/itlb_multihit
+Lines: 1
+Not affected
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/devices/system/cpu/vulnerabilities/mds
+Lines: 1
+Vulnerable
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/devices/system/cpu/vulnerabilities/retbleed
+Lines: 1
+Mitigation: untrained return thunk; SMT enabled with STIBP protection
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/devices/system/cpu/vulnerabilities/spectre_v1
+Lines: 1
+Mitigation: usercopy/swapgs barriers and __user pointer sanitization
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Path: sys/devices/system/cpu/vulnerabilities/spectre_v2
+Lines: 1
+Mitigation: Retpolines, IBPB: conditional, STIBP: always-on, RSB filling, PBRSB-eIBRS: Not affected
+Mode: 644
+# ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Directory: sys/devices/system/edac
 Mode: 755
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3900,7 +4130,7 @@ Mode: 644
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Path: sys/fs/bcache/deaddd54-c735-46d5-868e-f331c5fd7c74/stats_day/cache_readaheads
 Lines: 1
-0
+13
 Mode: 644
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Directory: sys/fs/bcache/deaddd54-c735-46d5-868e-f331c5fd7c74/stats_five_minute
@@ -3943,7 +4173,7 @@ Mode: 644
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Path: sys/fs/bcache/deaddd54-c735-46d5-868e-f331c5fd7c74/stats_five_minute/cache_readaheads
 Lines: 1
-0
+13
 Mode: 644
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Directory: sys/fs/bcache/deaddd54-c735-46d5-868e-f331c5fd7c74/stats_hour
@@ -3986,7 +4216,7 @@ Mode: 644
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Path: sys/fs/bcache/deaddd54-c735-46d5-868e-f331c5fd7c74/stats_hour/cache_readaheads
 Lines: 1
-0
+13
 Mode: 644
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Directory: sys/fs/bcache/deaddd54-c735-46d5-868e-f331c5fd7c74/stats_total
@@ -4029,7 +4259,7 @@ Mode: 644
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Path: sys/fs/bcache/deaddd54-c735-46d5-868e-f331c5fd7c74/stats_total/cache_readaheads
 Lines: 1
-0
+13
 Mode: 644
 # ttar - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Path: sys/fs/bcache/deaddd54-c735-46d5-868e-f331c5fd7c74/tree_depth

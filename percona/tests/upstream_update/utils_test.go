@@ -1,4 +1,4 @@
-// Copyright 2017 The Prometheus Authors
+// Copyright 2015 The Prometheus Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -25,7 +25,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/pkg/errors"
 	"golang.org/x/sys/unix"
 )
 
@@ -46,7 +45,7 @@ func getBool(val *bool) bool {
 func launchExporter(fileName string) (cmd *exec.Cmd, port int, collectOutput func() string, _ error) {
 	lines, err := os.ReadFile("assets/test.exporter-flags.txt")
 	if err != nil {
-		return nil, 0, nil, errors.Wrapf(err, "Unable to read exporter args file")
+		return nil, 0, nil, fmt.Errorf("unable to read exporter args file: %w", err)
 	}
 
 	port = -1
@@ -58,7 +57,7 @@ func launchExporter(fileName string) (cmd *exec.Cmd, port int, collectOutput fun
 	}
 
 	if port == -1 {
-		return nil, 0, nil, errors.Wrapf(err, "Failed to find free port in range [%d..%d]", portRangeStart, portRangeEnd)
+		return nil, 0, nil, fmt.Errorf("failed to find free port in range [%d..%d]: %w", portRangeStart, portRangeEnd, err)
 	}
 
 	linesStr := string(lines)
@@ -97,12 +96,12 @@ func launchExporter(fileName string) (cmd *exec.Cmd, port int, collectOutput fun
 
 	err = cmd.Start()
 	if err != nil {
-		return nil, 0, nil, errors.Wrapf(err, "Failed to start exporter.%s", collectOutput())
+		return nil, 0, nil, fmt.Errorf("failed to start exporter. %w. %s", err, collectOutput())
 	}
 
 	err = waitForExporter(port)
 	if err != nil {
-		return nil, 0, nil, errors.Wrapf(err, "Failed to wait for exporter.%s", collectOutput())
+		return nil, 0, nil, fmt.Errorf("failed to wait for exporter. %w. %s", err, collectOutput())
 	}
 
 	return cmd, port, collectOutput, nil
@@ -111,12 +110,12 @@ func launchExporter(fileName string) (cmd *exec.Cmd, port int, collectOutput fun
 func stopExporter(cmd *exec.Cmd, collectOutput func() string) error {
 	err := cmd.Process.Signal(unix.SIGINT)
 	if err != nil {
-		return errors.Wrapf(err, "failed to send SIGINT to exporter process.%s", collectOutput())
+		return fmt.Errorf("failed to send SIGINT to exporter process. %w. %s", err, collectOutput())
 	}
 
 	err = cmd.Wait()
 	if err != nil && err.Error() != "signal: interrupt" {
-		return errors.Wrapf(err, "failed to wait for exporter process termination.%s", collectOutput())
+		return fmt.Errorf("failed to wait for exporter process termination. %w. %s", err, collectOutput())
 	}
 
 	return nil
