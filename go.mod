@@ -27,7 +27,7 @@ require (
 	github.com/prometheus/procfs v0.8.0
 	github.com/safchain/ethtool v0.4.1
 	github.com/soundcloud/go-runit v0.0.0-20150630195641-06ad41a06c4a
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	github.com/tklauser/go-sysconf v0.3.14
 	golang.org/x/sys v0.27.0
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
