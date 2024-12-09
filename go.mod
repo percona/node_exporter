@@ -29,7 +29,7 @@ require (
 	github.com/soundcloud/go-runit v0.0.0-20150630195641-06ad41a06c4a
 	github.com/stretchr/testify v1.10.0
 	github.com/tklauser/go-sysconf v0.3.14
-	golang.org/x/sys v0.27.0
+	golang.org/x/sys v0.28.0
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 )
 
