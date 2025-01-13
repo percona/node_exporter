@@ -189,8 +189,8 @@ github.com/mdlayher/netlink v1.7.2 h1:/UtM3ofJap7Vl4QWCPDGXY8d3GIY2UGSDbK+QWmY8/
 github.com/mdlayher/netlink v1.7.2/go.mod h1:xraEF7uJbxLhc5fpHL4cPe221LI2bdttWlU+ZGLfQSw=
 github.com/mdlayher/socket v0.4.1 h1:eM9y2/jlbs1M615oshPQOHZzj6R6wMT7bX5NPiQvn2U=
 github.com/mdlayher/socket v0.4.1/go.mod h1:cAqeGjoufqdxWkD7DkpyS+wcefOtmu5OQ8KuoJGIReA=
-github.com/mdlayher/wifi v0.3.0 h1:ZfS81w/7xTWBJfhM77K0k6m3sJckwoNOoZUwOW34omo=
-github.com/mdlayher/wifi v0.3.0/go.mod h1:/bdkqKYl+lD4recmQM6bTHxMrEUW70reibTyr93CAd0=
+github.com/mdlayher/wifi v0.3.1 h1:bZDuMI1f7z5BtUUO3NgHRdR/R88YtywIe6dsEFI0Txs=
+github.com/mdlayher/wifi v0.3.1/go.mod h1:ODQaObvsglghTuNhezD9grkTB4shVNc28aJfTXmvSi8=
 github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421/go.mod h1:6dJC0mAP4ikYIbvyc7fijjWJddQyLn8Ig3JB5CqoB9Q=
 github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd/go.mod h1:6dJC0mAP4ikYIbvyc7fijjWJddQyLn8Ig3JB5CqoB9Q=
 github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3RllmbCylyMrvgv0=
