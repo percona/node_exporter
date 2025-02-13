@@ -28,6 +28,6 @@ jobs:
         if: github.repository == 'prometheus/snmp_exporter'
 
       - name: Lint
-        uses: golangci/golangci-lint-action@v6.1.1
+        uses: golangci/golangci-lint-action@v6.3.2
         with:
           version: v1.45.2
