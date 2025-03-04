@@ -1,7 +1,6 @@
 module github.com/prometheus/node_exporter
 
 go 1.23
-
 require (
 	github.com/beevik/ntp v1.4.3
 	github.com/coreos/go-systemd/v22 v22.5.0
@@ -16,7 +15,7 @@ require (
 	github.com/lufia/iostat v1.2.1
 	github.com/mattn/go-xmlrpc v0.0.3
 	github.com/mdlayher/netlink v1.7.2
-	github.com/mdlayher/wifi v0.3.1
+	github.com/mdlayher/wifi v0.4.0
 	github.com/montanaflynn/stats v0.7.1
 	github.com/opencontainers/selinux v1.11.1
 	github.com/pkg/errors v0.9.1
@@ -42,7 +41,7 @@ require (
 	github.com/dennwc/ioctl v1.0.0 // indirect
 	github.com/go-logfmt/logfmt v0.5.1 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/google/go-cmp v0.6.0 // indirect
+	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/josharian/native v1.1.0 // indirect
 	github.com/jpillora/backoff v1.0.0 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
@@ -54,11 +53,11 @@ require (
 	github.com/tklauser/numcpus v0.8.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
-	golang.org/x/crypto v0.31.0 // indirect
+	golang.org/x/crypto v0.35.0 // indirect
 	golang.org/x/net v0.33.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20220223155221-ee480838109b // indirect
-	golang.org/x/sync v0.10.0 // indirect
-	golang.org/x/text v0.21.0 // indirect
+	golang.org/x/sync v0.11.0 // indirect
+	golang.org/x/text v0.22.0 // indirect
 	google.golang.org/appengine v1.6.6 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
