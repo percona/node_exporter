@@ -292,7 +292,7 @@ func TestZpoolParsing(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		err = c.parsePoolProcfsFile(file, zpoolPath, func(poolName string, s zfsSysctl, v uint64) {
+		err = c.parsePoolProcfsFile(file, zpoolPath, func(_ string, s zfsSysctl, v uint64) {
 			if s != zfsSysctl("kstat.zfs.misc.io.nread") {
 				return
 			}

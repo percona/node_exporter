@@ -17,5 +17,5 @@ issues:
 linters-settings:
   errcheck:
     exclude-functions:
-      - net/http.ResponseWriter.Write
-      - github.com/go-kit/log.Logger.Log
+      - (net/http.ResponseWriter).Write
+      - (github.com/go-kit/log.Logger).Log
