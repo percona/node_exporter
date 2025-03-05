@@ -43,7 +43,7 @@ const (
 
 var (
 	unitIncludeSet bool
-	unitInclude    = kingpin.Flag("collector.systemd.unit-include", "Regexp of systemd units to include. Units must both match include and not match exclude to be included.").Default(".+").PreAction(func(c *kingpin.ParseContext) error {
+	unitInclude    = kingpin.Flag("collector.systemd.unit-include", "Regexp of systemd units to include. Units must both match include and not match exclude to be included.").Default(".+").PreAction(func(_ *kingpin.ParseContext) error {
 		unitIncludeSet = true
 		return nil
 	}).String()
