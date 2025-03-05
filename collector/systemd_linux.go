@@ -43,13 +43,13 @@ const (
 
 var (
 	unitIncludeSet bool
-	unitInclude    = kingpin.Flag("collector.systemd.unit-include", "Regexp of systemd units to include. Units must both match include and not match exclude to be included.").Default(".+").PreAction(func(c *kingpin.ParseContext) error {
+	unitInclude    = kingpin.Flag("collector.systemd.unit-include", "Regexp of systemd units to include. Units must both match include and not match exclude to be included.").Default(".+").PreAction(func(_ *kingpin.ParseContext) error {
 		unitIncludeSet = true
 		return nil
 	}).String()
 	oldUnitInclude = kingpin.Flag("collector.systemd.unit-whitelist", "DEPRECATED: Use --collector.systemd.unit-include").Hidden().String()
 	unitExcludeSet bool
-	unitExclude    = kingpin.Flag("collector.systemd.unit-exclude", "Regexp of systemd units to exclude. Units must both match include and not match exclude to be included.").Default(".+\\.(automount|device|mount|scope|slice)").PreAction(func(c *kingpin.ParseContext) error {
+	unitExclude    = kingpin.Flag("collector.systemd.unit-exclude", "Regexp of systemd units to exclude. Units must both match include and not match exclude to be included.").Default(".+\\.(automount|device|mount|scope|slice)").PreAction(func(_ *kingpin.ParseContext) error {
 		unitExcludeSet = true
 		return nil
 	}).String()
@@ -334,7 +334,7 @@ func (c *systemdCollector) collectSockets(conn *dbus.Conn, ch chan<- prometheus.
 
 		// NRefused wasn't added until systemd 239.
 		refusedConnectionCount, err := conn.GetUnitTypePropertyContext(context.TODO(), unit.Name, "Socket", "NRefused")
-		if err != nil {
+		if err != nil { //nolint:revive
 			//log.Debugf("couldn't get unit '%s' NRefused: %s", unit.Name, err)
 		} else {
 			ch <- prometheus.MustNewConstMetric(

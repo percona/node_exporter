@@ -18,7 +18,6 @@ package perconacollector
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"sort"
@@ -241,7 +240,7 @@ func (c *textFileCollector) Update(ch chan<- prometheus.Metric) error {
 
 	mtimes := make(map[string]time.Time)
 	for _, path := range paths {
-		files, err := ioutil.ReadDir(path)
+		files, err := os.ReadDir(path)
 		if err != nil && path != "" {
 			errored = true
 			level.Error(c.logger).Log("msg", "failed to read textfile collector directory", "path", path, "err", err)

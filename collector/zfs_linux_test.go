@@ -292,7 +292,7 @@ func TestZpoolParsing(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		err = c.parsePoolProcfsFile(file, zpoolPath, func(poolName string, s zfsSysctl, v uint64) {
+		err = c.parsePoolProcfsFile(file, zpoolPath, func(_ string, s zfsSysctl, v uint64) {
 			if s != zfsSysctl("kstat.zfs.misc.io.nread") {
 				return
 			}
@@ -332,7 +332,7 @@ func TestZpoolObjsetParsing(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		err = c.parsePoolObjsetFile(file, zpoolPath, func(poolName string, datasetName string, s zfsSysctl, v uint64) {
+		err = c.parsePoolObjsetFile(file, zpoolPath, func(_ string, _ string, s zfsSysctl, v uint64) {
 			if s != zfsSysctl("kstat.zfs.misc.objset.writes") {
 				return
 			}

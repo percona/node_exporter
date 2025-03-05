@@ -34,7 +34,7 @@ type standardGoCollector struct {
 }
 
 // NewStandardGoCollector creates standard go collector.
-func NewStandardGoCollector(logger log.Logger) (cl.Collector, error) {
+func NewStandardGoCollector(_ log.Logger) (cl.Collector, error) {
 	c := collectors.NewGoCollector()
 	return &standardGoCollector{origin: c}, nil
 }
@@ -49,7 +49,7 @@ type standardProcessCollector struct {
 }
 
 // NewStandardProcessCollector creates standard process collector.
-func NewStandardProcessCollector(logger log.Logger) (cl.Collector, error) {
+func NewStandardProcessCollector(_ log.Logger) (cl.Collector, error) {
 	c := collectors.NewProcessCollector(collectors.ProcessCollectorOpts{})
 	return &standardProcessCollector{origin: c}, nil
 }

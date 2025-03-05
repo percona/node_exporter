@@ -264,7 +264,7 @@ func (c *textFileCollector) Update(ch chan<- prometheus.Metric) error {
 }
 
 // processFile processes a single file, returning its modification time on success.
-func (c *textFileCollector) processFile(dir, name string, ch chan<- prometheus.Metric) (*time.Time, map[string]*dto.MetricFamily, error) {
+func (c *textFileCollector) processFile(dir, name string, _ chan<- prometheus.Metric) (*time.Time, map[string]*dto.MetricFamily, error) {
 	path := filepath.Join(dir, name)
 	f, err := os.Open(path)
 	if err != nil {

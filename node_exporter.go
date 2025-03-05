@@ -63,11 +63,12 @@ func newHandler(includeExporterMetrics bool, maxRequests int, logger log.Logger)
 			promcollectors.NewGoCollector(),
 		)
 	}
-	if innerHandler, err := h.innerHandler(); err != nil {
+	innerHandler, err := h.innerHandler()
+	if err != nil {
 		panic(fmt.Sprintf("Couldn't create metrics handler: %s", err))
-	} else {
-		h.unfilteredHandler = innerHandler
 	}
+
+	h.unfilteredHandler = innerHandler
 	return h
 }
 
@@ -86,7 +87,7 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		level.Warn(h.logger).Log("msg", "Couldn't create filtered metrics handler:", "err", err)
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte(fmt.Sprintf("Couldn't create filtered metrics handler: %s", err)))
+		w.Write([]byte(fmt.Sprintf("Couldn't create filtered metrics handler: %s", err))) //nolint: errcheck
 		return
 	}
 	filteredHandler.ServeHTTP(w, r)
@@ -187,8 +188,9 @@ func main() {
 	}
 
 	http.Handle(*metricsPath, newHandler(!*disableExporterMetrics, *maxRequests, logger))
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(`<html>
+	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		w.Write( //nolint:errcheck
+			[]byte(`<html>
 			<head><title>Node Exporter</title></head>
 			<body>
 			<h1>Node Exporter</h1>
