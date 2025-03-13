@@ -16,7 +16,7 @@ package perconatests
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 	"testing"
@@ -81,7 +81,7 @@ func doTestStats(t *testing.T, cnt int, size int, fileName string) *StatsData {
 	var hwms []float64
 	var datas []float64
 
-	for i := 0; i < cnt; i++ {
+	for range cnt {
 		d, hwm, data, err := doTest(size, fileName)
 		if !assert.NoError(t, err) {
 			return nil
@@ -165,7 +165,7 @@ func doTest(iterations int, fileName string) (cpu, hwm, data int64, _ error) {
 }
 
 func getCPUMem(pid int) (hwm, data int64) {
-	contents, err := ioutil.ReadFile(fmt.Sprintf("/proc/%d/status", pid))
+	contents, err := os.ReadFile(fmt.Sprintf("/proc/%d/status", pid))
 	if err != nil {
 		return 0, 0
 	}
@@ -189,7 +189,7 @@ func getCPUMem(pid int) (hwm, data int64) {
 }
 
 func getCPUTime(pid int) (total int64) {
-	contents, err := ioutil.ReadFile(fmt.Sprintf("/proc/%d/stat", pid))
+	contents, err := os.ReadFile(fmt.Sprintf("/proc/%d/stat", pid))
 	if err != nil {
 		return
 	}

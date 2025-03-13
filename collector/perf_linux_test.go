@@ -54,7 +54,7 @@ func TestPerfCollector(t *testing.T) {
 	metrics := make(chan prometheus.Metric)
 	defer close(metrics)
 	go func() {
-		for range metrics {
+		for range metrics { //nolint:revive
 		}
 	}()
 	if err := collector.Update(metrics); err != nil {

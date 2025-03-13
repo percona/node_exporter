@@ -97,7 +97,7 @@ func DisableDefaultCollectors() {
 // does not contain information about which flag called the action.
 // See: https://github.com/alecthomas/kingpin/issues/294
 func collectorFlagAction(collector string) func(ctx *kingpin.ParseContext) error {
-	return func(ctx *kingpin.ParseContext) error {
+	return func(_ *kingpin.ParseContext) error {
 		forcedCollectors[collector] = true
 		return nil
 	}
