@@ -28,7 +28,7 @@ require (
 	github.com/safchain/ethtool v0.5.10
 	github.com/soundcloud/go-runit v0.0.0-20150630195641-06ad41a06c4a
 	github.com/stretchr/testify v1.10.0
-	github.com/tklauser/go-sysconf v0.3.14
+	github.com/tklauser/go-sysconf v0.3.15
 	golang.org/x/sys v0.31.0
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 )
@@ -51,7 +51,7 @@ require (
 	github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/siebenmann/go-kstat v0.0.0-20210513183136-173c9b0a9973 // indirect
-	github.com/tklauser/numcpus v0.8.0 // indirect
+	github.com/tklauser/numcpus v0.10.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/crypto v0.35.0 // indirect
