@@ -1,6 +1,7 @@
 module github.com/prometheus/node_exporter
 
 go 1.23
+toolchain go1.24.1
 
 require (
 	github.com/alecthomas/kingpin/v2 v2.4.0
@@ -32,7 +33,7 @@ require (
 	github.com/stretchr/testify v1.9.0
 	github.com/tklauser/go-sysconf v0.3.14
 	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f
-	golang.org/x/sys v0.26.0
+	golang.org/x/sys v0.32.0
 	howett.net/plist v1.0.1
 )
 
