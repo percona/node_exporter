@@ -18,14 +18,14 @@ import (
 	"fmt"
 
 	kingpin "github.com/alecthomas/kingpin/v2"
-	log "github.com/go-kit/log"
+	"log/slog"
 )
 
-func RegisterCollectorPublic(collector string, isDefaultEnabled bool, factory func(logger log.Logger) (Collector, error)) {
+func RegisterCollectorPublic(collector string, isDefaultEnabled bool, factory func(logger *slog.Logger) (Collector, error)) {
 	registerCollector(collector, isDefaultEnabled, factory)
 }
 
-func ReplaceCollector(collector string, isDefaultEnabled bool, factory func(logger log.Logger) (Collector, error)) {
+func ReplaceCollector(collector string, isDefaultEnabled bool, factory func(logger *slog.Logger) (Collector, error)) {
 	delete(factories, collector)
 	/*var helpDefaultState string
 	if isDefaultEnabled {
