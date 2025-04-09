@@ -16,9 +16,9 @@ package collector
 
 import (
 	"fmt"
+	"log/slog"
 
 	kingpin "github.com/alecthomas/kingpin/v2"
-	"log/slog"
 )
 
 func RegisterCollectorPublic(collector string, isDefaultEnabled bool, factory func(logger *slog.Logger) (Collector, error)) {

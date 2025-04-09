@@ -15,11 +15,11 @@ package perconacollector
 
 import (
 	"fmt"
+	"log/slog"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/collectors"
 	cl "github.com/prometheus/node_exporter/collector"
-	"log/slog"
 )
 
 func init() {

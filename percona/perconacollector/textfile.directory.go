@@ -18,6 +18,7 @@ package perconacollector
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"sort"
@@ -29,11 +30,10 @@ import (
 	dto "github.com/prometheus/client_model/go"
 	"github.com/prometheus/common/expfmt"
 	cl "github.com/prometheus/node_exporter/collector"
-	"log/slog"
 )
 
 var (
-	//textFileDirectory   = kingpin.Flag("collector.textfile.directory", "Directory to read text files with metrics from.").Default("").String()
+	// textFileDirectory   = kingpin.Flag("collector.textfile.directory", "Directory to read text files with metrics from.").Default("").String()
 	textFileDirectory   = kingpin.CommandLine.GetFlag("collector.textfile.directory").Default("").String()
 	textFileDirectoryLr = kingpin.Flag("collector.textfile.directory.lr", "Directory to read text files with low resolution metrics from.").String()
 	textFileDirectoryMr = kingpin.Flag("collector.textfile.directory.mr", "Directory to read text files with medium resolution metrics from.").String()
@@ -55,7 +55,7 @@ type textFileCollector struct {
 
 func init() {
 	cl.ReplaceCollector("textfile", true, NewTextFileCollector)
-	//cl.RegisterCollectorPublic("textfile", true, NewTextFileCollector) // Alias for "textfile.mr" for backward compatibility.
+	// cl.RegisterCollectorPublic("textfile", true, NewTextFileCollector) // Alias for "textfile.mr" for backward compatibility.
 	cl.RegisterCollectorPublic("textfile.lr", false, NewTextFileCollectorLr)
 	cl.RegisterCollectorPublic("textfile.mr", false, NewTextFileCollectorMr)
 	cl.RegisterCollectorPublic("textfile.hr", false, NewTextFileCollectorHr)
