@@ -18,6 +18,7 @@ package perconacollector
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"sort"
@@ -25,8 +26,6 @@ import (
 	"time"
 
 	kingpin "github.com/alecthomas/kingpin/v2"
-	log "github.com/go-kit/log"
-	"github.com/go-kit/log/level"
 	"github.com/prometheus/client_golang/prometheus"
 	dto "github.com/prometheus/client_model/go"
 	"github.com/prometheus/common/expfmt"
@@ -34,7 +33,7 @@ import (
 )
 
 var (
-	//textFileDirectory   = kingpin.Flag("collector.textfile.directory", "Directory to read text files with metrics from.").Default("").String()
+	// textFileDirectory   = kingpin.Flag("collector.textfile.directory", "Directory to read text files with metrics from.").Default("").String()
 	textFileDirectory   = kingpin.CommandLine.GetFlag("collector.textfile.directory").Default("").String()
 	textFileDirectoryLr = kingpin.Flag("collector.textfile.directory.lr", "Directory to read text files with low resolution metrics from.").String()
 	textFileDirectoryMr = kingpin.Flag("collector.textfile.directory.mr", "Directory to read text files with medium resolution metrics from.").String()
@@ -51,12 +50,12 @@ type textFileCollector struct {
 	path string
 	// Only set for testing to get predictable output.
 	mtime  *float64
-	logger log.Logger
+	logger *slog.Logger
 }
 
 func init() {
 	cl.ReplaceCollector("textfile", true, NewTextFileCollector)
-	//cl.RegisterCollectorPublic("textfile", true, NewTextFileCollector) // Alias for "textfile.mr" for backward compatibility.
+	// cl.RegisterCollectorPublic("textfile", true, NewTextFileCollector) // Alias for "textfile.mr" for backward compatibility.
 	cl.RegisterCollectorPublic("textfile.lr", false, NewTextFileCollectorLr)
 	cl.RegisterCollectorPublic("textfile.mr", false, NewTextFileCollectorMr)
 	cl.RegisterCollectorPublic("textfile.hr", false, NewTextFileCollectorHr)
@@ -64,7 +63,7 @@ func init() {
 
 // NewTextFileCollectorLr returns a new Collector exposing metrics read from files
 // in the given textfile lr directory.
-func NewTextFileCollectorLr(logger log.Logger) (cl.Collector, error) {
+func NewTextFileCollectorLr(logger *slog.Logger) (cl.Collector, error) {
 	c := &textFileCollector{
 		path:   *textFileDirectoryLr,
 		logger: logger,
@@ -74,7 +73,7 @@ func NewTextFileCollectorLr(logger log.Logger) (cl.Collector, error) {
 
 // NewTextFileCollectorMr returns a new Collector exposing metrics read from files
 // in the given textfile mr directory.
-func NewTextFileCollectorMr(logger log.Logger) (cl.Collector, error) {
+func NewTextFileCollectorMr(logger *slog.Logger) (cl.Collector, error) {
 	c := &textFileCollector{
 		path:   *textFileDirectoryMr,
 		logger: logger,
@@ -84,7 +83,7 @@ func NewTextFileCollectorMr(logger log.Logger) (cl.Collector, error) {
 
 // NewTextFileCollectorHr returns a new Collector exposing metrics read from files
 // in the given textfile hr directory.
-func NewTextFileCollectorHr(logger log.Logger) (cl.Collector, error) {
+func NewTextFileCollectorHr(logger *slog.Logger) (cl.Collector, error) {
 	c := &textFileCollector{
 		path:   *textFileDirectoryHr,
 		logger: logger,
@@ -94,7 +93,7 @@ func NewTextFileCollectorHr(logger log.Logger) (cl.Collector, error) {
 
 // NewTextFileCollector returns a new Collector exposing metrics read from files
 // in the given textfile directory.
-func NewTextFileCollector(logger log.Logger) (cl.Collector, error) {
+func NewTextFileCollector(logger *slog.Logger) (cl.Collector, error) {
 	c := &textFileCollector{
 		path:   *textFileDirectory,
 		logger: logger,
@@ -102,7 +101,7 @@ func NewTextFileCollector(logger log.Logger) (cl.Collector, error) {
 	return c, nil
 }
 
-func convertMetricFamily(metricFamily *dto.MetricFamily, ch chan<- prometheus.Metric, logger log.Logger) {
+func convertMetricFamily(metricFamily *dto.MetricFamily, ch chan<- prometheus.Metric, logger *slog.Logger) {
 	var valType prometheus.ValueType
 	var val float64
 
@@ -118,7 +117,7 @@ func convertMetricFamily(metricFamily *dto.MetricFamily, ch chan<- prometheus.Me
 
 	for _, metric := range metricFamily.Metric {
 		if metric.TimestampMs != nil {
-			level.Warn(logger).Log("msg", "Ignoring unsupported custom timestamp on textfile collector metric", "metric", metric)
+			logger.Warn("Ignoring unsupported custom timestamp on textfile collector metric", "metric", metric)
 		}
 
 		labels := metric.GetLabel()
@@ -243,7 +242,7 @@ func (c *textFileCollector) Update(ch chan<- prometheus.Metric) error {
 		files, err := os.ReadDir(path)
 		if err != nil && path != "" {
 			errored = true
-			level.Error(c.logger).Log("msg", "failed to read textfile collector directory", "path", path, "err", err)
+			c.logger.Error("failed to read textfile collector directory", "path", path, "err", err)
 		}
 
 		for _, f := range files {
@@ -254,7 +253,7 @@ func (c *textFileCollector) Update(ch chan<- prometheus.Metric) error {
 			mtime, err := c.processFile(path, f.Name(), ch)
 			if err != nil {
 				errored = true
-				level.Error(c.logger).Log("msg", "failed to collect textfile data", "file", f.Name(), "err", err)
+				c.logger.Error("failed to collect textfile data", "file", f.Name(), "err", err)
 				continue
 			}
 

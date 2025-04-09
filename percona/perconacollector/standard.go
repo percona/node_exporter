@@ -15,8 +15,8 @@ package perconacollector
 
 import (
 	"fmt"
+	"log/slog"
 
-	"github.com/go-kit/log"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/collectors"
 	cl "github.com/prometheus/node_exporter/collector"
@@ -30,11 +30,10 @@ func init() {
 
 type standardGoCollector struct {
 	origin prometheus.Collector
-	logger log.Logger
 }
 
 // NewStandardGoCollector creates standard go collector.
-func NewStandardGoCollector(logger log.Logger) (cl.Collector, error) {
+func NewStandardGoCollector(_ *slog.Logger) (cl.Collector, error) {
 	c := collectors.NewGoCollector()
 	return &standardGoCollector{origin: c}, nil
 }
@@ -49,7 +48,7 @@ type standardProcessCollector struct {
 }
 
 // NewStandardProcessCollector creates standard process collector.
-func NewStandardProcessCollector(logger log.Logger) (cl.Collector, error) {
+func NewStandardProcessCollector(_ *slog.Logger) (cl.Collector, error) {
 	c := collectors.NewProcessCollector(collectors.ProcessCollectorOpts{})
 	return &standardProcessCollector{origin: c}, nil
 }
