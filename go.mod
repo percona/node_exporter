@@ -19,7 +19,7 @@ require (
 	github.com/jsimonetti/rtnetlink v1.4.2
 	github.com/lufia/iostat v1.2.1
 	github.com/mattn/go-xmlrpc v0.0.3
-	github.com/mdlayher/ethtool v0.1.0
+	github.com/mdlayher/ethtool v0.4.0
 	github.com/mdlayher/netlink v1.7.2
 	github.com/mdlayher/wifi v0.3.0
 	github.com/montanaflynn/stats v0.7.1
@@ -45,7 +45,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dennwc/ioctl v1.0.0 // indirect
 	github.com/go-logfmt/logfmt v0.5.1 // indirect
-	github.com/google/go-cmp v0.6.0 // indirect
+	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/jpillora/backoff v1.0.0 // indirect
 	github.com/mdlayher/genetlink v1.3.2 // indirect
 	github.com/mdlayher/socket v0.4.1 // indirect
