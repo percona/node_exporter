@@ -18,7 +18,7 @@ require (
 	github.com/mdlayher/netlink v1.7.2
 	github.com/mdlayher/wifi v0.4.0
 	github.com/montanaflynn/stats v0.7.1
-	github.com/opencontainers/selinux v1.11.1
+	github.com/opencontainers/selinux v1.12.0
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.13.0
 	github.com/prometheus/client_model v0.6.1
