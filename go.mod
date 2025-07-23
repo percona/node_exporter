@@ -1,6 +1,6 @@
 module github.com/prometheus/node_exporter
 
-go 1.23.6
+go 1.24.2
 
 require (
 	github.com/beevik/ntp v1.4.3
@@ -25,7 +25,7 @@ require (
 	github.com/prometheus/common v0.37.0
 	github.com/prometheus/exporter-toolkit v0.7.2
 	github.com/prometheus/procfs v0.8.0
-	github.com/safchain/ethtool v0.5.10
+	github.com/safchain/ethtool v0.6.1
 	github.com/soundcloud/go-runit v0.0.0-20150630195641-06ad41a06c4a
 	github.com/stretchr/testify v1.10.0
 	github.com/tklauser/go-sysconf v0.3.15
