@@ -19,7 +19,7 @@ jobs:
       - run: go mod download
       - run: make test-e2e
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: node_exporter
           path: node_exporter
@@ -53,7 +53,7 @@ jobs:
       - run: promu crossbuild -v  --parallelism 3 --parallelism-thread 3
       - run: promu --config .promu-cgo.yml crossbuild -v  --parallelism 3 --parallelism-thread 3
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: build
           path: .build
