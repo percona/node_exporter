@@ -37,6 +37,7 @@ linters:
     rules:
       - linters:
           - errcheck
+          - staticcheck
         path: _test.go
     paths:
       - third_party$
