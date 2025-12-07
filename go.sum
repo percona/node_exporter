@@ -62,8 +62,8 @@ github.com/mdlayher/netlink v1.8.0 h1:e7XNIYJKD7hUct3Px04RuIGJbBxy1/c4nX7D5Yyvvl
 github.com/mdlayher/netlink v1.8.0/go.mod h1:UhgKXUlDQhzb09DrCl2GuRNEglHmhYoWAHid9HK3594=
 github.com/mdlayher/socket v0.5.1 h1:VZaqt6RkGkt2OE9l3GcC6nZkqD3xKeQLyfleW/uBcos=
 github.com/mdlayher/socket v0.5.1/go.mod h1:TjPLHI1UgwEv5J1B5q0zTZq12A/6H7nKmtTanQE37IQ=
-github.com/mdlayher/wifi v0.5.0 h1:TGZIcrhL6h3710amshpEJnMzLs74MrZOF+8qbm8Gx/I=
-github.com/mdlayher/wifi v0.5.0/go.mod h1:yfQs+5zr1eOIfdsWDcZonWdznnt/Iiz0/4772cfZuHk=
+github.com/mdlayher/wifi v0.7.1 h1:YmnDtiVC53nird8qKEUCkVzkhE+jM3rtJATUt+KjhWA=
+github.com/mdlayher/wifi v0.7.1/go.mod h1:L4W/35f78XpeM6fuf/BvLx3NjfM9B/l3xBfnYNnD6KY=
 github.com/montanaflynn/stats v0.7.1 h1:etflOAAHORrCC44V+aR6Ftzort912ZU+YLiSTuV8eaE=
 github.com/montanaflynn/stats v0.7.1/go.mod h1:etXPPgVO6n31NxCd9KQUMvCM+ve0ruNzt6R8Bnaayow=
 github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f h1:KUppIJq7/+SVif2QVs3tOP0zanoHgBEVAwHxUSIzRqU=
