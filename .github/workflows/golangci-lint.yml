@@ -24,9 +24,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@f4a68c5e6e6e2e2e7e2e2e2e2e2e2e2e2e2e2e2e # v7.0.0
       - name: Install Go
-        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
+        uses: actions/setup-go@b7c8e5e6e6e2e2e7e2e2e2e2e2e2e2e2e2e2e2e2 # v7.0.0
         with:
           go-version: 1.24.x
       - name: Install snmp_exporter/generator dependencies
