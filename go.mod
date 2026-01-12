@@ -4,7 +4,7 @@ go 1.24.9
 
 require (
 	github.com/alecthomas/kingpin/v2 v2.4.0
-	github.com/beevik/ntp v1.4.3
+	github.com/beevik/ntp v1.5.0
 	github.com/coreos/go-systemd/v22 v22.6.0
 	github.com/dennwc/btrfs v0.0.0-20240418142341-0167142bde7a
 	github.com/ema/qdisc v1.0.0
