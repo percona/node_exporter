@@ -142,3 +142,32 @@ func TestPathRootfs(t *testing.T) {
 		}
 	}
 }
+
+func TestMountInfoPathOverride(t *testing.T) {
+	// --path.procfs points to fixtures with 25+ mount points,
+	// but --collector.filesystem.mount-info-path overrides to a file with only 1 mount.
+	if _, err := kingpin.CommandLine.Parse([]string{
+		"--path.procfs", "./fixtures/proc",
+		"--collector.filesystem.mount-info-path", "./fixtures_hidepid/proc/mounts",
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	expected := map[string]string{
+		"/": "",
+	}
+
+	filesystems, err := mountPointDetails(log.NewNopLogger())
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(filesystems) != len(expected) {
+		t.Errorf("expected %d mounts, got %d", len(expected), len(filesystems))
+	}
+	for _, fs := range filesystems {
+		if _, ok := expected[fs.mountPoint]; !ok {
+			t.Errorf("Got unexpected %s", fs.mountPoint)
+		}
+	}
+}
