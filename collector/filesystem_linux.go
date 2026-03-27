@@ -18,7 +18,6 @@ package collector
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -43,7 +42,7 @@ var mountTimeout = kingpin.Flag("collector.filesystem.mount-timeout",
 var statWorkerCount = kingpin.Flag("collector.filesystem.stat-workers",
 	"how many stat calls to process simultaneously").
 	Hidden().Default("4").Int()
-var mountInfoPath = kingpin.Flag("collector.filesystem.mount-info-path",
+var procMountsPath = kingpin.Flag("collector.filesystem.proc-mounts-path",
 	"Override path to mounts file. If set, disables the default /proc/1/mounts fallback logic.").
 	Default("").String()
 var stuckMounts = make(map[string]struct{})
@@ -182,12 +181,12 @@ func stuckMountWatcher(mountPoint string, success chan struct{}, logger log.Logg
 
 func mountPointDetails(logger log.Logger) ([]filesystemLabels, error) {
 	path := procFilePath("1/mounts")
-	if *mountInfoPath != "" {
-		path = *mountInfoPath
+	if *procMountsPath != "" {
+		path = *procMountsPath
 	}
 
 	file, err := os.Open(path)
-	if errors.Is(err, os.ErrNotExist) && *mountInfoPath == "" {
+	if err != nil && *procMountsPath == "" {
 		// Fallback to `/proc/mounts` if `/proc/1/mounts` is missing due hidepid.
 		level.Debug(logger).Log("msg", "Reading root mounts failed, falling back to system mounts", "err", err)
 		file, err = os.Open(procFilePath("mounts"))
