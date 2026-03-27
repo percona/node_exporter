@@ -1,6 +1,6 @@
 module github.com/prometheus/node_exporter
 
-go 1.25.5
+go 1.25.8
 
 require (
 	github.com/alecthomas/kingpin/v2 v2.4.0
@@ -18,7 +18,7 @@ require (
 	github.com/lufia/iostat v1.2.1
 	github.com/mattn/go-xmlrpc v0.0.3
 	github.com/mdlayher/ethtool v0.5.1
-	github.com/mdlayher/netlink v1.8.0
+	github.com/mdlayher/netlink v1.9.0
 	github.com/mdlayher/wifi v0.7.2
 	github.com/montanaflynn/stats v0.7.1
 	github.com/opencontainers/selinux v1.13.1
@@ -32,7 +32,7 @@ require (
 	github.com/stretchr/testify v1.11.1
 	github.com/tklauser/go-sysconf v0.3.16
 	golang.org/x/exp v0.0.0-20251219203646-944ab1f22d93
-	golang.org/x/sys v0.40.0
+	golang.org/x/sys v0.42.0
 	howett.net/plist v1.0.1
 )
 
@@ -55,11 +55,11 @@ require (
 	github.com/tklauser/numcpus v0.11.0 // indirect
 	github.com/xhit/go-str2duration/v2 v2.1.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/crypto v0.46.0 // indirect
-	golang.org/x/net v0.48.0 // indirect
+	golang.org/x/crypto v0.48.0 // indirect
+	golang.org/x/net v0.50.0 // indirect
 	golang.org/x/oauth2 v0.34.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
-	golang.org/x/text v0.33.0 // indirect
+	golang.org/x/text v0.34.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
