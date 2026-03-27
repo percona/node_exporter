@@ -43,7 +43,7 @@ var statWorkerCount = kingpin.Flag("collector.filesystem.stat-workers",
 	"how many stat calls to process simultaneously").
 	Hidden().Default("4").Int()
 var procMountsPath = kingpin.Flag("collector.filesystem.proc-mounts-path",
-	"Override path to mounts file. If set, disables the default /proc/1/mounts fallback logic.").
+	"Override absolute path to mounts file. If set, disables the default /proc/1/mounts fallback logic.").
 	Default("").String()
 var stuckMounts = make(map[string]struct{})
 var stuckMountsMtx = &sync.Mutex{}
