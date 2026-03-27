@@ -144,12 +144,23 @@ func TestPathRootfs(t *testing.T) {
 }
 
 func TestMountInfoPathOverride(t *testing.T) {
+	// Save and restore flag values so changes don't leak into other tests.
+	priorMountInfoPath := *mountInfoPath
+	priorProcPath := *procPath
+	t.Cleanup(func() {
+		_, _ = kingpin.CommandLine.Parse([]string{
+			"--path.procfs", priorProcPath,
+			"--collector.filesystem.mount-info-path", priorMountInfoPath,
+		})
+	})
+
 	// --path.procfs points to fixtures with 25+ mount points,
 	// but --collector.filesystem.mount-info-path overrides to a file with only 1 mount.
-	if _, err := kingpin.CommandLine.Parse([]string{
+	_, err := kingpin.CommandLine.Parse([]string{
 		"--path.procfs", "./fixtures/proc",
 		"--collector.filesystem.mount-info-path", "./fixtures_hidepid/proc/mounts",
-	}); err != nil {
+	})
+	if err != nil {
 		t.Fatal(err)
 	}
 
