@@ -142,3 +142,43 @@ func TestPathRootfs(t *testing.T) {
 		}
 	}
 }
+
+func TestProcMountsPathOverride(t *testing.T) {
+	// Save and restore flag values so changes don't leak into other tests.
+	priorProcMountsPath := *procMountsPath
+	priorProcPath := *procPath
+	t.Cleanup(func() {
+		_, _ = kingpin.CommandLine.Parse([]string{
+			"--path.procfs", priorProcPath,
+			"--collector.filesystem.proc-mounts-path", priorProcMountsPath,
+		})
+	})
+
+	// --path.procfs points to fixtures with 25+ mount points,
+	// but --collector.filesystem.proc-mounts-path overrides to a file with only 1 mount.
+	_, err := kingpin.CommandLine.Parse([]string{
+		"--path.procfs", "./fixtures/proc",
+		"--collector.filesystem.proc-mounts-path", "./fixtures_hidepid/proc/mounts",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := map[string]string{
+		"/": "",
+	}
+
+	filesystems, err := mountPointDetails(log.NewNopLogger())
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(filesystems) != len(expected) {
+		t.Errorf("expected %d mounts, got %d", len(expected), len(filesystems))
+	}
+	for _, fs := range filesystems {
+		if _, ok := expected[fs.mountPoint]; !ok {
+			t.Errorf("Got unexpected %s", fs.mountPoint)
+		}
+	}
+}
