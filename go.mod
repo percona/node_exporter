@@ -30,9 +30,9 @@ require (
 	github.com/prometheus/procfs v0.14.0
 	github.com/safchain/ethtool v0.7.0
 	github.com/stretchr/testify v1.11.1
-	github.com/tklauser/go-sysconf v0.3.16
+	github.com/tklauser/go-sysconf v0.4.0
 	golang.org/x/exp v0.0.0-20251219203646-944ab1f22d93
-	golang.org/x/sys v0.43.0
+	golang.org/x/sys v0.44.0
 	howett.net/plist v1.0.1
 )
 
@@ -52,7 +52,7 @@ require (
 	github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/siebenmann/go-kstat v0.0.0-20210513183136-173c9b0a9973 // indirect
-	github.com/tklauser/numcpus v0.11.0 // indirect
+	github.com/tklauser/numcpus v0.12.0 // indirect
 	github.com/xhit/go-str2duration/v2 v2.1.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.49.0 // indirect
