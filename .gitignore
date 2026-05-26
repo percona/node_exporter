@@ -37,6 +37,7 @@ collector/fixtures/sys/
 collector/fixtures/udev/
 
 /vendor
+CLAUDE.md
 
 # upstream updating dev test
 percona/tests/upstream_update/metrics.upstream.txt

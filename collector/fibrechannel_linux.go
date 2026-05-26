@@ -23,6 +23,7 @@ import (
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/node_exporter/collector/utils"
 	"github.com/prometheus/procfs/sysfs"
 )
 
@@ -114,9 +115,22 @@ func (c *fibrechannelCollector) Update(ch chan<- prometheus.Metric) error {
 		infoValue := 1.0
 
 		// First push the Host values
-		ch <- prometheus.MustNewConstMetric(infoDesc, prometheus.GaugeValue, infoValue, *host.Name, *host.Speed, *host.PortState, *host.PortType, *host.PortID, *host.PortName, *host.FabricName, *host.SymbolicName, *host.SupportedClasses, *host.SupportedSpeeds, *host.DevLossTMO)
+		ch <- prometheus.MustNewConstMetric(infoDesc, prometheus.GaugeValue, infoValue, utils.SafeDereference(
+			host.Name,
+			host.Speed,
+			host.PortState,
+			host.PortType,
+			host.PortID,
+			host.PortName,
+			host.FabricName,
+			host.SymbolicName,
+			host.SupportedClasses,
+			host.SupportedSpeeds,
+			host.DevLossTMO,
+		)...)
 
 		// Then the counters
+		// Note: `procfs` guarantees these a safe dereference for these counters.
 		c.pushCounter(ch, "dumped_frames_total", *host.Counters.DumpedFrames, *host.Name)
 		c.pushCounter(ch, "error_frames_total", *host.Counters.ErrorFrames, *host.Name)
 		c.pushCounter(ch, "invalid_crc_total", *host.Counters.InvalidCRCCount, *host.Name)
