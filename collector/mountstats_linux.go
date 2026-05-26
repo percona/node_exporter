@@ -20,6 +20,7 @@ import (
 	"fmt"
 
 	"github.com/go-kit/log"
+	"github.com/go-kit/log/level"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/procfs"
 )
@@ -541,7 +542,7 @@ func (c *mountStatsCollector) Update(ch chan<- prometheus.Metric) error {
 			deviceIdentifier := nfsDeviceIdentifier{m.Device, stats.Transport[k].Protocol, mountAddress}
 			i := deviceList[deviceIdentifier]
 			if i {
-				c.logger.Log("Skipping duplicate device entry", "device", deviceIdentifier)
+				level.Debug(c.logger).Log("msg", "Skipping duplicate device entry", "device", deviceIdentifier)
 				break
 			}
 			deviceList[deviceIdentifier] = true
