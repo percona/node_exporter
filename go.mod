@@ -29,7 +29,7 @@ require (
 	github.com/prometheus/exporter-toolkit v0.11.0
 	github.com/prometheus/procfs v0.15.1
 	github.com/safchain/ethtool v0.7.0
-	github.com/stretchr/testify v1.11.1
+	github.com/stretchr/testify v1.12.0
 	github.com/tklauser/go-sysconf v0.4.0
 	golang.org/x/exp v0.0.0-20251219203646-944ab1f22d93
 	golang.org/x/sys v0.47.0
@@ -50,7 +50,6 @@ require (
 	github.com/mdlayher/genetlink v1.4.0 // indirect
 	github.com/mdlayher/socket v0.6.1 // indirect
 	github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f // indirect
-	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/siebenmann/go-kstat v0.0.0-20210513183136-173c9b0a9973 // indirect
 	github.com/tklauser/numcpus v0.12.0 // indirect
 	github.com/xhit/go-str2duration/v2 v2.1.0 // indirect
