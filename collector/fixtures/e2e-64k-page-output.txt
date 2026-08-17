@@ -2579,12 +2579,12 @@ node_nfs_requests_total{method="FsidPresent",proto="4"} 11
 node_nfs_requests_total{method="GetACL",proto="4"} 36
 node_nfs_requests_total{method="GetAttr",proto="2"} 57
 node_nfs_requests_total{method="GetAttr",proto="3"} 1.061909262e+09
-node_nfs_requests_total{method="GetDeviceInfo",proto="4"} 1
+node_nfs_requests_total{method="GetDeviceInfo",proto="4"} 90
 node_nfs_requests_total{method="GetDeviceList",proto="4"} 0
 node_nfs_requests_total{method="GetLeaseTime",proto="4"} 28
 node_nfs_requests_total{method="Getattr",proto="4"} 88
 node_nfs_requests_total{method="LayoutCommit",proto="4"} 26
-node_nfs_requests_total{method="LayoutGet",proto="4"} 90
+node_nfs_requests_total{method="LayoutGet",proto="4"} 1
 node_nfs_requests_total{method="LayoutReturn",proto="4"} 0
 node_nfs_requests_total{method="LayoutStats",proto="4"} 0
 node_nfs_requests_total{method="Link",proto="2"} 17
