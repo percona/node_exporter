@@ -64,8 +64,8 @@ github.com/mdlayher/socket v0.6.1 h1:M7uj2NtuujUY4mYr1C57NmfNiRHbkKpnBxO856lsc3A
 github.com/mdlayher/socket v0.6.1/go.mod h1:+/SGtqc9V+5dAuRgQsU0fGBI+oRDiW7O2Obx10OIWfg=
 github.com/mdlayher/wifi v0.9.0 h1:d5mmqw9S2U4f95dcW5wnnUagpI6GJh328/AchVSP4ko=
 github.com/mdlayher/wifi v0.9.0/go.mod h1:Bfkrz+VncrVPaOLcFG/bR9tSY2PbmYNQicWvAZlUZlI=
-github.com/montanaflynn/stats v0.12.3 h1:6Wapv3TSE8rWROR0+nYl7Sy6C2jXlnZDcFCb0J554zk=
-github.com/montanaflynn/stats v0.12.3/go.mod h1:etXPPgVO6n31NxCd9KQUMvCM+ve0ruNzt6R8Bnaayow=
+github.com/montanaflynn/stats v0.12.4 h1:amtNRsti20yIhcrkfUJGwoYqBR82jKQFE8SNNYVgGn0=
+github.com/montanaflynn/stats v0.12.4/go.mod h1:etXPPgVO6n31NxCd9KQUMvCM+ve0ruNzt6R8Bnaayow=
 github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f h1:KUppIJq7/+SVif2QVs3tOP0zanoHgBEVAwHxUSIzRqU=
 github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f/go.mod h1:qRWi+5nqEBWmkhHvq77mSJWrCKwh8bxhgT7d/eI7P4U=
 github.com/opencontainers/selinux v1.15.1 h1:ERxeh5caJvCzNAKdI8WQbJmB1LDTn4BuaAg8wihLBpA=
