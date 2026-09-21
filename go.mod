@@ -32,7 +32,7 @@ require (
 	github.com/stretchr/testify v1.12.1
 	github.com/tklauser/go-sysconf v0.4.0
 	golang.org/x/exp v0.0.0-20251219203646-944ab1f22d93
-	golang.org/x/sys v0.47.0
+	golang.org/x/sys v0.48.0
 	howett.net/plist v1.0.1
 )
 
