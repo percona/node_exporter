@@ -3,6 +3,8 @@
 name: golangci-lint
 on:
   push:
+    branches:
+      - main
     paths:
       - "go.sum"
       - "go.mod"
