@@ -16,6 +16,12 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: ${{ github.workspace }}/go.mod
+      - name: Cache prometheus build tools
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/go/bin/promu
+          key: ${{ runner.os }}-gotools-${{ github.job }}-${{ hashFiles('Makefile', 'Makefile.common') }}
       - run: go mod download
       - run: make test-e2e
       - name: Upload artifact
@@ -31,6 +37,12 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: ${{ github.workspace }}/go.mod
+      - name: Cache prometheus build tools
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/go/bin/promtool
+          key: ${{ runner.os }}-gotools-${{ github.job }}-${{ hashFiles('Makefile', 'Makefile.common') }}
       - run: go install github.com/google/go-jsonnet/cmd/jsonnet@latest
       - run: go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest
       - run: go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest
@@ -47,6 +59,13 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: ${{ github.workspace }}/go.mod
+      - name: Cache prometheus build tools
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/go/bin/promu
+            ~/go/bin/promtool
+          key: ${{ runner.os }}-gotools-${{ github.job }}-${{ hashFiles('Makefile', 'Makefile.common') }}
       - run: docker run --privileged linuxkit/binfmt:v0.8
       - run: make promtool
       - run: make promu
