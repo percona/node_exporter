@@ -24,7 +24,7 @@ require (
 	github.com/opencontainers/selinux v1.15.1
 	github.com/prometheus-community/go-runit v0.1.0
 	github.com/prometheus/client_golang v1.19.0
-	github.com/prometheus/client_model v0.6.2
+	github.com/prometheus/client_model v0.6.3
 	github.com/prometheus/common v0.53.0
 	github.com/prometheus/exporter-toolkit v0.11.0
 	github.com/prometheus/procfs v0.22.0
@@ -60,6 +60,6 @@ require (
 	golang.org/x/oauth2 v0.34.0 // indirect
 	golang.org/x/sync v0.22.0 // indirect
 	golang.org/x/text v0.40.0 // indirect
-	google.golang.org/protobuf v1.36.11 // indirect
+	google.golang.org/protobuf v1.36.12 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
