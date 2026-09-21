@@ -7,7 +7,7 @@ executors:
   # should also be updated.
   golang:
     docker:
-      - image: cimg/go:1.22
+      - image: cimg/go:1.26
   arm:
     machine:
       image: ubuntu-2204:current
