@@ -76,3 +76,6 @@ jobs:
         with:
           name: build
           path: .build
+          # .build is dot-prefixed, which upload-artifact treats as hidden and
+          # skips unless this is set.
+          include-hidden-files: true
