@@ -19,7 +19,7 @@ require (
 	github.com/mattn/go-xmlrpc v0.0.3
 	github.com/mdlayher/ethtool v0.7.0
 	github.com/mdlayher/netlink v1.11.2
-	github.com/mdlayher/wifi v0.9.0
+	github.com/mdlayher/wifi v0.10.0
 	github.com/montanaflynn/stats v0.12.7
 	github.com/opencontainers/selinux v1.15.1
 	github.com/prometheus-community/go-runit v0.1.0
